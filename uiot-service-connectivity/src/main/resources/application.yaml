@@ -1,0 +1,19 @@
+server:
+  port: 8333
+spring:
+  application:
+    name: uiot-service-connectivity
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: uiot-service-connectivity
+  kafka:
+    streams:
+      application-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
+uiot:
+  rmq-auth:
+    vhost: /
+    routing-key-template: telemetry.%s.%s
+    username-context-separator: \.
+    kafka-system-events-topic: uiot-system-events

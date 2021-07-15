@@ -1,0 +1,22 @@
+server:
+  port: 8334
+spring:
+  application:
+    name: uiot-service-history
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: uiot-service-history
+  kafka:
+    streams:
+      application-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
+  jackson:
+    default-property-inclusion: non_null
+uiot:
+  history:
+    kafka:
+      thing-events-topic: uiot-thing-events
+      thing-metadata-topic: uiot-history_thing-metadata
+      keyed-thing-events-topic: uiot-history_keyed-thing-events
+      system-events-topic: uiot-system-events

@@ -1,0 +1,19 @@
+server:
+  port: 8335
+spring:
+  application:
+    name: uiot-service-things
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: uiot-service-things
+  kafka:
+    producer:
+      client-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
+      retries: 3
+  jackson:
+    default-property-inclusion: non_null
+uiot:
+  things:
+    kafka-system-events-topic: uiot-system-events

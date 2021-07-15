@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = "uiot"
+
+include ":uiot-library-event-schema"
+include ":uiot-service-connectivity"
+include ":uiot-service-history"
+include ":uiot-service-rmq-telemetry"
+include ":uiot-service-rooms"
+include ":uiot-service-things"

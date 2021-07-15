@@ -1,0 +1,20 @@
+server:
+  port: 8331
+spring:
+  application:
+    name: uiot-service-rabbitmq-telemetry
+  rabbitmq:
+    addresses: localhost:5672
+    username: user
+    password: user
+  kafka:
+    producer:
+      client-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
+      retries: 3
+uiot:
+  telemetry:
+    rabbitmq-routing-key-regexp: ^telemetry\.(.*)\.(.*)$
+    rabbitmq-routing-key: telemetry.*.*
+    rabbitmq-input-queue: uiot-telemetry-inbound
+    kafka-output-topic: uiot-thing-events

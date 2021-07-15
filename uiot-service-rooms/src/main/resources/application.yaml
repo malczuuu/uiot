@@ -1,0 +1,19 @@
+server:
+  port: 8338
+spring:
+  application:
+    name: uiot-service-rooms
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: uiot-service-rooms
+  kafka:
+    producer:
+      client-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
+      retries: 3
+  jackson:
+    default-property-inclusion: non_null
+uiot:
+  rooms:
+    kafka-system-events-topic: uiot-system-events
