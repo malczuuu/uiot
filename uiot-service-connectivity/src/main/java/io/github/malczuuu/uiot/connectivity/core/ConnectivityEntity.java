@@ -33,11 +33,17 @@ public class ConnectivityEntity {
 
   public ConnectivityEntity(
       ObjectId id, String room, String thing, String password, Boolean enabled) {
+    this(id, room, thing, password, enabled, null);
+  }
+
+  public ConnectivityEntity(
+      ObjectId id, String room, String thing, String password, Boolean enabled, Long version) {
     this.id = id;
     this.room = room;
     this.thing = thing;
     this.password = password;
     this.enabled = enabled;
+    this.version = version;
   }
 
   public ConnectivityEntity(String room, String thing, String password, Boolean enabled) {

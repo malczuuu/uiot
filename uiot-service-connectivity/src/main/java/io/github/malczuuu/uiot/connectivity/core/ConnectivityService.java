@@ -77,8 +77,8 @@ public class ConnectivityService {
   }
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  private static class ConnectivityNotFoundException extends RuntimeException {}
+  public static class ConnectivityNotFoundException extends RuntimeException {}
 
   @ResponseStatus(HttpStatus.CONFLICT)
-  private static class ConcurrentUpdateException extends RuntimeException {}
+  public static class ConcurrentUpdateException extends RuntimeException {}
 }
