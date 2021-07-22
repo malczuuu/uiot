@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.things.core;
 
+import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
 import io.github.malczuuu.uiot.schema.event.thing.ThingCreateEvent;
 import io.github.malczuuu.uiot.schema.event.thing.ThingDeleteEvent;
 import io.github.malczuuu.uiot.things.entity.ThingEntity;
