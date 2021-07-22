@@ -3,9 +3,11 @@ package io.github.malczuuu.uiot.history.stream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.history.core.HistoryService;
-import io.github.malczuuu.uiot.schema.event.thing.ThingDeleteEnvelope;
-import io.github.malczuuu.uiot.schema.event.thing.ThingDeleteEvent;
+import io.github.malczuuu.uiot.history.core.storage.StorageService;
+import io.github.malczuuu.uiot.schema.event.room.RoomCreateEnvelope;
+import io.github.malczuuu.uiot.schema.event.room.RoomCreateEvent;
+import io.github.malczuuu.uiot.schema.event.room.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.schema.event.room.RoomDeleteEvent;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
@@ -24,18 +26,17 @@ public class SystemEventStream implements InitializingBean {
   private static final Logger log = LoggerFactory.getLogger(SystemEventStream.class);
 
   private final StreamsBuilder streamsBuilder;
-  private final HistoryService historyService;
+  private final StorageService storageService;
   private final ObjectMapper objectMapper;
-
   private final TopicProperties topics;
 
   public SystemEventStream(
       StreamsBuilder streamsBuilder,
-      HistoryService historyService,
+      StorageService storageService,
       ObjectMapper objectMapper,
       TopicProperties topics) {
     this.streamsBuilder = streamsBuilder;
-    this.historyService = historyService;
+    this.storageService = storageService;
     this.objectMapper = objectMapper;
     this.topics = topics;
   }
@@ -65,21 +66,28 @@ public class SystemEventStream implements InitializingBean {
 
   private void processSystemEventInternal(String value) throws JsonProcessingException {
     JsonNode node = objectMapper.readTree(value);
-    if (node.get("type").asText("").equals(ThingDeleteEnvelope.TYPE)) {
-      ThingDeleteEnvelope envelope = objectMapper.treeToValue(node, ThingDeleteEnvelope.class);
-      ThingDeleteEvent event = envelope.getDeleteThingEvent();
-
-      historyService.registerThingDeletion(
-          event.getRoomUid(), event.getThingUid(), event.getTimestamp());
-
-      log.debug(
-          "Successfully deleted events for room_uid={}, thing_uid={}, deletion requested at timestamp={}",
-          event.getRoomUid(),
-          event.getThingUid(),
-          event.getTimestamp());
-    } else {
-      String type = node.get("type").asText("");
-      log.debug("Ignoring internal event of type={}, value={}", type, node.get("type"));
+    String type = node.get("type").asText("");
+    switch (type) {
+      case RoomCreateEnvelope.TYPE:
+        createStorage(node);
+        break;
+      case RoomDeleteEnvelope.TYPE:
+        deleteStorage(node);
+        break;
+      default:
+        log.debug("Ignoring internal event of type={}, value={}", type, node.get("type"));
     }
+  }
+
+  private void createStorage(JsonNode node) throws JsonProcessingException {
+    RoomCreateEnvelope envelope = objectMapper.treeToValue(node, RoomCreateEnvelope.class);
+    RoomCreateEvent event = envelope.getRoomCreateEvent();
+    storageService.createStorage(event);
+  }
+
+  private void deleteStorage(JsonNode node) throws JsonProcessingException {
+    RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
+    RoomDeleteEvent event = envelope.getRoomDeleteEvent();
+    storageService.deleteStorage(event);
   }
 }

@@ -10,6 +10,4 @@ public interface HistoryService {
   EventHistory getThingEventHistory(String roomUid, String thingUid, int size);
 
   void storeEvent(ThingEvent event);
-
-  void registerThingDeletion(String roomUid, String thingUid, long timeNano);
 }

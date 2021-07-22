@@ -12,11 +12,13 @@ sourceCompatibility = "11"
 
 repositories {
     mavenCentral()
+    maven {url "https://jitpack.io/"}
 }
 
 dependencies {
 
     implementation project(":uiot-library-event-schema")
+    implementation project(":uiot-library-http-errors")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
@@ -24,6 +26,9 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
 
     implementation("org.apache.kafka:kafka-streams")
+
+    implementation("io.github.malczuuu.problem4j:problem4j-spring-web:2.0.0")
+    implementation("commons-codec:commons-codec:1.15")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

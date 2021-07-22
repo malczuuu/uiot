@@ -6,18 +6,16 @@ import io.github.malczuuu.uiot.schema.event.thing.ThingEvent;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
 
-  private final ThingEventRepository thingEventRepository;
+  private final ThingEventRepositoryExtensions thingEventRepository;
 
-  public HistoryServiceImpl(ThingEventRepository thingEventRepository) {
+  public HistoryServiceImpl(ThingEventRepositoryExtensions thingEventRepository) {
     this.thingEventRepository = thingEventRepository;
   }
 
@@ -48,9 +46,9 @@ public class HistoryServiceImpl implements HistoryService {
         e.getValueBoolean(),
         e.getValueData(),
         e.getUnit(),
-        e.getRoom(),
-        e.getThing(),
-        e.getProperty(),
+        e.getRoomUid(),
+        e.getThingUid(),
+        e.getPropertyName(),
         e.getArrivalTime() / 1000_000_000.0d,
         parsedArrivalTime.toString());
   }
@@ -80,12 +78,5 @@ public class HistoryServiceImpl implements HistoryService {
         event.getThing(),
         event.getProperty(),
         event.getArrivalTime());
-  }
-
-  @Override
-  public void registerThingDeletion(String roomUid, String thingUid, long timeNano) {
-    Date date = new Date(timeNano / 1000_000L);
-    ObjectId id = ObjectId.getSmallestWithDate(date);
-    thingEventRepository.deleteAllByThingAndIdLessThanEqual(thingUid, id);
   }
 }
