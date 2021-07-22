@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rooms.core;
 
+import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
 import io.github.malczuuu.uiot.rooms.entity.RoomEntity;
 import io.github.malczuuu.uiot.rooms.entity.RoomRepository;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -72,7 +74,10 @@ public class RoomServiceImpl implements RoomService {
   @Override
   public void createRoom(RoomModel room) {
     RoomEntity entity = new RoomEntity(room.getUid(), room.getName());
-    roomRepository.save(entity);
+    try {
+      roomRepository.save(entity);
+    } catch (DuplicateKeyException ignored) {
+    }
   }
 
   @Override

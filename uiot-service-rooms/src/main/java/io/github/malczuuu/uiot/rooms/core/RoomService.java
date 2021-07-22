@@ -1,11 +1,10 @@
 package io.github.malczuuu.uiot.rooms.core;
 
+import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
 import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
 import io.github.malczuuu.uiot.rooms.model.RoomModel;
 import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface RoomService {
 
@@ -24,10 +23,4 @@ public interface RoomService {
   void requestRoomDeletion(String uid);
 
   void deleteRoom(String uid);
-
-  @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "room not found")
-  class RoomNotFoundException extends RuntimeException {}
-
-  @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "invalid cursor")
-  class InvalidCursorException extends RuntimeException {}
 }
