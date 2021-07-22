@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(path = "/api/rooms")
@@ -60,6 +61,7 @@ public class RoomController {
         responseBody.getContent().stream().map(RoomModel::getUid).collect(Collectors.toList()));
   }
 
+  @ApiIgnore
   @GetMapping(
       produces = MediaType.APPLICATION_JSON_VALUE,
       params = {"cursor"})
