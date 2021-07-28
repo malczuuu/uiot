@@ -15,14 +15,10 @@ public interface ThingService {
 
   ThingModel getThing(String roomUid, String thingUid) throws ThingNotFoundException;
 
-  ThingModel requestThingCreation(String roomUid, ThingCreateModel thing);
-
-  void createThing(String roomUid, ThingModel thing);
+  ThingModel createThing(String roomUid, ThingCreateModel thing);
 
   ThingModel updateThing(String roomUid, String thingUid, ThingUpdateModel thing)
       throws ThingNotFoundException;
-
-  void requestThingDeletion(String roomUid, String thingUid);
 
   void deleteThing(String roomUid, String thingUid);
 }

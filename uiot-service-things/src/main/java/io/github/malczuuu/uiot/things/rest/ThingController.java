@@ -87,7 +87,7 @@ public class ThingController {
   public ThingModel createThing(
       @PathVariable("room") String room, @RequestBody @Valid ThingCreateModel requestBody) {
     log.debug("Attempting to create thing on Things API POST, room={}", room);
-    ThingModel responseBody = thingService.requestThingCreation(room, requestBody);
+    ThingModel responseBody = thingService.createThing(room, requestBody);
     log.info("Created thing on Things API POST, room={}, thing={}", room, responseBody.getUid());
     return responseBody;
   }
@@ -119,7 +119,7 @@ public class ThingController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteThing(@PathVariable("room") String room, @PathVariable("thing") String thing) {
     log.debug("Attempting to delete thing on Things API DELETE, room={}, thing={}", room, thing);
-    thingService.requestThingDeletion(room, thing);
+    thingService.deleteThing(room, thing);
     log.info("Deleted thing on Things API DELETE, room={}, thing={}", room, thing);
   }
 }

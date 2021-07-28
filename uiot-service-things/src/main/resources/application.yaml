@@ -16,4 +16,4 @@ spring:
     default-property-inclusion: non_null
 uiot:
   things:
-    kafka-system-events-topic: uiot-system-events
+    connectivity-url: http://localhost:8333/api/rooms/{roomUid}/things/{thingUid}/connectivity

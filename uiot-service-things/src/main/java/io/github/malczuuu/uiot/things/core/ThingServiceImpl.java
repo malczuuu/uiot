@@ -1,34 +1,30 @@
 package io.github.malczuuu.uiot.things.core;
 
+import io.github.malczuuu.uiot.http.errors.InternalServerErrorException;
 import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
-import io.github.malczuuu.uiot.schema.event.thing.ThingCreateEvent;
-import io.github.malczuuu.uiot.schema.event.thing.ThingDeleteEvent;
 import io.github.malczuuu.uiot.things.entity.ThingEntity;
 import io.github.malczuuu.uiot.things.entity.ThingRepository;
 import io.github.malczuuu.uiot.things.model.CursorPage;
 import io.github.malczuuu.uiot.things.model.ThingCreateModel;
 import io.github.malczuuu.uiot.things.model.ThingModel;
 import io.github.malczuuu.uiot.things.model.ThingUpdateModel;
-import java.time.Clock;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ThingServiceImpl implements ThingService {
 
   private final ThingRepository thingRepository;
-  private final ThingEventBroker thingEventBroker;
-  private final Clock clock;
+  private final ConnectivityIntegration connectivityIntegration;
 
   public ThingServiceImpl(
-      ThingRepository thingRepository, ThingEventBroker thingEventBroker, Clock clock) {
+      ThingRepository thingRepository, ConnectivityIntegration connectivityIntegration) {
     this.thingRepository = thingRepository;
-    this.thingEventBroker = thingEventBroker;
-    this.clock = clock;
+    this.connectivityIntegration = connectivityIntegration;
   }
 
   @Override
@@ -66,17 +62,10 @@ public class ThingServiceImpl implements ThingService {
   }
 
   @Override
-  public ThingModel requestThingCreation(String roomUid, ThingCreateModel thing) {
-    ThingModel model = new ThingModel(thing.getUid(), thing.getName(), null);
-    long time = nowAsNano();
-    thingEventBroker.publish(new ThingCreateEvent(roomUid, model.getUid(), model.getName(), time));
-    return model;
-  }
-
-  @Override
-  public void createThing(String roomUid, ThingModel thing) {
+  public ThingModel createThing(String roomUid, ThingCreateModel thing) {
     ThingEntity entity = new ThingEntity(roomUid, thing.getUid(), thing.getName());
-    thingRepository.save(entity);
+    entity = thingRepository.save(entity);
+    return toThingModel(entity);
   }
 
   @Override
@@ -94,21 +83,13 @@ public class ThingServiceImpl implements ThingService {
   }
 
   @Override
-  public void requestThingDeletion(String roomUid, String thingUid) {
-    if (thingRepository.existsByRoomAndUid(roomUid, thingUid)) {
-      long time = nowAsNano();
-      thingEventBroker.publish(new ThingDeleteEvent(roomUid, thingUid, time));
+  @Transactional
+  public void deleteThing(String roomUid, String thingUid) {
+    thingRepository.deleteByRoomAndUid(roomUid, thingUid);
+    boolean integrated = connectivityIntegration.onThingDeletion(roomUid, roomUid);
+    if (!integrated) {
+      throw new InternalServerErrorException();
     }
-  }
-
-  private long nowAsNano() {
-    Instant timestamp = clock.instant();
-    return timestamp.getEpochSecond() * 1000_000_000L + timestamp.getNano();
-  }
-
-  @Override
-  public void deleteThing(String thingUid, String roomUid) {
-    thingRepository.deleteByRoomAndUid(roomUid, roomUid);
   }
 
   private static final class Cursor {
