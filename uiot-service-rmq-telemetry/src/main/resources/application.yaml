@@ -2,7 +2,7 @@ server:
   port: 8331
 spring:
   application:
-    name: uiot-service-rabbitmq-telemetry
+    name: uiot-service-rmq-telemetry
   rabbitmq:
     addresses: localhost:5672
     username: user
