@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class HistoryServiceImpl implements HistoryService {
 
-  private final ThingEventRepositoryExtensions thingEventRepository;
+  private final ThingEventRepository thingEventRepository;
 
-  public HistoryServiceImpl(ThingEventRepositoryExtensions thingEventRepository) {
+  public HistoryServiceImpl(ThingEventRepository thingEventRepository) {
     this.thingEventRepository = thingEventRepository;
   }
 

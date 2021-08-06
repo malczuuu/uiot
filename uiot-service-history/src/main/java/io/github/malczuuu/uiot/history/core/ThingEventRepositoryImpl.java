@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ThingEventRepositoryImpl implements ThingEventRepositoryExtensions {
+public class ThingEventRepositoryImpl implements ThingEventRepository {
 
   private final StorageNameService storageNameService;
   private final MongoOperations mongoOperations;

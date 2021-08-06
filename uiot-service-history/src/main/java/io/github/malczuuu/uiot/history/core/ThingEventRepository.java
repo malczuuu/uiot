@@ -2,7 +2,7 @@ package io.github.malczuuu.uiot.history.core;
 
 import java.util.List;
 
-public interface ThingEventRepositoryExtensions {
+public interface ThingEventRepository {
 
   ThingEventEntity save(ThingEventEntity event);
 
