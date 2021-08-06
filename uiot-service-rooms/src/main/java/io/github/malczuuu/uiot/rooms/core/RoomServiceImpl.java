@@ -72,8 +72,8 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public void createRoom(RoomModel room) {
-    RoomEntity entity = new RoomEntity(room.getUid(), room.getName());
+  public void createRoom(RoomCreateEvent room) {
+    RoomEntity entity = new RoomEntity(room.getRoomUid(), room.getRoomName());
     try {
       roomRepository.save(entity);
     } catch (DuplicateKeyException ignored) {

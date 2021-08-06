@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.rooms.core.RoomService;
-import io.github.malczuuu.uiot.rooms.model.RoomModel;
 import io.github.malczuuu.uiot.schema.event.room.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.schema.event.room.RoomDeleteEnvelope;
 import org.apache.kafka.common.serialization.Serdes;
@@ -77,11 +76,7 @@ public class RoomEventStream implements InitializingBean {
   private void triggerRoomCreation(JsonNode node) throws JsonProcessingException {
     RoomCreateEnvelope envelope = objectMapper.treeToValue(node, RoomCreateEnvelope.class);
 
-    roomService.createRoom(
-        new RoomModel(
-            envelope.getRoomCreateEvent().getRoomUid(),
-            envelope.getRoomCreateEvent().getRoomName(),
-            0L));
+    roomService.createRoom(envelope.getRoomCreateEvent());
 
     log.info(
         "Triggered room creation via streams processing, room={}, timestamp={}",
