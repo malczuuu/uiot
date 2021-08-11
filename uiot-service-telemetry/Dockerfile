@@ -4,7 +4,7 @@ WORKDIR /app
 
 EXPOSE 8333
 
-COPY ./uiot-service-rmq-telemetry-1.0.0-SNAPSHOT.jar /app/app.jar
+COPY ./uiot-service-telemetry-1.0.0-SNAPSHOT.jar /app/app.jar
 
 ENTRYPOINT [ "java" ]
 CMD [ "-Dfile.encoding=UTF-8", "-Duser.timezone=UTC", "-XX:+UseG1GC", "-jar", "/app/app.jar" ]
