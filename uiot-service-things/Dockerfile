@@ -2,7 +2,9 @@ FROM openjdk:11.0.11-jre-slim
 
 WORKDIR /app
 
-EXPOSE 8335
+ENV SERVER_PORT 8080
+
+EXPOSE 8080
 
 COPY ./uiot-service-things-1.0.0-SNAPSHOT.jar /app/app.jar
 

@@ -1,12 +1,12 @@
 server:
-  port: 8333
+  port: 8330
 spring:
   application:
-    name: uiot-service-rooms
+    name: uiot-service-accounting
   data:
     mongodb:
       uri: mongodb://localhost:27017
-      database: uiot-service-rooms
+      database: uiot-service-accounting
   kafka:
     producer:
       client-id: ${spring.application.name}
@@ -15,5 +15,5 @@ spring:
   jackson:
     default-property-inclusion: non_null
 uiot:
-  rooms:
+  rules:
     kafka-system-events-topic: uiot-system-events

@@ -1,0 +1,45 @@
+plugins {
+    id "java"
+    id "org.springframework.boot" version "2.5.0"
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "com.github.sherter.google-java-format" version "0.9"
+}
+
+group = "io.github.malczuuu"
+version = "1.0.0-SNAPSHOT"
+
+sourceCompatibility = "11"
+
+repositories {
+    mavenCentral()
+    maven {url "https://jitpack.io/"}
+}
+
+dependencies {
+
+    implementation project(":uiot-library-models")
+    implementation project(":uiot-library-problems")
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+
+    implementation("io.github.malczuuu.problem4j:problem4j-spring-web:2.0.0")
+
+    implementation("org.springframework.kafka:spring-kafka")
+
+    implementation("org.apache.kafka:kafka-streams")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+googleJavaFormat {
+    toolVersion = "1.8"
+}
