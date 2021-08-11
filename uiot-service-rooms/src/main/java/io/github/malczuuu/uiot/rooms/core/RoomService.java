@@ -1,11 +1,11 @@
 package io.github.malczuuu.uiot.rooms.core;
 
-import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
+import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
+import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
 import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
 import io.github.malczuuu.uiot.rooms.model.RoomModel;
 import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
-import io.github.malczuuu.uiot.schema.event.room.RoomCreateEvent;
 
 public interface RoomService {
 

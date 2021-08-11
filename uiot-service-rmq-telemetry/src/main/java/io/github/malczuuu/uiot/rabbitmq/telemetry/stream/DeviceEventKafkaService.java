@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.schema.event.thing.ThingEvent;
-import io.github.malczuuu.uiot.schema.event.thing.ThingEventEnvelope;
+import io.github.malczuuu.uiot.models.thing.ThingEvent;
+import io.github.malczuuu.uiot.models.thing.ThingEventEnvelope;
 import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;

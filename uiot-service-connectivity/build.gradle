@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":uiot-library-event-schema")
+    implementation project(":uiot-library-models")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")

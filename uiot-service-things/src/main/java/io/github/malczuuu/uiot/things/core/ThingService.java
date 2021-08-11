@@ -1,6 +1,6 @@
 package io.github.malczuuu.uiot.things.core;
 
-import io.github.malczuuu.uiot.http.errors.InvalidCursorException;
+import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.things.model.CursorPage;
 import io.github.malczuuu.uiot.things.model.ThingCreateModel;
 import io.github.malczuuu.uiot.things.model.ThingModel;

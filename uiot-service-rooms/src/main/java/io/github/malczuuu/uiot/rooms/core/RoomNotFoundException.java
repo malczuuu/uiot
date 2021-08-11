@@ -1,6 +1,6 @@
 package io.github.malczuuu.uiot.rooms.core;
 
-import io.github.malczuuu.uiot.http.errors.NotFoundException;
+import io.github.malczuuu.uiot.problems.NotFoundException;
 
 public class RoomNotFoundException extends NotFoundException {
 

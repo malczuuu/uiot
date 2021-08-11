@@ -2,7 +2,7 @@ package io.github.malczuuu.uiot.history.core;
 
 import io.github.malczuuu.uiot.history.model.EventHistory;
 import io.github.malczuuu.uiot.history.model.HistoryRecord;
-import io.github.malczuuu.uiot.schema.event.thing.ThingEvent;
+import io.github.malczuuu.uiot.models.thing.ThingEvent;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

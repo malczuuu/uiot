@@ -6,8 +6,8 @@ pluginManagement {
 
 rootProject.name = "uiot"
 
-include ":uiot-library-event-schema"
-include ":uiot-library-http-errors"
+include ":uiot-library-models"
+include ":uiot-library-problems"
 include ":uiot-service-connectivity"
 include ":uiot-service-history"
 include ":uiot-service-rmq-telemetry"
