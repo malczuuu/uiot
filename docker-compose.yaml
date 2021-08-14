@@ -1,0 +1,72 @@
+version: "3"
+services:
+
+  mongo:
+    image: mongo:4.4.6-bionic
+    ports:
+      - 127.0.0.1:27017:27017
+    volumes:
+      - mongodb_data:/data/db:rw
+      - ./uiot-docker-configuration/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - uiot
+
+  rabbitmq:
+    image: rabbitmq:3.8.16-management-alpine
+    # ports:
+    #   - 127.0.0.1:1883:1883
+    #   - 127.0.0.1:5672:5672
+    #   - 127.0.0.1:8883:8883
+    #   - 127.0.0.1:15672:15672
+    volumes:
+      - ./uiot-docker-configuration/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./uiot-docker-configuration/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+      - ./uiot-docker-configuration/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    network_mode: host
+
+  uiot-service-connectivity:
+    image: uiot-service-connectivity:latest
+    # ports:
+    #   - 127.0.0.1:8333:8333
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: localhost:9092
+    network_mode: host
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.4.4
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data:rw
+    networks:
+      - uiot
+
+  kafka:
+    image: confluentinc/cp-kafka:5.4.4
+    ports:
+      - 127.0.0.1:9092:9092
+      - 127.0.0.1:9999:9999
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_JMX_PORT: 9999
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data:/var/lib/kafka/data:rw
+    networks:
+      - uiot
+
+volumes:
+  mongodb_data:
+  zookeeper_data:
+  kafka_data:
+
+networks:
+  uiot:
+    external: true
