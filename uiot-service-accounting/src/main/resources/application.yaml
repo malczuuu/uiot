@@ -15,5 +15,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
 uiot:
-  rules:
-    kafka-system-events-topic: uiot-system-events
+  accounting:
+    metrics-topic: uiot-accounting
+    windows-topic: uiot-accounting-windows
+    windows-size: 1m
