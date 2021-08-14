@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 public class ThingEventEntity {
 
-  public static final String ROOM_UID = "room_uid";
-  public static final String THING_UID_FIELD = "thing_uid";
-  public static final String ARRIVAL_TIME_FIELD = "arrival_time";
+  public static final String ROOM_UID = "roomUid";
+  public static final String THING_UID_FIELD = "thingUid";
+  public static final String ARRIVAL_TIME_FIELD = "arrivalTime";
 
   @MongoId(targetType = FieldType.OBJECT_ID)
   private ObjectId id;
@@ -23,20 +23,20 @@ public class ThingEventEntity {
   @Field(name = "value")
   private Double value;
 
-  @Field(name = "value_string")
+  @Field(name = "valueString")
   private String valueString;
 
-  @Field(name = "value_boolean")
+  @Field(name = "valueBoolean")
   private Boolean valueBoolean;
 
-  @Field(name = "value_data")
+  @Field(name = "valueData")
   private String valueData;
 
   @Field(name = "unit")
   private String unit;
 
-  @Field(name = "event_uid")
-  private String eventUid;
+  @Field(name = "uuid")
+  private String uuid;
 
   @Field(name = ROOM_UID)
   private String roomUid;
@@ -44,7 +44,7 @@ public class ThingEventEntity {
   @Field(name = THING_UID_FIELD)
   private String thingUid;
 
-  @Field(name = "property_name")
+  @Field(name = "propertyName")
   private String propertyName;
 
   @Field(name = ARRIVAL_TIME_FIELD)
@@ -61,7 +61,7 @@ public class ThingEventEntity {
       Boolean valueBoolean,
       String valueData,
       String unit,
-      String eventUid,
+      String uuid,
       String roomUid,
       String thingUid,
       String propertyName,
@@ -74,7 +74,7 @@ public class ThingEventEntity {
     this.valueBoolean = valueBoolean;
     this.valueData = valueData;
     this.unit = unit;
-    this.eventUid = eventUid;
+    this.uuid = uuid;
     this.roomUid = roomUid;
     this.thingUid = thingUid;
     this.propertyName = propertyName;
@@ -89,7 +89,7 @@ public class ThingEventEntity {
       Boolean valueBoolean,
       String valueData,
       String unit,
-      String eventUid,
+      String uuid,
       String roomUid,
       String thingUid,
       String propertyName,
@@ -103,7 +103,7 @@ public class ThingEventEntity {
         valueBoolean,
         valueData,
         unit,
-        eventUid,
+        uuid,
         roomUid,
         thingUid,
         propertyName,
@@ -142,8 +142,8 @@ public class ThingEventEntity {
     return unit;
   }
 
-  public String getEventUid() {
-    return eventUid;
+  public String getUuid() {
+    return uuid;
   }
 
   public String getRoomUid() {
