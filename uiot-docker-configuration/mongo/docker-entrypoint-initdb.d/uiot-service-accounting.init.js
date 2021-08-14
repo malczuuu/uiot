@@ -3,7 +3,7 @@ db = db.getSiblingDB("uiot-service-accounting");
 db.createCollection("accounting");
 
 db.runCommand({
-    createIndexes: "rooms",
+    createIndexes: "accounting",
     indexes: [{
         "name": "uuid_unique",
         "key": {
