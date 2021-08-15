@@ -10,8 +10,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import io.github.malczuuu.uiot.connectivity.core.ConnectivityService.ConcurrentUpdateException;
-import io.github.malczuuu.uiot.connectivity.core.ConnectivityService.ConnectivityNotFoundException;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityCreateModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityUpdateModel;

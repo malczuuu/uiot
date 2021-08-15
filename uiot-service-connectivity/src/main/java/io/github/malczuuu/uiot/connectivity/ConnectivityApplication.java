@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.connectivity;
 
+import io.github.malczuuu.problem4j.spring.web.EnableProblem;
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +10,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+@EnableProblem
 @SpringBootApplication
 public class ConnectivityApplication {
 

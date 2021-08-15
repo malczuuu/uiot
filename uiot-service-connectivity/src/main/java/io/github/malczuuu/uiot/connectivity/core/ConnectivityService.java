@@ -4,8 +4,6 @@ import io.github.malczuuu.uiot.connectivity.model.ConnectivityCreateModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityUpdateModel;
 import io.github.malczuuu.uiot.connectivity.model.PasswordUpdateModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface ConnectivityService {
 
@@ -20,10 +18,4 @@ public interface ConnectivityService {
   void updatePassword(String room, String thing, PasswordUpdateModel password);
 
   void deleteConnectivity(String room, String thing);
-
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  class ConnectivityNotFoundException extends RuntimeException {}
-
-  @ResponseStatus(HttpStatus.CONFLICT)
-  class ConcurrentUpdateException extends RuntimeException {}
 }
