@@ -12,7 +12,7 @@ spring:
       application-id: ${spring.application.name}
       bootstrap-servers: localhost:9092
 uiot:
-  rmq-auth:
+  connectivity:
     vhost: /
     routing-key-template: telemetry.%s.%s
     username-context-separator: \.
