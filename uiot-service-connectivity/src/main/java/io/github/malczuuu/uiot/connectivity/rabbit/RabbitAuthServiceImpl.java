@@ -19,9 +19,9 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
 
   public RabbitAuthServiceImpl(
       ConnectivityRepository connectivityRepository,
-      @Value("${uiot.rmq-auth.routing-key-template}") String routingKeyTemplate,
-      @Value("${uiot.rmq-auth.username-context-separator}") String usernameContextSeparator,
-      @Value("${uiot.rmq-auth.vhost}") String vhost) {
+      @Value("${uiot.connectivity.routing-key-template}") String routingKeyTemplate,
+      @Value("${uiot.connectivity.username-context-separator}") String usernameContextSeparator,
+      @Value("${uiot.connectivity.vhost}") String vhost) {
     this.connectivityRepository = connectivityRepository;
     this.routingKeyTemplate = routingKeyTemplate;
     this.usernameContextSeparator = usernameContextSeparator;
@@ -38,7 +38,7 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
       return false;
     }
     return connectivityRepository
-        .findByRoomAndThing(usernameSplit[0], usernameSplit[1])
+        .findByRoomUidAndThingUid(usernameSplit[0], usernameSplit[1])
         .filter(c -> c.getPassword().equals(credentials.getPassword()))
         .isPresent();
   }

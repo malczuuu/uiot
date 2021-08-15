@@ -5,9 +5,9 @@ db.createCollection("rooms");
 db.runCommand({
     createIndexes: "rooms",
     indexes: [{
-        "name": "room_unique",
+        "name": "uid_unique",
         "key": {
-            "room": -1
+            "uid": -1
         },
         "unique": true
     }]

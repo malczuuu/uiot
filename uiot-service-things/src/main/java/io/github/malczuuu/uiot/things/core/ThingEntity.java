@@ -10,14 +10,14 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class ThingEntity {
 
   public static final String ID_FIELD = "_id";
-  public static final String ROOM_FIELD = "room";
+  public static final String ROOM_FIELD = "roomUid";
 
   @MongoId
   @Field(ID_FIELD)
   private ObjectId id;
 
   @Field(ROOM_FIELD)
-  private String room;
+  private String roomUid;
 
   @Field("uid")
   private String uid;
@@ -31,13 +31,13 @@ public class ThingEntity {
 
   ThingEntity() {}
 
-  public ThingEntity(String room, String uid, String name) {
-    this(null, room, uid, name);
+  public ThingEntity(String roomUid, String uid, String name) {
+    this(null, roomUid, uid, name);
   }
 
-  public ThingEntity(ObjectId id, String room, String uid, String name) {
+  public ThingEntity(ObjectId id, String roomUid, String uid, String name) {
     this.id = id;
-    this.room = room;
+    this.roomUid = roomUid;
     this.uid = uid;
     this.name = name;
   }
@@ -46,8 +46,8 @@ public class ThingEntity {
     return id;
   }
 
-  public String getRoom() {
-    return room;
+  public String getRoomUid() {
+    return roomUid;
   }
 
   public String getUid() {

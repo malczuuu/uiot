@@ -5,34 +5,34 @@ db.createCollection("thing_events");
 db.runCommand({
     createIndexes: "thing_events",
     indexes: [{
-        "name": "uuid",
+        "name": "uuid_unique",
         "key": {
             "uuid": -1
         },
         "unique": true
     }, {
-        "name": "room",
+        "name": "roomUid",
         "key": {
-            "room": -1
+            "roomUid": -1
         }
     }, {
-        "name": "room_thing",
+        "name": "roomUid_thingUid",
         "key": {
-            "room": -1,
-            "thing": -1
+            "roomUid": -1,
+            "thingUid": -1
         }
     }, {
-        "name": "room_thing_time",
+        "name": "roomUid_thingUid_time",
         "key": {
-            "room": -1,
-            "thing": -1,
+            "roomUid": -1,
+            "thingUid": -1,
             "time": -1
         }
     }, {
-        "name": "room_thing_arrivalTime",
+        "name": "roomUid_thingUid_arrivalTime",
         "key": {
-            "room": -1,
-            "thing": -1,
+            "roomUid": -1,
+            "thingUid": -1,
             "arrivalTime": -1
         }
     }]

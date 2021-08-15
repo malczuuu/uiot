@@ -26,7 +26,7 @@ services:
       UIOT_CONNECTIVITY_VHOST: /
       UIOT_CONNECTIVITY_ROUTING_KEY_TEMPLATE: telemetry.%s.%s
       UIOT_CONNECTIVITY_USERNAME_CONTEXT_SEPARATOR: \.
-      UIOT_CONNECTIVITY_-KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_CONNECTIVITY_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 
@@ -71,6 +71,19 @@ services:
       UIOT_TELEMETRY_RABBITMQ_INPUT_QUEUE: uiot-telemetry-inbound
       UIOT_TELEMETRY_KAFKA_OUTPUT_TOPIC: uiot-thing-events
       UIOT_TELEMETRY_KAFKA_ACCOUNTING_TOPIC: uiot-accounting
+    networks:
+      - uiot
+
+  uiot-service-things:
+    image: uiot-service-things:latest
+    ports:
+      - 127.0.0.1:8336:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-things
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_THINGS_CONNECTIVITY_URL: http://uiot-service-connectivity:8080/api/rooms/{roomUid}/things/{thingUid}/connectivity
+      UIOT_THINGS_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 

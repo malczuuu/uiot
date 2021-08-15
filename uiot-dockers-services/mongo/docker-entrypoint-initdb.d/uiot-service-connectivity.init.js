@@ -5,10 +5,10 @@ db.createCollection("connectivity");
 db.runCommand({
     createIndexes: "connectivity",
     indexes: [{
-        "name": "room_thing_unique",
+        "name": "roomUid_thingUid_unique",
         "key": {
-            "room": -1,
-            "thing": -1
+            "roomUid": -1,
+            "thingUid": -1
         },
         "unique": true
     }]

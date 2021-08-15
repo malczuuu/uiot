@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ThingRepository
     extends CursorAwareThingRepository, MongoRepository<ThingEntity, ObjectId> {
 
-  Optional<ThingEntity> findByRoomAndUid(String room, String uid);
+  Optional<ThingEntity> findByRoomUidAndUid(String roomUid, String uid);
 
-  void deleteByRoomAndUid(String room, String uid);
+  void deleteByRoomUidAndUid(String roomUid, String uid);
+
+  void deleteAllByRoomUid(String roomUid);
 }

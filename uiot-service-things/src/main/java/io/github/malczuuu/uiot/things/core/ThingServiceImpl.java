@@ -55,7 +55,7 @@ public class ThingServiceImpl implements ThingService {
 
   private ThingEntity fetchThing(String roomUid, String thingUid) {
     return thingRepository
-        .findByRoomAndUid(roomUid, thingUid)
+        .findByRoomUidAndUid(roomUid, thingUid)
         .orElseThrow(ThingNotFoundException::new);
   }
 
@@ -76,6 +76,11 @@ public class ThingServiceImpl implements ThingService {
     return toThingModel(entity);
   }
 
+  @Override
+  public void deleteThings(String roomUid) {
+    thingRepository.deleteAllByRoomUid(roomUid);
+  }
+
   private ThingModel toThingModel(ThingEntity entity) {
     return new ThingModel(entity.getUid(), entity.getName(), entity.getVersion());
   }
@@ -83,7 +88,7 @@ public class ThingServiceImpl implements ThingService {
   @Override
   @Transactional
   public void deleteThing(String roomUid, String thingUid) {
-    thingRepository.deleteByRoomAndUid(roomUid, thingUid);
+    thingRepository.deleteByRoomUidAndUid(roomUid, thingUid);
     boolean integrated = connectivityIntegration.onThingDeletion(roomUid, roomUid);
     if (!integrated) {
       throw new InternalServerErrorException();

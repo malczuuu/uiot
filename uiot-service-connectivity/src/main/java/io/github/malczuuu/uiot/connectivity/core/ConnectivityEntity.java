@@ -13,11 +13,11 @@ public class ConnectivityEntity {
   @Field("_id")
   private ObjectId id;
 
-  @Field("room")
-  private String room;
+  @Field("roomUid")
+  private String roomUid;
 
-  @Field("thing")
-  private String thing;
+  @Field("thingUid")
+  private String thingUid;
 
   @Field("password")
   private String password;
@@ -32,34 +32,39 @@ public class ConnectivityEntity {
   ConnectivityEntity() {}
 
   public ConnectivityEntity(
-      ObjectId id, String room, String thing, String password, Boolean enabled) {
-    this(id, room, thing, password, enabled, null);
+      ObjectId id, String roomUid, String thingUid, String password, Boolean enabled) {
+    this(id, roomUid, thingUid, password, enabled, null);
   }
 
   public ConnectivityEntity(
-      ObjectId id, String room, String thing, String password, Boolean enabled, Long version) {
+      ObjectId id,
+      String roomUid,
+      String thingUid,
+      String password,
+      Boolean enabled,
+      Long version) {
     this.id = id;
-    this.room = room;
-    this.thing = thing;
+    this.roomUid = roomUid;
+    this.thingUid = thingUid;
     this.password = password;
     this.enabled = enabled;
     this.version = version;
   }
 
-  public ConnectivityEntity(String room, String thing, String password, Boolean enabled) {
-    this(null, room, thing, password, enabled);
+  public ConnectivityEntity(String roomUid, String thingUid, String password, Boolean enabled) {
+    this(null, roomUid, thingUid, password, enabled);
   }
 
   public ObjectId getId() {
     return id;
   }
 
-  public String getRoom() {
-    return room;
+  public String getRoomUid() {
+    return roomUid;
   }
 
-  public String getThing() {
-    return thing;
+  public String getThingUid() {
+    return thingUid;
   }
 
   public String getPassword() {

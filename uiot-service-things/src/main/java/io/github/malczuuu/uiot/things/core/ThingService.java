@@ -20,5 +20,7 @@ public interface ThingService {
   ThingModel updateThing(String roomUid, String thingUid, ThingUpdateModel thing)
       throws ThingNotFoundException;
 
+  void deleteThings(String roomUid);
+
   void deleteThing(String roomUid, String thingUid);
 }

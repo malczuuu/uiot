@@ -7,8 +7,13 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017
       database: uiot-service-things
+  kafka:
+    streams:
+      application-id: ${spring.application.name}
+      bootstrap-servers: localhost:9092
   jackson:
     default-property-inclusion: non_null
 uiot:
   things:
     connectivity-url: http://localhost:8333/api/rooms/{roomUid}/things/{thingUid}/connectivity
+    system-events-topic: uiot-system-events

@@ -20,7 +20,7 @@ public class ConnectivityServiceImpl implements ConnectivityService {
   public ConnectivityModel getConnectivity(String room, String thing) {
     ConnectivityEntity entity =
         connectivityRepository
-            .findByRoomAndThing(room, thing)
+            .findByRoomUidAndThingUid(room, thing)
             .orElseThrow(ConnectivityNotFoundException::new);
     return mapToDto(entity);
   }
@@ -39,7 +39,7 @@ public class ConnectivityServiceImpl implements ConnectivityService {
       String room, String thing, ConnectivityUpdateModel connectivity) {
     ConnectivityEntity entity =
         connectivityRepository
-            .findByRoomAndThing(room, thing)
+            .findByRoomUidAndThingUid(room, thing)
             .orElseThrow(ConnectivityNotFoundException::new);
 
     entity.setEnabled(connectivity.getEnabled());
@@ -57,7 +57,7 @@ public class ConnectivityServiceImpl implements ConnectivityService {
   public void updatePassword(String room, String thing, PasswordUpdateModel password) {
     ConnectivityEntity entity =
         connectivityRepository
-            .findByRoomAndThing(room, thing)
+            .findByRoomUidAndThingUid(room, thing)
             .orElseThrow(ConnectivityNotFoundException::new);
 
     entity.setPassword(password.getPassword());
@@ -71,11 +71,11 @@ public class ConnectivityServiceImpl implements ConnectivityService {
 
   @Override
   public void deleteConnectivity(String room, String thing) {
-    connectivityRepository.deleteByRoomAndThing(room, thing);
+    connectivityRepository.deleteByRoomUidAndThingUid(room, thing);
   }
 
   private ConnectivityModel mapToDto(ConnectivityEntity entity) {
     return new ConnectivityModel(
-        entity.getRoom(), entity.getThing(), entity.isEnabled(), entity.getVersion());
+        entity.getRoomUid(), entity.getThingUid(), entity.isEnabled(), entity.getVersion());
   }
 }

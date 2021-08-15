@@ -37,7 +37,7 @@ class ConnectivityServiceTests {
   void shouldReturnConnectivity() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(roomUid, thingUid))
+    when(connectivityRepository.findByRoomUidAndThingUid(roomUid, thingUid))
         .thenReturn(
             Optional.of(
                 new ConnectivityEntity(new ObjectId(), roomUid, thingUid, "password", true)));
@@ -53,7 +53,7 @@ class ConnectivityServiceTests {
   void shouldThrowConnectivityNotFound() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(anyString(), anyString()))
+    when(connectivityRepository.findByRoomUidAndThingUid(anyString(), anyString()))
         .thenReturn(Optional.empty());
 
     assertThrows(
@@ -83,8 +83,8 @@ class ConnectivityServiceTests {
     ConnectivityEntity entity = invocation.getArgument(0, ConnectivityEntity.class);
     return new ConnectivityEntity(
         new ObjectId(),
-        entity.getRoom(),
-        entity.getThing(),
+        entity.getRoomUid(),
+        entity.getThingUid(),
         entity.getPassword(),
         entity.isEnabled(),
         0L);
@@ -94,7 +94,7 @@ class ConnectivityServiceTests {
   void shouldUpdateConnectivity() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(roomUid, thingUid))
+    when(connectivityRepository.findByRoomUidAndThingUid(roomUid, thingUid))
         .thenReturn(
             Optional.of(
                 new ConnectivityEntity(new ObjectId(), roomUid, thingUid, "password", true, 0L)));
@@ -116,8 +116,8 @@ class ConnectivityServiceTests {
     call.value = entity;
     return new ConnectivityEntity(
         entity.getId(),
-        entity.getRoom(),
-        entity.getThing(),
+        entity.getRoomUid(),
+        entity.getThingUid(),
         entity.getPassword(),
         entity.isEnabled(),
         entity.getVersion() + 1L);
@@ -127,7 +127,7 @@ class ConnectivityServiceTests {
   void shouldThrowNotFoundOnAttemptToUpdateConnectivity() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(anyString(), anyString()))
+    when(connectivityRepository.findByRoomUidAndThingUid(anyString(), anyString()))
         .thenReturn(Optional.empty());
 
     assertThrows(
@@ -141,7 +141,7 @@ class ConnectivityServiceTests {
   void shouldThrowConcurrentModificationOnAttemptToUpdateConnectivity() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(roomUid, thingUid))
+    when(connectivityRepository.findByRoomUidAndThingUid(roomUid, thingUid))
         .thenReturn(
             Optional.of(
                 new ConnectivityEntity(new ObjectId(), roomUid, thingUid, "password", true, 0L)));
@@ -160,7 +160,7 @@ class ConnectivityServiceTests {
   void shouldUpdateConnectivityPassword() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(roomUid, thingUid))
+    when(connectivityRepository.findByRoomUidAndThingUid(roomUid, thingUid))
         .thenReturn(
             Optional.of(
                 new ConnectivityEntity(new ObjectId(), roomUid, thingUid, "password1", true, 0L)));
@@ -179,7 +179,7 @@ class ConnectivityServiceTests {
   void shouldThrowNotFoundOnAttemptToUpdateConnectivityPassword() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(anyString(), anyString()))
+    when(connectivityRepository.findByRoomUidAndThingUid(anyString(), anyString()))
         .thenReturn(Optional.empty());
 
     assertThrows(
@@ -193,7 +193,7 @@ class ConnectivityServiceTests {
   void shouldThrowConcurrentModificationOnAttemptToUpdateConnectivityPassword() {
     String roomUid = "room";
     String thingUid = "thing";
-    when(connectivityRepository.findByRoomAndThing(roomUid, thingUid))
+    when(connectivityRepository.findByRoomUidAndThingUid(roomUid, thingUid))
         .thenReturn(
             Optional.of(
                 new ConnectivityEntity(new ObjectId(), roomUid, thingUid, "password", true, 0L)));
@@ -215,7 +215,7 @@ class ConnectivityServiceTests {
     Holder<Boolean> call = new Holder<>(false);
     doAnswer(i -> mockConnectivityDelete(i, call))
         .when(connectivityRepository)
-        .deleteByRoomAndThing(roomUid, thingUid);
+        .deleteByRoomUidAndThingUid(roomUid, thingUid);
 
     connectivityService.deleteConnectivity(roomUid, thingUid);
 

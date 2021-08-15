@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 
 public interface CursorAwareThingRepository {
 
-  List<ThingEntity> findWithoutCursor(String room, int size);
+  List<ThingEntity> findWithoutCursor(String roomUid, int size);
 
-  List<ThingEntity> findWithCursor(String room, ObjectId id, int size);
+  List<ThingEntity> findWithCursor(String roomUid, ObjectId id, int size);
 }

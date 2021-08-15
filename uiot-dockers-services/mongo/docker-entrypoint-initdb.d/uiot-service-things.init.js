@@ -7,8 +7,8 @@ db.runCommand({
     indexes: [{
         "name": "thing_unique",
         "key": {
-            "room": -1,
-            "thing": -1
+            "roomUid": -1,
+            "uid": -1
         },
         "unique": true
     }]

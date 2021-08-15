@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ConnectivityRepository extends MongoRepository<ConnectivityEntity, ObjectId> {
 
-  Optional<ConnectivityEntity> findByRoomAndThing(String room, String thing);
+  Optional<ConnectivityEntity> findByRoomUidAndThingUid(String roomUid, String thingUid);
 
-  void deleteByRoomAndThing(String room, String thing);
+  void deleteByRoomUidAndThingUid(String roomUid, String thingUid);
 }
