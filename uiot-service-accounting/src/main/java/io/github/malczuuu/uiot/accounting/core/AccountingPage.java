@@ -8,15 +8,15 @@ import java.util.List;
 
 public class AccountingPage {
 
-  private final List<AccountingRecord> content;
+  private final List<AccountingModel> content;
 
   @JsonCreator
-  public AccountingPage(@JsonProperty("content") List<AccountingRecord> content) {
+  public AccountingPage(@JsonProperty("content") List<AccountingModel> content) {
     this.content = new ArrayList<>(content);
   }
 
   @JsonProperty("content")
-  public List<AccountingRecord> getContent() {
+  public List<AccountingModel> getContent() {
     return Collections.unmodifiableList(content);
   }
 }

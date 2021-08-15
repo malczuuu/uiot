@@ -24,8 +24,8 @@ public class AccountingService {
     return new AccountingPage(entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }
 
-  private AccountingRecord toRecord(AccountingEntity e) {
-    return new AccountingRecord(
+  private AccountingModel toRecord(AccountingEntity e) {
+    return new AccountingModel(
         e.getRoomUid(),
         e.getType(),
         e.getValue(),
