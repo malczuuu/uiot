@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.things.entity;
+package io.github.malczuuu.uiot.things.core;
 
 import java.util.List;
 import org.bson.types.ObjectId;

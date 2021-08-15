@@ -1,6 +1,5 @@
 package io.github.malczuuu.uiot.history.core;
 
-import io.github.malczuuu.uiot.history.core.storage.StorageNameService;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;

@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rooms.entity;
+package io.github.malczuuu.uiot.rooms.core;
 
 import java.util.Optional;
 import org.bson.types.ObjectId;

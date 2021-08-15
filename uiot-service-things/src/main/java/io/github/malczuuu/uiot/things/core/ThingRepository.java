@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.things.entity;
+package io.github.malczuuu.uiot.things.core;
 
 import java.util.Optional;
 import org.bson.types.ObjectId;
@@ -8,8 +8,6 @@ public interface ThingRepository
     extends CursorAwareThingRepository, MongoRepository<ThingEntity, ObjectId> {
 
   Optional<ThingEntity> findByRoomAndUid(String room, String uid);
-
-  boolean existsByRoomAndUid(String room, String uid);
 
   void deleteByRoomAndUid(String room, String uid);
 }

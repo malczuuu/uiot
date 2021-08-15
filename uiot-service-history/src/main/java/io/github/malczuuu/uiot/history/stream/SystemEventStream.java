@@ -3,7 +3,7 @@ package io.github.malczuuu.uiot.history.stream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.history.core.storage.StorageService;
+import io.github.malczuuu.uiot.history.core.StorageService;
 import io.github.malczuuu.uiot.models.room.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.room.RoomDeleteEnvelope;

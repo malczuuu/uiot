@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.history.core.storage;
+package io.github.malczuuu.uiot.history.core;
 
 public interface StorageNameService {
 

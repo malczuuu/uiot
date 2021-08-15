@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rooms.entity;
+package io.github.malczuuu.uiot.rooms.core;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;

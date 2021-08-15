@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.accounting.rest;
 
-import io.github.malczuuu.uiot.accounting.core.AccountingPage;
 import io.github.malczuuu.uiot.accounting.core.AccountingService;
+import io.github.malczuuu.uiot.accounting.model.AccountingPage;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;

@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.history.core.storage;
+package io.github.malczuuu.uiot.history.core;
 
 import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;

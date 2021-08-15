@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.things.entity;
+package io.github.malczuuu.uiot.things.core;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Version;

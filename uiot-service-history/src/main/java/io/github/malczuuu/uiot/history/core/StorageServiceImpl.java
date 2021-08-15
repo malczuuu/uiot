@@ -1,6 +1,5 @@
-package io.github.malczuuu.uiot.history.core.storage;
+package io.github.malczuuu.uiot.history.core;
 
-import io.github.malczuuu.uiot.history.core.ThingEventEntity;
 import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
 import org.springframework.data.domain.Sort.Direction;

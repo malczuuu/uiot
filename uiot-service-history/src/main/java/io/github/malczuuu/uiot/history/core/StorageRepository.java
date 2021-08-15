@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.history.core.storage;
+package io.github.malczuuu.uiot.history.core;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;

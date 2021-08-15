@@ -2,8 +2,6 @@ package io.github.malczuuu.uiot.things.core;
 
 import io.github.malczuuu.uiot.problems.InternalServerErrorException;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
-import io.github.malczuuu.uiot.things.entity.ThingEntity;
-import io.github.malczuuu.uiot.things.entity.ThingRepository;
 import io.github.malczuuu.uiot.things.model.CursorPage;
 import io.github.malczuuu.uiot.things.model.ThingCreateModel;
 import io.github.malczuuu.uiot.things.model.ThingModel;
