@@ -10,28 +10,36 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(collection = "accounting")
 public class AccountingEntity {
 
+  public static final String UUID = "uuid";
+  public static final String ROOM_UID = "roomUid";
+  public static final String TYPE = "type";
+  public static final String TAGS = "tags";
+  public static final String START_TIME = "startTime";
+  public static final String END_TIME = "endTime";
+  public static final String VALUE = "value";
+
   @MongoId(targetType = FieldType.OBJECT_ID)
   private ObjectId id;
 
-  @Field("uuid")
+  @Field(UUID)
   private String uuid;
 
-  @Field("roomUid")
+  @Field(ROOM_UID)
   private String roomUid;
 
-  @Field("type")
+  @Field(TYPE)
   private String type;
 
-  @Field("tags")
+  @Field(TAGS)
   private Map<String, String> tags;
 
-  @Field("startTime")
+  @Field(START_TIME)
   private Long startTime;
 
-  @Field("endTime")
+  @Field(END_TIME)
   private Long endTime;
 
-  @Field("value")
+  @Field(VALUE)
   private Double value;
 
   public AccountingEntity() {}

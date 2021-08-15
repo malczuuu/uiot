@@ -17,10 +17,11 @@ import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.Suppressed;
 import org.apache.kafka.streams.kstream.TimeWindows;
 import org.apache.kafka.streams.kstream.Windowed;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
-import org.apache.kafka.streams.state.internals.InMemoryWindowBytesStoreSupplier;
+import org.apache.kafka.streams.state.Stores;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,7 @@ public class MetricStream implements InitializingBean {
   private final String windowsTopic;
 
   private final Duration windowsSize;
+  private final Duration gracePeriod = Duration.ofSeconds(5);
 
   public MetricStream(
       StreamsBuilder streamsBuilder,
@@ -67,19 +69,20 @@ public class MetricStream implements InitializingBean {
             Grouped.<MetricKey, AccountingMetric>as("metric_grouping")
                 .withKeySerde(newBasicJsonSerde(MetricKey.class))
                 .withValueSerde(newBasicJsonSerde(AccountingMetric.class)))
-        .windowedBy(TimeWindows.of(windowsSize))
+        .windowedBy(TimeWindows.of(windowsSize).grace(gracePeriod))
         .aggregate(
             () -> new MetricAggregate(UUID.randomUUID().toString(), 0.0),
             (key, value, aggregate) -> aggregate.aggregate(value.getValue()),
             Named.as("accounting_windowing"),
             Materialized.<MetricKey, MetricAggregate>as(
-                    new InMemoryWindowBytesStoreSupplier(
+                    Stores.inMemoryWindowStore(
                         "window_store",
-                        Duration.ofSeconds(5).toMillis(),
-                        windowsSize.toMillis(),
-                        false))
+                        windowsSize.plus(gracePeriod).multipliedBy(2),
+                        windowsSize,
+                        true))
                 .withKeySerde(newBasicJsonSerde(MetricKey.class))
                 .withValueSerde(newBasicJsonSerde(MetricAggregate.class)))
+        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
         .toStream()
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
         .to(

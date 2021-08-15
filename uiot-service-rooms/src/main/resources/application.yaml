@@ -8,6 +8,8 @@ spring:
       uri: mongodb://localhost:27017
       database: uiot-service-rooms
   kafka:
+    streams:
+      bootstrap-servers: localhost:9092
     producer:
       client-id: ${spring.application.name}
       bootstrap-servers: localhost:9092

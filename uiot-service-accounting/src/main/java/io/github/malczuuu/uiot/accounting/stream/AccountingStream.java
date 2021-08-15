@@ -11,6 +11,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.support.serializer.JsonSerde;
 
@@ -45,7 +46,10 @@ public class AccountingStream implements InitializingBean {
         .foreach(
             (key, value) -> {
               AccountingEntity entity = toEntity(value);
-              accountingRepository.save(entity);
+              try {
+                accountingRepository.upsert(entity);
+              } catch (DuplicateKeyException e) {
+              }
             });
   }
 
@@ -59,8 +63,8 @@ public class AccountingStream implements InitializingBean {
         value.getRoomUid(),
         value.getType(),
         value.getTags(),
-        (long) (1000_000_000L * value.getTimes().get(0)),
-        (long) (1000_000_000L * value.getTimes().get(1)),
+        value.getTimes().get(0),
+        value.getTimes().get(1),
         value.getValue());
   }
 }

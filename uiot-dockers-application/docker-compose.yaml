@@ -1,0 +1,79 @@
+version: "3"
+services:
+
+  uiot-service-accounting:
+    image: uiot-service-accounting:latest
+    ports:
+      - 127.0.0.1:8330:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-accounting
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_ACCOUNTING_METRICS_TOPIC: uiot-accounting
+      UIOT_ACCOUNTING_WINDOWS_TOPIC: uiot-accounting-windows
+      UIOT_ACCOUNTING_WINDOW_SIZE: "1h"
+    networks:
+      - uiot
+
+  uiot-service-connectivity:
+    image: uiot-service-connectivity:latest
+    ports:
+      - 127.0.0.1:8331:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_RMQ_AUTH_VHOST: /
+      UIOT_RMQ_AUTH_ROUTING_KEY_TEMPLATE: telemetry.%s.%s
+      UIOT_RMQ_AUTH_USERNAME_CONTEXT_SEPARATOR: \.
+      UIOT_RMQ_AUTH_-KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+    networks:
+      - uiot
+
+  uiot-service-history:
+    image: uiot-service-history:latest
+    ports:
+      - 127.0.0.1:8332:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-history
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_HISTORY_KAFKA_THING_EVENTS_TOPIC: uiot-thing-events
+      UIOT_HISTORY_KAFKA_THING_METADATA_TOPIC: uiot-service-history_thing-metadata
+      UIOT_HISTORY_KAFKA_KEYED_THING_EVENTS_TOPIC: uiot-service-history_keyed-thing-events
+      UIOT_HISTORY_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+    networks:
+      - uiot
+
+  uiot-service-rooms:
+    image: uiot-service-rooms:latest
+    ports:
+      - 127.0.0.1:8333:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-rooms
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_ROOMS_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+    networks:
+      - uiot
+
+  uiot-service-telemetry:
+    image: uiot-service-telemetry:latest
+    ports:
+      - 127.0.0.1:8335:8080
+    environment:
+      SPRING_RABBITMQ_ADDRESSES: rabbitmq:5672
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
+      UIOT_ROOMS_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_TELEMETRY_RABBITMQ_ROUTING_KEY_REGEXP: ^telemetry\.(.*)\.(.*)$$
+      UIOT_TELEMETRY_RABBITMQ_ROUTING_KEY: telemetry.*.*
+      UIOT_TELEMETRY_RABBITMQ_INPUT_QUEUE: uiot-telemetry-inbound
+      UIOT_TELEMETRY_KAFKA_OUTPUT_TOPIC: uiot-thing-events
+      UIOT_TELEMETRY_KAFKA_ACCOUNTING_TOPIC: uiot-accounting
+    networks:
+      - uiot
+
+networks:
+  uiot:
+    external: true
