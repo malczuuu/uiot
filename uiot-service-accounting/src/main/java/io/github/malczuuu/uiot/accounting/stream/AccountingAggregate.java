@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MetricAggregate {
+public class AccountingAggregate {
 
   private final String uuid;
   private final Double value;
 
   @JsonCreator
-  public MetricAggregate(@JsonProperty("uuid") String uuid, @JsonProperty("value") Double value) {
+  public AccountingAggregate(
+      @JsonProperty("uuid") String uuid, @JsonProperty("value") Double value) {
     this.uuid = uuid;
     this.value = value;
   }
@@ -26,7 +27,7 @@ public class MetricAggregate {
   }
 
   @JsonIgnore
-  public MetricAggregate aggregate(double value) {
-    return new MetricAggregate(getUuid(), getValue() + value);
+  public AccountingAggregate aggregate(double value) {
+    return new AccountingAggregate(getUuid(), getValue() + value);
   }
 }

@@ -12,20 +12,20 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @JsonPropertyOrder({"type", "tag_entries"})
-public class MetricKey {
+public class AggregationKey {
 
   private final String type;
   private final String roomUid;
   private final Map<String, String> tags;
 
-  public MetricKey(String type, String roomUid, Map<String, String> tags) {
+  public AggregationKey(String type, String roomUid, Map<String, String> tags) {
     this.type = type;
     this.roomUid = roomUid;
     this.tags = new HashMap<>(tags);
   }
 
   @JsonCreator
-  public MetricKey(
+  public AggregationKey(
       @JsonProperty("type") String type,
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("tag_entries") List<Entry<String, String>> entries) {
