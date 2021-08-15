@@ -32,7 +32,7 @@ class ConnectivityServiceTests {
   @BeforeEach
   void beforeEach() {
     connectivityRepository = mock(ConnectivityRepository.class);
-    connectivityService = new ConnectivityService(connectivityRepository);
+    connectivityService = new ConnectivityServiceImpl(connectivityRepository);
   }
 
   @Test
