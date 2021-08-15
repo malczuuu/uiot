@@ -2,28 +2,37 @@ package io.github.malczuuu.uiot.models.accounting;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-public class AccountingEvent {
+public class AccountingAggregate {
 
+  private final String uuid;
   private final String type;
   private final String roomUid;
   private final Double value;
-  private final Double time;
+  private final List<Long> times;
   private final Map<String, String> tags;
 
   @JsonCreator
-  public AccountingEvent(
+  public AccountingAggregate(
+      @JsonProperty("uuid") String uuid,
       @JsonProperty("type") String type,
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("value") Double value,
-      @JsonProperty("time") Double time,
+      @JsonProperty("times") List<Long> times,
       @JsonProperty("tags") Map<String, String> tags) {
+    this.uuid = uuid;
     this.type = type;
     this.roomUid = roomUid;
     this.value = value;
-    this.time = time;
+    this.times = times;
     this.tags = tags;
+  }
+
+  @JsonProperty("uuid")
+  public String getUuid() {
+    return uuid;
   }
 
   @JsonProperty("type")
@@ -41,9 +50,9 @@ public class AccountingEvent {
     return value;
   }
 
-  @JsonProperty("time")
-  public Double getTime() {
-    return time;
+  @JsonProperty("times")
+  public List<Long> getTimes() {
+    return times;
   }
 
   @JsonProperty("tags")

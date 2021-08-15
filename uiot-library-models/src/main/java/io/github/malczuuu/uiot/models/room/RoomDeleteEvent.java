@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RoomDeleteEvent {
 
   private final String roomUid;
-  private final Long timestamp;
+  private final Long time;
 
   @JsonCreator
   public RoomDeleteEvent(
-      @JsonProperty("room_uid") String roomUid, @JsonProperty("timestamp") Long timestamp) {
+      @JsonProperty("room_uid") String roomUid, @JsonProperty("time") Long time) {
     this.roomUid = roomUid;
-    this.timestamp = timestamp;
+    this.time = time;
   }
 
   @JsonProperty("room_uid")
@@ -20,8 +20,8 @@ public class RoomDeleteEvent {
     return roomUid;
   }
 
-  @JsonProperty("timestamp")
-  public Long getTimestamp() {
-    return timestamp;
+  @JsonProperty("time")
+  public Long getTime() {
+    return time;
   }
 }

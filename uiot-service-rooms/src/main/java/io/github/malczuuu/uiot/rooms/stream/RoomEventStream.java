@@ -81,7 +81,7 @@ public class RoomEventStream implements InitializingBean {
     log.info(
         "Triggered room creation via streams processing, room={}, timestamp={}",
         envelope.getRoomCreateEvent().getRoomUid(),
-        envelope.getRoomCreateEvent().getTimestamp());
+        envelope.getRoomCreateEvent().getTime());
   }
 
   private void triggerRoomDeletion(JsonNode node) throws JsonProcessingException {
@@ -92,6 +92,6 @@ public class RoomEventStream implements InitializingBean {
     log.info(
         "Triggered room deletion via streams processing, room_uid={}, timestamp={}",
         envelope.getRoomDeleteEvent().getRoomUid(),
-        envelope.getRoomDeleteEvent().getTimestamp());
+        envelope.getRoomDeleteEvent().getTime());
   }
 }

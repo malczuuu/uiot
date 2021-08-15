@@ -8,18 +8,18 @@ public class ThingCreateEvent {
   private final String roomUid;
   private final String thingUid;
   private final String thingName;
-  private final Long timestamp;
+  private final Long time;
 
   @JsonCreator
   public ThingCreateEvent(
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("thing_uid") String thingUid,
       @JsonProperty("thing_name") String thingName,
-      @JsonProperty("timestamp") Long timestamp) {
+      @JsonProperty("time") Long time) {
     this.roomUid = roomUid;
     this.thingUid = thingUid;
     this.thingName = thingName;
-    this.timestamp = timestamp;
+    this.time = time;
   }
 
   @JsonProperty("room_uid")
@@ -37,8 +37,8 @@ public class ThingCreateEvent {
     return thingName;
   }
 
-  @JsonProperty("timestamp")
-  public Long getTimestamp() {
-    return timestamp;
+  @JsonProperty("time")
+  public Long getTime() {
+    return time;
   }
 }

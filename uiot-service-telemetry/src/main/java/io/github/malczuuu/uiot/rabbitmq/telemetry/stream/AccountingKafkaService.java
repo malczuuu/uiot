@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingEvent;
-import io.github.malczuuu.uiot.models.accounting.AccountingEventEnvelope;
+import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
+import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ public class AccountingKafkaService {
     this.kafkaOutputTopic = kafkaOutputTopic;
   }
 
-  public void sink(AccountingEvent accountingEvent) {
-    AccountingEventEnvelope envelope = new AccountingEventEnvelope(accountingEvent);
+  public void sink(AccountingMetric accountingMetric) {
+    AccountingMetricEnvelope envelope = new AccountingMetricEnvelope(accountingMetric);
     String payload;
     try {
       payload = objectMapper.writeValueAsString(envelope);

@@ -47,7 +47,7 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
         "Published type={} event with room={} and timestamp={}",
         RoomCreateEnvelope.TYPE,
         event.getRoomUid(),
-        event.getTimestamp());
+        event.getTime());
   }
 
   @Override
@@ -66,6 +66,6 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
         "Published type={} event with room_uid={} and timestamp={}",
         RoomDeleteEnvelope.TYPE,
         event.getRoomUid(),
-        event.getTimestamp());
+        event.getTime());
   }
 }

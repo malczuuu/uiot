@@ -75,7 +75,7 @@ public class ConnectivityStream implements InitializingBean {
       log.debug(
           "Successfully deleted events for thing={}, deletion requested at timestamp={}",
           event.getThingUid(),
-          event.getTimestamp());
+          event.getTime());
     } else {
       String type = node.get("type").asText("");
       log.debug("Ignoring internal event of type={}, value={}", type, node.get("type"));

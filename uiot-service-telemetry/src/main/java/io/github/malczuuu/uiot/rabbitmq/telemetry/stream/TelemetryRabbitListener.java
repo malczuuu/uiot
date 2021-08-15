@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingEvent;
+import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
 import io.github.malczuuu.uiot.models.telemetry.Pack;
 import io.github.malczuuu.uiot.models.telemetry.Record;
 import io.github.malczuuu.uiot.models.thing.ThingEvent;
@@ -116,19 +116,20 @@ public class TelemetryRabbitListener implements InitializingBean {
           Base64.getEncoder().encodeToString(message));
     }
 
-    AccountingEvent accounting = toAccountingEvent(message, arrivalTime, room, thing);
+    AccountingMetric accounting = toAccountingMetric(message, arrivalTime, room, thing);
     accountingKafkaService.sink(accounting);
   }
 
-  private AccountingEvent toAccountingEvent(
+  private AccountingMetric toAccountingMetric(
       byte[] message, Instant arrivalTime, String room, String thing) {
     Map<String, String> tags = new HashMap<>();
     tags.put("thing_uid", thing);
-    return new AccountingEvent(
+    return new AccountingMetric(
+        UUID.randomUUID().toString(),
         "inbound_mqtt",
         room,
         (double) message.length,
-        arrivalTime.getEpochSecond() + 0.000_000_001 * arrivalTime.getNano(),
+        arrivalTime.getEpochSecond() * 1000_000_000L + arrivalTime.getNano(),
         tags);
   }
 

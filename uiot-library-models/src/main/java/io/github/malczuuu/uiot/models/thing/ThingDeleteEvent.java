@@ -7,16 +7,16 @@ public class ThingDeleteEvent {
 
   private final String roomUid;
   private final String thingUid;
-  private final Long timestamp;
+  private final Long time;
 
   @JsonCreator
   public ThingDeleteEvent(
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("thing_uid") String thingUid,
-      @JsonProperty("timestamp") Long timestamp) {
+      @JsonProperty("time") Long time) {
     this.roomUid = roomUid;
     this.thingUid = thingUid;
-    this.timestamp = timestamp;
+    this.time = time;
   }
 
   @JsonProperty("room_uid")
@@ -29,8 +29,8 @@ public class ThingDeleteEvent {
     return thingUid;
   }
 
-  @JsonProperty("timestamp")
-  public Long getTimestamp() {
-    return timestamp;
+  @JsonProperty("time")
+  public Long getTime() {
+    return time;
   }
 }

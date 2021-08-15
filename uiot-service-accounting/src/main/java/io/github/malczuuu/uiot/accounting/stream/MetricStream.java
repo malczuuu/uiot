@@ -1,8 +1,10 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.WindowEvent;
-import io.github.malczuuu.uiot.models.accounting.AccountingEvent;
+import io.github.malczuuu.uiot.models.accounting.AccountingAggregate;
+import io.github.malczuuu.uiot.models.accounting.AccountingAggregateEnvelope;
+import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
+import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -54,15 +56,17 @@ public class MetricStream implements InitializingBean {
   public void afterPropertiesSet() {
     streamsBuilder.stream(
             metricsTopic,
-            Consumed.<String, AccountingEvent>as("metrics_source")
+            Consumed.<String, AccountingMetricEnvelope>as("metrics_source")
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(AccountingEvent.class)))
+                .withValueSerde(newBasicJsonSerde(AccountingMetricEnvelope.class)))
+        .filter((key, value) -> value.getAccountingEvent() != null)
+        .mapValues(AccountingMetricEnvelope::getAccountingEvent)
         .groupBy(
             (key, value) -> new MetricKey(value.getType(), value.getRoomUid(), value.getTags()),
-            Grouped.<MetricKey, AccountingEvent>as("metric_grouping")
+            Grouped.<MetricKey, AccountingMetric>as("metric_grouping")
                 .withKeySerde(newBasicJsonSerde(MetricKey.class))
-                .withValueSerde(newBasicJsonSerde(AccountingEvent.class)))
+                .withValueSerde(newBasicJsonSerde(AccountingMetric.class)))
         .windowedBy(TimeWindows.of(windowsSize))
         .aggregate(
             () -> new MetricAggregate(UUID.randomUUID().toString(), 0.0),
@@ -80,29 +84,30 @@ public class MetricStream implements InitializingBean {
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
         .to(
             windowsTopic,
-            Produced.<String, WindowEvent>as("accounting_source")
+            Produced.<String, AccountingAggregateEnvelope>as("accounting_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(WindowEvent.class)));
+                .withValueSerde(newBasicJsonSerde(AccountingAggregateEnvelope.class)));
   }
 
   private <T> JsonSerde<T> newBasicJsonSerde(Class<T> clazz) {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
-  private KeyValue<String, WindowEvent> mapAccountingModel(
+  private KeyValue<String, AccountingAggregateEnvelope> mapAccountingModel(
       Windowed<MetricKey> key, MetricAggregate value) {
     return new KeyValue<>(
         key.key().getRoomUid(),
-        new WindowEvent(
-            value.getUuid(),
-            key.key().getType(),
-            key.key().getRoomUid(),
-            value.getValue(),
-            Arrays.asList(toSeconds(key.window().startTime()), toSeconds(key.window().endTime())),
-            key.key().getTags()));
+        new AccountingAggregateEnvelope(
+            new AccountingAggregate(
+                value.getUuid(),
+                key.key().getType(),
+                key.key().getRoomUid(),
+                value.getValue(),
+                Arrays.asList(toMillis(key.window().startTime()), toMillis(key.window().endTime())),
+                key.key().getTags())));
   }
 
-  private double toSeconds(Instant instant) {
-    return instant.getEpochSecond() + 0.000_000_001 * instant.getNano();
+  private long toMillis(Instant instant) {
+    return instant.getEpochSecond() * 1000_000_000L + instant.getNano();
   }
 }
