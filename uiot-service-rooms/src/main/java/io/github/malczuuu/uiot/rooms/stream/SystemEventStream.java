@@ -20,9 +20,9 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 
 @Configuration
 @EnableKafkaStreams
-public class RoomEventStream implements InitializingBean {
+public class SystemEventStream implements InitializingBean {
 
-  private static final Logger log = LoggerFactory.getLogger(RoomEventStream.class);
+  private static final Logger log = LoggerFactory.getLogger(SystemEventStream.class);
 
   private final StreamsBuilder streamsBuilder;
   private final ObjectMapper objectMapper;
@@ -30,7 +30,7 @@ public class RoomEventStream implements InitializingBean {
 
   private final String systemEventsTopic;
 
-  public RoomEventStream(
+  public SystemEventStream(
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
       RoomService roomService,
