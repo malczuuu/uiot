@@ -18,3 +18,4 @@ uiot:
     rabbitmq-routing-key: telemetry.*.*
     rabbitmq-input-queue: uiot-telemetry-inbound
     kafka-output-topic: uiot-thing-events
+    kafka-accounting-topic: uiot-accounting

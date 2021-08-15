@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingModel;
-import io.github.malczuuu.uiot.models.accounting.MetricModel;
+import io.github.malczuuu.uiot.models.accounting.WindowEvent;
+import io.github.malczuuu.uiot.models.accounting.AccountingEvent;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -54,15 +54,15 @@ public class MetricStream implements InitializingBean {
   public void afterPropertiesSet() {
     streamsBuilder.stream(
             metricsTopic,
-            Consumed.<String, MetricModel>as("metrics_source")
+            Consumed.<String, AccountingEvent>as("metrics_source")
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(MetricModel.class)))
+                .withValueSerde(newBasicJsonSerde(AccountingEvent.class)))
         .groupBy(
             (key, value) -> new MetricKey(value.getType(), value.getRoomUid(), value.getTags()),
-            Grouped.<MetricKey, MetricModel>as("metric_grouping")
+            Grouped.<MetricKey, AccountingEvent>as("metric_grouping")
                 .withKeySerde(newBasicJsonSerde(MetricKey.class))
-                .withValueSerde(newBasicJsonSerde(MetricModel.class)))
+                .withValueSerde(newBasicJsonSerde(AccountingEvent.class)))
         .windowedBy(TimeWindows.of(windowsSize))
         .aggregate(
             () -> new MetricAggregate(UUID.randomUUID().toString(), 0.0),
@@ -80,20 +80,20 @@ public class MetricStream implements InitializingBean {
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
         .to(
             windowsTopic,
-            Produced.<String, AccountingModel>as("accounting_source")
+            Produced.<String, WindowEvent>as("accounting_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(AccountingModel.class)));
+                .withValueSerde(newBasicJsonSerde(WindowEvent.class)));
   }
 
   private <T> JsonSerde<T> newBasicJsonSerde(Class<T> clazz) {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
-  private KeyValue<String, AccountingModel> mapAccountingModel(
+  private KeyValue<String, WindowEvent> mapAccountingModel(
       Windowed<MetricKey> key, MetricAggregate value) {
     return new KeyValue<>(
         key.key().getRoomUid(),
-        new AccountingModel(
+        new WindowEvent(
             value.getUuid(),
             key.key().getType(),
             key.key().getRoomUid(),

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-public class MetricModel {
+public class AccountingEvent {
 
   private final String type;
   private final String roomUid;
@@ -13,7 +13,7 @@ public class MetricModel {
   private final Map<String, String> tags;
 
   @JsonCreator
-  public MetricModel(
+  public AccountingEvent(
       @JsonProperty("type") String type,
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("value") Double value,

@@ -3,7 +3,7 @@ package io.github.malczuuu.uiot.accounting.stream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.accounting.core.AccountingEntity;
 import io.github.malczuuu.uiot.accounting.core.AccountingRepository;
-import io.github.malczuuu.uiot.models.accounting.AccountingModel;
+import io.github.malczuuu.uiot.models.accounting.WindowEvent;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -37,7 +37,7 @@ public class AccountingStream implements InitializingBean {
   @Override
   public void afterPropertiesSet() {
     streamsBuilder.stream(
-            windowsTopic, Consumed.with(Serdes.String(), newBasicJsonSerde(AccountingModel.class)))
+            windowsTopic, Consumed.with(Serdes.String(), newBasicJsonSerde(WindowEvent.class)))
         .foreach(
             (key, value) -> {
               AccountingEntity entity = toEntity(value);
@@ -49,7 +49,7 @@ public class AccountingStream implements InitializingBean {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
-  private AccountingEntity toEntity(AccountingModel value) {
+  private AccountingEntity toEntity(WindowEvent value) {
     return new AccountingEntity(
         value.getUuid(),
         value.getRoomUid(),

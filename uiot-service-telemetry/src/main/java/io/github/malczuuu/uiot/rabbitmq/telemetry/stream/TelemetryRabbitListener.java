@@ -1,6 +1,7 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.malczuuu.uiot.models.accounting.AccountingEvent;
 import io.github.malczuuu.uiot.models.telemetry.Pack;
 import io.github.malczuuu.uiot.models.telemetry.Record;
 import io.github.malczuuu.uiot.models.thing.ThingEvent;
@@ -8,7 +9,9 @@ import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -32,6 +35,7 @@ public class TelemetryRabbitListener implements InitializingBean {
   private static final Logger log = LoggerFactory.getLogger(TelemetryRabbitListener.class);
 
   private final DeviceEventKafkaService deviceEventKafkaService;
+  private final AccountingKafkaService accountingKafkaService;
   private final ObjectMapper objectMapper;
   private final Clock clock;
 
@@ -41,10 +45,12 @@ public class TelemetryRabbitListener implements InitializingBean {
 
   public TelemetryRabbitListener(
       DeviceEventKafkaService deviceEventKafkaService,
+      AccountingKafkaService accountingKafkaService,
       ObjectMapper objectMapper,
       Clock clock,
       @Value("${uiot.telemetry.rabbitmq-routing-key-regexp}") String routingKeyRegexp) {
     this.deviceEventKafkaService = deviceEventKafkaService;
+    this.accountingKafkaService = accountingKafkaService;
     this.objectMapper = objectMapper;
     this.clock = clock;
     this.routingKeyRegexp = routingKeyRegexp;
@@ -109,6 +115,21 @@ public class TelemetryRabbitListener implements InitializingBean {
           routingKey,
           Base64.getEncoder().encodeToString(message));
     }
+
+    AccountingEvent accounting = toAccountingEvent(message, arrivalTime, room, thing);
+    accountingKafkaService.sink(accounting);
+  }
+
+  private AccountingEvent toAccountingEvent(
+      byte[] message, Instant arrivalTime, String room, String thing) {
+    Map<String, String> tags = new HashMap<>();
+    tags.put("thing_uid", thing);
+    return new AccountingEvent(
+        "inbound_mqtt",
+        room,
+        (double) message.length,
+        arrivalTime.getEpochSecond() + 0.000_000_001 * arrivalTime.getNano(),
+        tags);
   }
 
   private Optional<ThingEvent> toDeviceEvent(Record record, Instant arrivalTime) {
