@@ -28,6 +28,9 @@ public class StorageServiceImpl implements StorageService {
   @Override
   public void createStorage(RoomCreateEvent roomCreate) {
     String storageName = storageNameService.getStorageName(roomCreate.getRoomUid());
+
+    storageRepository.save(new StorageEntity(roomCreate.getRoomUid(), storageName));
+
     mongoOperations.createCollection(storageName);
 
     IndexOperations indexOperations = mongoOperations.indexOps(storageName);
@@ -40,8 +43,6 @@ public class StorageServiceImpl implements StorageService {
             .on(ThingEventEntity.ROOM_UID, Direction.ASC)
             .on(ThingEventEntity.THING_UID_FIELD, Direction.ASC)
             .on(ThingEventEntity.ARRIVAL_TIME_FIELD, Direction.ASC));
-
-    storageRepository.save(new StorageEntity(roomCreate.getRoomUid(), storageName));
   }
 
   @Override
