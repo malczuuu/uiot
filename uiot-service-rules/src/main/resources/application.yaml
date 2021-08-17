@@ -7,11 +7,6 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017
       database: uiot-service-rules
-  kafka:
-    producer:
-      client-id: ${spring.application.name}
-      bootstrap-servers: localhost:9092
-      retries: 3
   jackson:
     default-property-inclusion: non_null
 uiot:

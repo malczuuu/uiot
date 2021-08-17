@@ -58,6 +58,17 @@ services:
     networks:
       - uiot
 
+  uiot-service-rules:
+    image: uiot-service-rules:latest
+    ports:
+      - 127.0.0.1:8334:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-rules
+      UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
+    networks:
+      - uiot
+
   uiot-service-telemetry:
     image: uiot-service-telemetry:latest
     ports:
@@ -65,7 +76,6 @@ services:
     environment:
       SPRING_RABBITMQ_ADDRESSES: rabbitmq:5672
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_ROOMS_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
       UIOT_RABBITMQ_ROUTING_KEY_REGEXP: ^telemetry\.(.*)\.(.*)$$
       UIOT_RABBITMQ_ROUTING_KEY: telemetry.*.*
       UIOT_RABBITMQ_INPUT_QUEUE: uiot-telemetry-inbound
