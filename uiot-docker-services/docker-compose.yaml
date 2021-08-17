@@ -11,7 +11,7 @@ services:
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_METRICS_TOPIC: uiot-accounting
       UIOT_WINDOWS_TOPIC: uiot-accounting-windows
-      UIOT_WINDOWS_SIZE: "1h"
+      UIOT_WINDOWS_SIZE: "1m"
     networks:
       - uiot
 
