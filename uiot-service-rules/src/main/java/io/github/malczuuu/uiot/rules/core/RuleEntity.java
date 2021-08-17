@@ -10,8 +10,8 @@ public class RuleEntity {
   @MongoId(targetType = FieldType.OBJECT_ID)
   private ObjectId id;
 
-  @Field("uuid")
-  private String uuid;
+  @Field("uid")
+  private String uid;
 
   @Field("roomUid")
   private String roomUid;
@@ -28,19 +28,19 @@ public class RuleEntity {
   public RuleEntity() {}
 
   public RuleEntity(
-      String uuid, String roomUid, String message, ConditionEntity condition, ActionEntity action) {
-    this(null, uuid, roomUid, message, condition, action);
+      String uid, String roomUid, String message, ConditionEntity condition, ActionEntity action) {
+    this(null, uid, roomUid, message, condition, action);
   }
 
   public RuleEntity(
       ObjectId id,
-      String uuid,
+      String uid,
       String roomUid,
       String message,
       ConditionEntity condition,
       ActionEntity action) {
     this.id = id;
-    this.uuid = uuid;
+    this.uid = uid;
     this.roomUid = roomUid;
     this.message = message;
     this.condition = condition;
@@ -49,6 +49,10 @@ public class RuleEntity {
 
   public ObjectId getId() {
     return id;
+  }
+
+  public String getUid() {
+    return uid;
   }
 
   public String getRoomUid() {
