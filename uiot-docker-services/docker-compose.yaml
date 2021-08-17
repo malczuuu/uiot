@@ -9,9 +9,9 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-accounting
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_ACCOUNTING_METRICS_TOPIC: uiot-accounting
-      UIOT_ACCOUNTING_WINDOWS_TOPIC: uiot-accounting-windows
-      UIOT_ACCOUNTING_WINDOW_SIZE: "1h"
+      UIOT_METRICS_TOPIC: uiot-accounting
+      UIOT_WINDOWS_TOPIC: uiot-accounting-windows
+      UIOT_WINDOWS_SIZE: "1h"
     networks:
       - uiot
 
@@ -23,10 +23,10 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_CONNECTIVITY_VHOST: /
-      UIOT_CONNECTIVITY_ROUTING_KEY_TEMPLATE: telemetry.%s.%s
-      UIOT_CONNECTIVITY_USERNAME_CONTEXT_SEPARATOR: \.
-      UIOT_CONNECTIVITY_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_VHOST: /
+      UIOT_ROUTING_KEY_TEMPLATE: telemetry.%s.%s
+      UIOT_USERNAME_CONTEXT_SEPARATOR: \.
+      UIOT_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 
@@ -38,10 +38,10 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-history
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_HISTORY_KAFKA_THING_EVENTS_TOPIC: uiot-thing-events
-      UIOT_HISTORY_KAFKA_THING_METADATA_TOPIC: uiot-service-history_thing-metadata
-      UIOT_HISTORY_KAFKA_KEYED_THING_EVENTS_TOPIC: uiot-service-history_keyed-thing-events
-      UIOT_HISTORY_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_THING_EVENTS_TOPIC: uiot-thing-events
+      UIOT_THING_METADATA_TOPIC: uiot-service-history_thing-metadata
+      UIOT_KEYED_THING_EVENTS_TOPIC: uiot-service-history_keyed-thing-events
+      UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 
@@ -54,7 +54,7 @@ services:
       SPRING_DATA_MONGODB_DATABASE: uiot-service-rooms
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_ROOMS_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 
@@ -66,11 +66,11 @@ services:
       SPRING_RABBITMQ_ADDRESSES: rabbitmq:5672
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_ROOMS_KAFKA_SYSTEM_EVENTS_TOPIC: uiot-system-events
-      UIOT_TELEMETRY_RABBITMQ_ROUTING_KEY_REGEXP: ^telemetry\.(.*)\.(.*)$$
-      UIOT_TELEMETRY_RABBITMQ_ROUTING_KEY: telemetry.*.*
-      UIOT_TELEMETRY_RABBITMQ_INPUT_QUEUE: uiot-telemetry-inbound
-      UIOT_TELEMETRY_KAFKA_OUTPUT_TOPIC: uiot-thing-events
-      UIOT_TELEMETRY_KAFKA_ACCOUNTING_TOPIC: uiot-accounting
+      UIOT_RABBITMQ_ROUTING_KEY_REGEXP: ^telemetry\.(.*)\.(.*)$$
+      UIOT_RABBITMQ_ROUTING_KEY: telemetry.*.*
+      UIOT_RABBITMQ_INPUT_QUEUE: uiot-telemetry-inbound
+      UIOT_KAFKA_THING_EVENTS_TOPIC: uiot-thing-events
+      UIOT_KAFKA_ACCOUNTING_TOPIC: uiot-accounting
     networks:
       - uiot
 
@@ -82,8 +82,8 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-things
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      UIOT_THINGS_CONNECTIVITY_URL: http://uiot-service-connectivity:8080/api/rooms/{roomUid}/things/{thingUid}/connectivity
-      UIOT_THINGS_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_CONNECTIVITY_INTEGRATION_URL: http://uiot-service-connectivity:8080/api/rooms/{roomUid}/things/{thingUid}/connectivity
+      UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
     networks:
       - uiot
 

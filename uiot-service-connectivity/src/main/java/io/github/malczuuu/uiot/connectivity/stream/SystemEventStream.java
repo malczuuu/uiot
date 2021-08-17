@@ -1,10 +1,11 @@
-package io.github.malczuuu.uiot.connectivity.core;
+package io.github.malczuuu.uiot.things.stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.thing.ThingDeleteEnvelope;
-import io.github.malczuuu.uiot.models.thing.ThingDeleteEvent;
+import io.github.malczuuu.uiot.models.room.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
+import io.github.malczuuu.uiot.things.core.ThingService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
@@ -19,34 +20,34 @@ import org.springframework.kafka.annotation.EnableKafkaStreams;
 
 @Configuration
 @EnableKafkaStreams
-public class ConnectivityStream implements InitializingBean {
+public class SystemEventStream implements InitializingBean {
 
-  private static final Logger log = LoggerFactory.getLogger(ConnectivityStream.class);
+  private static final Logger log = LoggerFactory.getLogger(SystemEventStream.class);
 
   private final StreamsBuilder streamsBuilder;
   private final ObjectMapper objectMapper;
 
-  private final ConnectivityRepository connectivityRepository;
+  private final ThingService thingService;
 
   private final String systemEventsTopic;
 
-  public ConnectivityStream(
+  public SystemEventStream(
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
-      ConnectivityRepository connectivityRepository,
-      @Value("${uiot.connectivity.kafka-system-events-topic}") String systemEventsTopic) {
+      ThingService thingService,
+      @Value("${uiot.things.system-events-topic}") String systemEventsTopic) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
-    this.connectivityRepository = connectivityRepository;
+    this.thingService = thingService;
     this.systemEventsTopic = systemEventsTopic;
   }
 
   @Override
   public void afterPropertiesSet() {
-    setupInternalEventsStream();
+    setupSystemEventStream();
   }
 
-  private void setupInternalEventsStream() {
+  private void setupSystemEventStream() {
     Consumed<String, String> consumed =
         Consumed.with(
             Serdes.String(),
@@ -66,19 +67,17 @@ public class ConnectivityStream implements InitializingBean {
 
   private void processSystemEventInternal(String value) throws JsonProcessingException {
     JsonNode node = objectMapper.readTree(value);
-    if (node.get("type").asText("").equals("deleteThingEvent")) {
-      ThingDeleteEnvelope envelope = objectMapper.treeToValue(node, ThingDeleteEnvelope.class);
-      ThingDeleteEvent event = envelope.getDeleteThingEvent();
-
-      connectivityRepository.deleteByRoomUidAndThingUid(event.getRoomUid(), event.getThingUid());
-
-      log.debug(
-          "Successfully deleted events for thing={}, deletion requested at timestamp={}",
-          event.getThingUid(),
-          event.getTime());
+    String type = node.get("type").asText("");
+    if (RoomDeleteEnvelope.TYPE.equals(type)) {
+      deleteThings(node);
     } else {
-      String type = node.get("type").asText("");
       log.debug("Ignoring internal event of type={}, value={}", type, node.get("type"));
     }
+  }
+
+  private void deleteThings(JsonNode node) throws JsonProcessingException {
+    RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
+    RoomDeleteEvent event = envelope.getRoomDeleteEvent();
+    thingService.deleteThings(event.getRoomUid());
   }
 }
