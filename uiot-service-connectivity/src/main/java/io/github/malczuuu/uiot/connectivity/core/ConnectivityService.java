@@ -18,4 +18,6 @@ public interface ConnectivityService {
   void updatePassword(String room, String thing, PasswordUpdateModel password);
 
   void deleteConnectivity(String room, String thing);
+
+  void deleteConnectivity(String roomUid);
 }

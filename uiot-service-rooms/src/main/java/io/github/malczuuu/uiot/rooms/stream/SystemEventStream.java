@@ -34,7 +34,7 @@ public class SystemEventStream implements InitializingBean {
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
       RoomService roomService,
-      @Value("${uiot.rooms.kafka-system-events-topic}") String systemEventsTopic) {
+      @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
     this.roomService = roomService;

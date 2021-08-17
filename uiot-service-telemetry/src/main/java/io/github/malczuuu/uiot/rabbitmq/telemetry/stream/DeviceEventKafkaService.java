@@ -23,7 +23,7 @@ public class DeviceEventKafkaService {
   public DeviceEventKafkaService(
       KafkaOperations<String, String> kafkaOperations,
       ObjectMapper objectMapper,
-      @Value("${uiot.telemetry.kafka-output-topic}") String kafkaOutputTopic) {
+      @Value("${uiot.kafka-thing-events-topic}") String kafkaOutputTopic) {
     this.kafkaOperations = kafkaOperations;
     this.objectMapper = objectMapper;
     this.kafkaOutputTopic = kafkaOutputTopic;

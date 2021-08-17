@@ -9,4 +9,6 @@ public interface ConnectivityRepository extends MongoRepository<ConnectivityEnti
   Optional<ConnectivityEntity> findByRoomUidAndThingUid(String roomUid, String thingUid);
 
   void deleteByRoomUidAndThingUid(String roomUid, String thingUid);
+
+  void deleteByRoomUid(String roomUid);
 }

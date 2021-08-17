@@ -78,4 +78,9 @@ public class ConnectivityServiceImpl implements ConnectivityService {
     return new ConnectivityModel(
         entity.getRoomUid(), entity.getThingUid(), entity.isEnabled(), entity.getVersion());
   }
+
+  @Override
+  public void deleteConnectivity(String roomUid) {
+    connectivityRepository.deleteByRoomUid(roomUid);
+  }
 }

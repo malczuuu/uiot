@@ -28,7 +28,7 @@ public class AccountingAggregateStream implements InitializingBean {
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
       AccountingRepository accountingRepository,
-      @Value("${uiot.accounting.windows-topic}") String windowsTopic) {
+      @Value("${uiot.windows-topic}") String windowsTopic) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
     this.accountingRepository = accountingRepository;

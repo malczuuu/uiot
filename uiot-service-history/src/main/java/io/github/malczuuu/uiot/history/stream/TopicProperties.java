@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
-@ConfigurationProperties(prefix = "uiot.history.kafka")
+@ConfigurationProperties(prefix = "uiot")
 @ConstructorBinding
 public class TopicProperties {
 

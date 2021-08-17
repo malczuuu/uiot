@@ -18,8 +18,8 @@ public class RabbitConfiguration {
   private final String inputQueue;
 
   public RabbitConfiguration(
-      @Value("${uiot.telemetry.rabbitmq-routing-key}") String routingKey,
-      @Value("${uiot.telemetry.rabbitmq-input-queue}") String inputQueue) {
+      @Value("${uiot.rabbitmq-routing-key}") String routingKey,
+      @Value("${uiot.rabbitmq-input-queue}") String inputQueue) {
     this.routingKey = routingKey;
     this.inputQueue = inputQueue;
   }

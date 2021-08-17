@@ -29,7 +29,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = {"${uiot.telemetry.rabbitmq-input-queue}"})
+@RabbitListener(queues = {"${uiot.rabbitmq-input-queue}"})
 public class TelemetryRabbitListener implements InitializingBean {
 
   private static final Logger log = LoggerFactory.getLogger(TelemetryRabbitListener.class);
@@ -48,7 +48,7 @@ public class TelemetryRabbitListener implements InitializingBean {
       AccountingKafkaService accountingKafkaService,
       ObjectMapper objectMapper,
       Clock clock,
-      @Value("${uiot.telemetry.rabbitmq-routing-key-regexp}") String routingKeyRegexp) {
+      @Value("${uiot.rabbitmq-routing-key-regexp}") String routingKeyRegexp) {
     this.deviceEventKafkaService = deviceEventKafkaService;
     this.accountingKafkaService = accountingKafkaService;
     this.objectMapper = objectMapper;

@@ -1,11 +1,11 @@
-package io.github.malczuuu.uiot.things.stream;
+package io.github.malczuuu.uiot.connectivity.stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.malczuuu.uiot.connectivity.core.ConnectivityService;
 import io.github.malczuuu.uiot.models.room.RoomDeleteEnvelope;
 import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
-import io.github.malczuuu.uiot.things.core.ThingService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
@@ -27,15 +27,15 @@ public class SystemEventStream implements InitializingBean {
   private final StreamsBuilder streamsBuilder;
   private final ObjectMapper objectMapper;
 
-  private final ThingService thingService;
+  private final ConnectivityService thingService;
 
   private final String systemEventsTopic;
 
   public SystemEventStream(
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
-      ThingService thingService,
-      @Value("${uiot.things.system-events-topic}") String systemEventsTopic) {
+      ConnectivityService thingService,
+      @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
     this.thingService = thingService;
@@ -78,6 +78,6 @@ public class SystemEventStream implements InitializingBean {
   private void deleteThings(JsonNode node) throws JsonProcessingException {
     RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
     RoomDeleteEvent event = envelope.getRoomDeleteEvent();
-    thingService.deleteThings(event.getRoomUid());
+    thingService.deleteConnectivity(event.getRoomUid());
   }
 }

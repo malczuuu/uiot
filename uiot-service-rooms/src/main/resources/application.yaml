@@ -17,5 +17,4 @@ spring:
   jackson:
     default-property-inclusion: non_null
 uiot:
-  rooms:
-    kafka-system-events-topic: uiot-system-events
+  system-events-topic: uiot-system-events

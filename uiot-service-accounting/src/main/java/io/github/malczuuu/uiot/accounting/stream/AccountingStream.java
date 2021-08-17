@@ -43,9 +43,9 @@ public class AccountingStream implements InitializingBean {
   public AccountingStream(
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
-      @Value("${uiot.accounting.metrics-topic}") String metricsTopic,
-      @Value("${uiot.accounting.windows-topic}") String windowsTopic,
-      @Value("${uiot.accounting.windows-size}") Duration windowsSize) {
+      @Value("${uiot.metrics-topic}") String metricsTopic,
+      @Value("${uiot.windows-topic}") String windowsTopic,
+      @Value("${uiot.windows-size}") Duration windowsSize) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
     this.metricsTopic = metricsTopic;

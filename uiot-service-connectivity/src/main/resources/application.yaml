@@ -12,8 +12,7 @@ spring:
       application-id: ${spring.application.name}
       bootstrap-servers: localhost:9092
 uiot:
-  connectivity:
-    vhost: /
-    routing-key-template: telemetry.%s.%s
-    username-context-separator: \.
-    kafka-system-events-topic: uiot-system-events
+  vhost: /
+  routing-key-template: telemetry.%s.%s
+  username-context-separator: \.
+  system-events-topic: uiot-system-events

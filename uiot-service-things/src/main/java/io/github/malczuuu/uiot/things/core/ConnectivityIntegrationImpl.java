@@ -11,12 +11,13 @@ import org.springframework.web.client.RestOperations;
 public class ConnectivityIntegrationImpl implements ConnectivityIntegration {
 
   private final RestOperations restOperations;
-  private final String url;
+  private final String connectivityIntegrationUrl;
 
   public ConnectivityIntegrationImpl(
-      RestOperations restOperations, @Value("${uiot.things.connectivity-url}") String url) {
+      RestOperations restOperations,
+      @Value("${uiot.connectivity-integration-url}") String connectivityIntegrationUrl) {
     this.restOperations = restOperations;
-    this.url = url;
+    this.connectivityIntegrationUrl = connectivityIntegrationUrl;
   }
 
   @Override
@@ -25,7 +26,7 @@ public class ConnectivityIntegrationImpl implements ConnectivityIntegration {
     parameters.put("roomUid", roomUid);
     parameters.put("thingUid", thingUid);
     try {
-      restOperations.delete(url, parameters);
+      restOperations.delete(connectivityIntegrationUrl, parameters);
       return true;
     } catch (RestClientException e) {
       return false;

@@ -25,7 +25,7 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
   public RoomEventBrokerImpl(
       KafkaOperations<String, String> kafkaOperations,
       ObjectMapper objectMapper,
-      @Value("${uiot.rooms.kafka-system-events-topic}") String systemEventsTopic) {
+      @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.kafkaOperations = kafkaOperations;
     this.objectMapper = objectMapper;
     this.systemEventsTopic = systemEventsTopic;

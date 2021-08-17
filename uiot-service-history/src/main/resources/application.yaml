@@ -14,9 +14,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
 uiot:
-  history:
-    kafka:
-      thing-events-topic: uiot-thing-events
-      thing-metadata-topic: uiot-service-history_thing-metadata
-      keyed-thing-events-topic: uiot-service-history_keyed-thing-events
-      system-events-topic: uiot-system-events
+  thing-events-topic: uiot-thing-events
+  thing-metadata-topic: uiot-service-history_thing-metadata
+  keyed-thing-events-topic: uiot-service-history_keyed-thing-events
+  system-events-topic: uiot-system-events

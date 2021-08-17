@@ -22,7 +22,7 @@ public class AccountingKafkaService {
   public AccountingKafkaService(
       KafkaOperations<String, String> kafkaOperations,
       ObjectMapper objectMapper,
-      @Value("${uiot.telemetry.kafka-accounting-topic}") String kafkaOutputTopic) {
+      @Value("${uiot.kafka-accounting-topic}") String kafkaOutputTopic) {
     this.kafkaOperations = kafkaOperations;
     this.objectMapper = objectMapper;
     this.kafkaOutputTopic = kafkaOutputTopic;

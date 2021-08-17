@@ -19,9 +19,9 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
 
   public RabbitAuthServiceImpl(
       ConnectivityRepository connectivityRepository,
-      @Value("${uiot.connectivity.routing-key-template}") String routingKeyTemplate,
-      @Value("${uiot.connectivity.username-context-separator}") String usernameContextSeparator,
-      @Value("${uiot.connectivity.vhost}") String vhost) {
+      @Value("${uiot.routing-key-template}") String routingKeyTemplate,
+      @Value("${uiot.username-context-separator}") String usernameContextSeparator,
+      @Value("${uiot.vhost}") String vhost) {
     this.connectivityRepository = connectivityRepository;
     this.routingKeyTemplate = routingKeyTemplate;
     this.usernameContextSeparator = usernameContextSeparator;

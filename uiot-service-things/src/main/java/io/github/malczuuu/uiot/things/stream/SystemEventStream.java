@@ -35,7 +35,7 @@ public class SystemEventStream implements InitializingBean {
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
       ThingService thingService,
-      @Value("${uiot.things.system-events-topic}") String systemEventsTopic) {
+      @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.streamsBuilder = streamsBuilder;
     this.objectMapper = objectMapper;
     this.thingService = thingService;
