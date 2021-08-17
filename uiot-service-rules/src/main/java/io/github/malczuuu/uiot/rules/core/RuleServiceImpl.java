@@ -43,7 +43,8 @@ public class RuleServiceImpl implements RuleService {
             rule.getMessage(),
             rule.getCondition() != null ? toEntity(rule.getCondition()) : null,
             rule.getAction() != null ? new ActionEntity(rule.getAction().getUrl()) : null);
-    return null;
+    entity = ruleRepository.save(entity);
+    return ruleMapper.toRuleModel(entity);
   }
 
   private ConditionEntity toEntity(ConditionModel condition) {
