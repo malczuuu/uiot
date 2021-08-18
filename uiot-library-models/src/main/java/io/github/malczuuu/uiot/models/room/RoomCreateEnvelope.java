@@ -2,8 +2,11 @@ package io.github.malczuuu.uiot.models.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.malczuuu.uiot.models.TypedEnvelope;
 
-public class RoomCreateEnvelope {
+@JsonPropertyOrder({"type", RoomCreateEnvelope.TYPE})
+public class RoomCreateEnvelope extends TypedEnvelope {
 
   public static final String TYPE = "room_create";
 
@@ -11,12 +14,8 @@ public class RoomCreateEnvelope {
 
   @JsonCreator
   public RoomCreateEnvelope(@JsonProperty(TYPE) RoomCreateEvent roomCreateEvent) {
+    super(TYPE);
     this.roomCreateEvent = roomCreateEvent;
-  }
-
-  @JsonProperty("type")
-  public String getType() {
-    return TYPE;
   }
 
   @JsonProperty(TYPE)

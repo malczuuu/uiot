@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.rule.ActionExecutionEnvelope;
 import io.github.malczuuu.uiot.models.rule.ActionExecutionEvent;
 import io.github.malczuuu.uiot.models.thing.ThingEvent;
-import io.github.malczuuu.uiot.models.thing.ThingEventEnvelope;
+import io.github.malczuuu.uiot.models.thing.ThingEventsEnvelope;
 import io.github.malczuuu.uiot.rules.core.RuleService;
+import io.github.malczuuu.uiot.rules.model.RuleModel;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
@@ -54,14 +55,14 @@ public class ThingEventStream implements InitializingBean {
   public void afterPropertiesSet() {
     streamsBuilder.stream(
             thingEventsTopic,
-            Consumed.<String, ThingEventEnvelope>as("thing_events_topic_source")
+            Consumed.<String, ThingEventsEnvelope>as("thing_events_topic_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(getJsonSerde(ThingEventEnvelope.class))
+                .withValueSerde(getJsonSerde(ThingEventsEnvelope.class))
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withOffsetResetPolicy(AutoOffsetReset.LATEST))
         .filter((key, value) -> value.getThingEvents() != null)
         .flatMap((key, value) -> flatMapThingEvents(value))
-        .flatMap((key, value) -> eventuallyTriggerAction(value))
+        .flatMap((key, value) -> triggerAction(value))
         .to(
             actionExecutionEventsTopic,
             Produced.<String, ActionExecutionEnvelope>as("action_execution_events_sink")
@@ -73,27 +74,28 @@ public class ThingEventStream implements InitializingBean {
     return new JsonSerde<>(type, objectMapper).noTypeInfo().ignoreTypeHeaders();
   }
 
-  private Iterable<KeyValue<String, ThingEvent>> flatMapThingEvents(ThingEventEnvelope envelope) {
+  private Iterable<KeyValue<String, ThingEvent>> flatMapThingEvents(ThingEventsEnvelope envelope) {
     return envelope.getThingEvents().stream()
         .map(event -> new KeyValue<>(event.getRoom(), event))
         .collect(Collectors.toList());
   }
 
-  private List<KeyValue<String, ActionExecutionEnvelope>> eventuallyTriggerAction(
-      ThingEvent value) {
-    return ruleService.search(value).stream()
-        .map(
-            rule ->
-                new ActionExecutionEvent(
-                    value.getThing(),
-                    value.getProperty(),
-                    rule.getUid(),
-                    value.getValue(),
-                    value.getValueString(),
-                    value.getValueBoolean(),
-                    rule.getMessage()))
+  private List<KeyValue<String, ActionExecutionEnvelope>> triggerAction(ThingEvent thingEvent) {
+    return ruleService.search(thingEvent).stream()
+        .map(rule -> buildExecutionEvent(thingEvent, rule))
         .map(ActionExecutionEnvelope::new)
-        .map(e -> new KeyValue<>(value.getRoom(), e))
+        .map(e -> new KeyValue<>(thingEvent.getRoom(), e))
         .collect(Collectors.toList());
+  }
+
+  private ActionExecutionEvent buildExecutionEvent(ThingEvent thingEvent, RuleModel rule) {
+    return new ActionExecutionEvent(
+        thingEvent.getThing(),
+        thingEvent.getProperty(),
+        rule.getUid(),
+        thingEvent.getValue(),
+        thingEvent.getValueString(),
+        thingEvent.getValueBoolean(),
+        rule.getMessage());
   }
 }

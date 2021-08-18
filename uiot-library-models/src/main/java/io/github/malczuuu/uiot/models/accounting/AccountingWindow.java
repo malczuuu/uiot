@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-public class AccountingAggregate {
+public class AccountingWindow {
 
   private final String uuid;
   private final String type;
@@ -15,7 +15,7 @@ public class AccountingAggregate {
   private final Map<String, String> tags;
 
   @JsonCreator
-  public AccountingAggregate(
+  public AccountingWindow(
       @JsonProperty("uuid") String uuid,
       @JsonProperty("type") String type,
       @JsonProperty("room_uid") String roomUid,

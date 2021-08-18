@@ -2,21 +2,20 @@ package io.github.malczuuu.uiot.models.accounting;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.malczuuu.uiot.models.TypedEnvelope;
 
-public class AccountingMetricEnvelope {
+@JsonPropertyOrder({"type", AccountingMetricEnvelope.TYPE})
+public class AccountingMetricEnvelope extends TypedEnvelope {
 
-  private static final String TYPE = "accounting_metric";
+  public static final String TYPE = "accounting_metric";
 
   private final AccountingMetric accountingMetric;
 
   @JsonCreator
   public AccountingMetricEnvelope(@JsonProperty(TYPE) AccountingMetric accountingMetric) {
+    super(TYPE);
     this.accountingMetric = accountingMetric;
-  }
-
-  @JsonProperty("type")
-  public String getType() {
-    return TYPE;
   }
 
   @JsonProperty(TYPE)

@@ -3,9 +3,10 @@ package io.github.malczuuu.uiot.models.rule;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.github.malczuuu.uiot.models.TypedEnvelope;
 
 @JsonPropertyOrder({"type", ActionExecutionEnvelope.TYPE})
-public class ActionExecutionEnvelope {
+public class ActionExecutionEnvelope extends TypedEnvelope {
 
   public static final String TYPE = "action_execution";
 
@@ -13,12 +14,8 @@ public class ActionExecutionEnvelope {
 
   @JsonCreator
   public ActionExecutionEnvelope(@JsonProperty(TYPE) ActionExecutionEvent actionExecution) {
+    super(TYPE);
     this.actionExecution = actionExecution;
-  }
-
-  @JsonProperty("type")
-  public String getType() {
-    return TYPE;
   }
 
   @JsonProperty(TYPE)

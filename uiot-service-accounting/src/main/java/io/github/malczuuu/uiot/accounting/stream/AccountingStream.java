@@ -1,9 +1,10 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingAggregateEnvelope;
 import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
 import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
+import io.github.malczuuu.uiot.models.accounting.AccountingWindow;
+import io.github.malczuuu.uiot.models.accounting.AccountingWindowEnvelope;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -87,21 +88,21 @@ public class AccountingStream implements InitializingBean {
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
         .to(
             windowsTopic,
-            Produced.<String, AccountingAggregateEnvelope>as("accounting_source")
+            Produced.<String, AccountingWindowEnvelope>as("accounting_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(AccountingAggregateEnvelope.class)));
+                .withValueSerde(newBasicJsonSerde(AccountingWindowEnvelope.class)));
   }
 
   private <T> JsonSerde<T> newBasicJsonSerde(Class<T> clazz) {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
-  private KeyValue<String, AccountingAggregateEnvelope> mapAccountingModel(
+  private KeyValue<String, AccountingWindowEnvelope> mapAccountingModel(
       Windowed<AggregationKey> key, AccountingAggregate value) {
     return new KeyValue<>(
         key.key().getRoomUid(),
-        new AccountingAggregateEnvelope(
-            new io.github.malczuuu.uiot.models.accounting.AccountingAggregate(
+        new AccountingWindowEnvelope(
+            new AccountingWindow(
                 value.getUuid(),
                 key.key().getType(),
                 key.key().getRoomUid(),

@@ -3,7 +3,7 @@ package io.github.malczuuu.uiot.history.stream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.history.core.HistoryService;
 import io.github.malczuuu.uiot.models.thing.ThingEvent;
-import io.github.malczuuu.uiot.models.thing.ThingEventEnvelope;
+import io.github.malczuuu.uiot.models.thing.ThingEventsEnvelope;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
@@ -48,27 +48,27 @@ public class ThingEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    KStream<String, ThingEventEnvelope> thingEventStream = initiateThingEventStream();
+    KStream<String, ThingEventsEnvelope> thingEventStream = initiateThingEventStream();
     storeThingEventsInDatabase(thingEventStream);
     storeThingMetadataInKTable(thingEventStream);
     storePropertyLastStateInKTable(thingEventStream);
   }
 
-  private KStream<String, ThingEventEnvelope> initiateThingEventStream() {
+  private KStream<String, ThingEventsEnvelope> initiateThingEventStream() {
     return streamsBuilder.stream(
         topics.getThingEventsTopic(),
         Consumed.with(
             Serdes.String(),
-            newBasicJsonSerde(ThingEventEnvelope.class),
+            newBasicJsonSerde(ThingEventsEnvelope.class),
             new WallclockTimestampExtractor(),
             AutoOffsetReset.LATEST));
   }
 
-  private void storeThingEventsInDatabase(KStream<String, ThingEventEnvelope> thingEventStream) {
+  private void storeThingEventsInDatabase(KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream.foreach((key, value) -> processThingEvent(value));
   }
 
-  private void storeThingMetadataInKTable(KStream<String, ThingEventEnvelope> thingEventStream) {
+  private void storeThingMetadataInKTable(KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
         .flatMap((key, value) -> splitByThingKey(value))
         .groupByKey(Grouped.with(Serdes.String(), newBasicJsonSerde(ThingEvent.class)))
@@ -88,7 +88,7 @@ public class ThingEventStream implements InitializingBean {
   }
 
   private void storePropertyLastStateInKTable(
-      KStream<String, ThingEventEnvelope> thingEventStream) {
+      KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
         .flatMap((key, value) -> splitByPropertyKey(value))
         .to(
@@ -105,13 +105,13 @@ public class ThingEventStream implements InitializingBean {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
-  private void processThingEvent(ThingEventEnvelope value) {
+  private void processThingEvent(ThingEventsEnvelope value) {
     if (value.getThingEvents() != null) {
       value.getThingEvents().forEach(historyService::storeEvent);
     }
   }
 
-  private Iterable<KeyValue<String, ThingEvent>> splitByThingKey(ThingEventEnvelope value) {
+  private Iterable<KeyValue<String, ThingEvent>> splitByThingKey(ThingEventsEnvelope value) {
     if (value.getThingEvents() != null) {
       return value.getThingEvents().stream()
           .map(event -> new KeyValue<>(getThingKey(event), event))
@@ -120,7 +120,7 @@ public class ThingEventStream implements InitializingBean {
     return Collections.emptyList();
   }
 
-  private Iterable<KeyValue<String, ThingEvent>> splitByPropertyKey(ThingEventEnvelope value) {
+  private Iterable<KeyValue<String, ThingEvent>> splitByPropertyKey(ThingEventsEnvelope value) {
     if (value.getThingEvents() != null) {
       return value.getThingEvents().stream()
           .map(event -> new KeyValue<>(getPropertyKey(event), event))
