@@ -1,9 +1,8 @@
-package io.github.malczuuu.uiot.models.room;
+package io.github.malczuuu.uiot.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import io.github.malczuuu.uiot.models.TypedEnvelope;
 
 @JsonPropertyOrder({"type", RoomCreateEnvelope.TYPE})
 public class RoomCreateEnvelope extends TypedEnvelope {

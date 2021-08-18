@@ -1,10 +1,10 @@
 package io.github.malczuuu.uiot.rules.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.rule.ActionExecutionEnvelope;
-import io.github.malczuuu.uiot.models.rule.ActionExecutionEvent;
-import io.github.malczuuu.uiot.models.thing.ThingEvent;
-import io.github.malczuuu.uiot.models.thing.ThingEventsEnvelope;
+import io.github.malczuuu.uiot.models.ActionExecutionEnvelope;
+import io.github.malczuuu.uiot.models.ActionExecutionEvent;
+import io.github.malczuuu.uiot.models.ThingEvent;
+import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
 import io.github.malczuuu.uiot.rules.core.RuleService;
 import io.github.malczuuu.uiot.rules.model.RuleModel;
 import java.util.List;

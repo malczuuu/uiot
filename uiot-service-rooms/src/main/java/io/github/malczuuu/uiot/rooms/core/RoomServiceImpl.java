@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.rooms.core;
 
-import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
-import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
+import io.github.malczuuu.uiot.models.RoomCreateEvent;
+import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
 import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;

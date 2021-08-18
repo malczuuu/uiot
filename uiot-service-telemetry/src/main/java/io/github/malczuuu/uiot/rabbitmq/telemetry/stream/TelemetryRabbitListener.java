@@ -1,10 +1,10 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
-import io.github.malczuuu.uiot.models.telemetry.Pack;
-import io.github.malczuuu.uiot.models.telemetry.Record;
-import io.github.malczuuu.uiot.models.thing.ThingEvent;
+import io.github.malczuuu.uiot.models.AccountingMetric;
+import io.github.malczuuu.uiot.models.Pack;
+import io.github.malczuuu.uiot.models.Record;
+import io.github.malczuuu.uiot.models.ThingEvent;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;

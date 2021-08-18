@@ -4,13 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
-import io.github.malczuuu.uiot.models.accounting.AccountingWindowEnvelope;
-import io.github.malczuuu.uiot.models.room.RoomCreateEnvelope;
-import io.github.malczuuu.uiot.models.room.RoomDeleteEnvelope;
-import io.github.malczuuu.uiot.models.rule.ActionExecutionEnvelope;
-import io.github.malczuuu.uiot.models.thing.ThingCreateEnvelope;
-import io.github.malczuuu.uiot.models.thing.ThingEventsEnvelope;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({

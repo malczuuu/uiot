@@ -1,10 +1,10 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
-import io.github.malczuuu.uiot.models.accounting.AccountingWindow;
-import io.github.malczuuu.uiot.models.accounting.AccountingWindowEnvelope;
+import io.github.malczuuu.uiot.models.AccountingMetric;
+import io.github.malczuuu.uiot.models.AccountingMetricEnvelope;
+import io.github.malczuuu.uiot.models.AccountingWindow;
+import io.github.malczuuu.uiot.models.AccountingWindowEnvelope;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;

@@ -2,10 +2,10 @@ package io.github.malczuuu.uiot.rooms.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.room.RoomCreateEnvelope;
-import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
-import io.github.malczuuu.uiot.models.room.RoomDeleteEnvelope;
-import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
+import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
+import io.github.malczuuu.uiot.models.RoomCreateEvent;
+import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

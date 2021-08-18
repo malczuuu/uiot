@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.models.accounting;
+package io.github.malczuuu.uiot.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

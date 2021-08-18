@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetric;
-import io.github.malczuuu.uiot.models.accounting.AccountingMetricEnvelope;
+import io.github.malczuuu.uiot.models.AccountingMetric;
+import io.github.malczuuu.uiot.models.AccountingMetricEnvelope;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

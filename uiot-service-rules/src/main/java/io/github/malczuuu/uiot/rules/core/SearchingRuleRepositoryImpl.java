@@ -1,6 +1,6 @@
 package io.github.malczuuu.uiot.rules.core;
 
-import io.github.malczuuu.uiot.models.thing.ThingEvent;
+import io.github.malczuuu.uiot.models.ThingEvent;
 import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;

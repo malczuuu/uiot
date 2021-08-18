@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.history.core;
 
-import io.github.malczuuu.uiot.models.room.RoomCreateEvent;
-import io.github.malczuuu.uiot.models.room.RoomDeleteEvent;
+import io.github.malczuuu.uiot.models.RoomCreateEvent;
+import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.index.Index;

@@ -2,8 +2,8 @@ package io.github.malczuuu.uiot.history.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.history.core.HistoryService;
-import io.github.malczuuu.uiot.models.thing.ThingEvent;
-import io.github.malczuuu.uiot.models.thing.ThingEventsEnvelope;
+import io.github.malczuuu.uiot.models.ThingEvent;
+import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
