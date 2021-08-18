@@ -5,6 +5,8 @@ kaf topic create uiot-accounting-windows
 
 kaf topic create uiot-thing-events
 
+kaf topic create uiot-action-execution-events
+
 kaf topic create uiot-system-events
 
 kaf topic create uiot-service-history_thing-metadata

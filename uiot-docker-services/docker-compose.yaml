@@ -63,8 +63,11 @@ services:
     image: uiot-service-rules:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_DATA_MONGODB_DATABASE: uiot-service-rules
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
+      UIOT_THING_EVENTS_TOPIC: uiot-thing-events
+      UIOT_ACTION_EXECUTION_EVENTS_TOPIC: uiot-action-execution-events
     networks:
       - uiot
 
