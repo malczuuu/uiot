@@ -2,10 +2,11 @@ package io.github.malczuuu.uiot.rules.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.rule.ActionExecutionEnvelope;
+import io.github.malczuuu.uiot.models.rule.ActionExecutionEvent;
 import io.github.malczuuu.uiot.models.thing.ThingEvent;
 import io.github.malczuuu.uiot.models.thing.ThingEventEnvelope;
 import io.github.malczuuu.uiot.rules.core.RuleService;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -78,8 +79,21 @@ public class ThingEventStream implements InitializingBean {
         .collect(Collectors.toList());
   }
 
-  private Iterable<KeyValue<String, ActionExecutionEnvelope>> eventuallyTriggerAction(
+  private List<KeyValue<String, ActionExecutionEnvelope>> eventuallyTriggerAction(
       ThingEvent value) {
-    return Collections.emptyList();
+    return ruleService.search(value).stream()
+        .map(
+            rule ->
+                new ActionExecutionEvent(
+                    value.getThing(),
+                    value.getProperty(),
+                    rule.getUid(),
+                    value.getValue(),
+                    value.getValueString(),
+                    value.getValueBoolean(),
+                    rule.getMessage()))
+        .map(ActionExecutionEnvelope::new)
+        .map(e -> new KeyValue<>(value.getRoom(), e))
+        .collect(Collectors.toList());
   }
 }

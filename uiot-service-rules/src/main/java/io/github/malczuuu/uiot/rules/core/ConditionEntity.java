@@ -6,6 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 public class ConditionEntity {
 
+  public static final String THING_UIDS = "thingUids";
+  public static final String PROPERTY_NAMES = "propertyNames";
+  public static final String OPERATOR = "operator";
+  public static final String VALUE = "value";
+  public static final String VALUE_STRING = "valueString";
+  public static final String VALUE_BOOLEAN = "valueBoolean";
+
   @Field("thingUids")
   private List<String> thingUids;
 

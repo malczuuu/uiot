@@ -1,8 +1,10 @@
 package io.github.malczuuu.uiot.rules.core;
 
+import io.github.malczuuu.uiot.models.thing.ThingEvent;
 import io.github.malczuuu.uiot.rules.model.ConditionModel;
 import io.github.malczuuu.uiot.rules.model.RuleModel;
 import io.github.malczuuu.uiot.rules.model.RulesPage;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -83,5 +85,12 @@ public class RuleServiceImpl implements RuleService {
   @Override
   public void deleteRules(String roomUid) {
     ruleRepository.deleteByRoomUid(roomUid);
+  }
+
+  @Override
+  public List<RuleModel> search(ThingEvent thingEvent) {
+    return ruleRepository.findRules(thingEvent).stream()
+        .map(ruleMapper::toRuleModel)
+        .collect(Collectors.toList());
   }
 }

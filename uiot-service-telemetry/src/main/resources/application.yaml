@@ -12,6 +12,8 @@ spring:
       client-id: ${spring.application.name}
       bootstrap-servers: localhost:9092
       retries: 3
+  jackson:
+    default-property-inclusion: non_null
 uiot:
   rabbitmq-routing-key-regexp: ^telemetry\.(.*)\.(.*)$
   rabbitmq-routing-key: telemetry.*.*
