@@ -1,0 +1,54 @@
+[log]
+  level = "DEBUG"
+
+[entryPoints]
+  [entryPoints.http]
+   address = ":80"
+
+[providers.file]
+  filename = "/etc/traefik/traefik.toml"
+
+[http]
+  [http.routers]
+    [http.routers.uiot-service-accounting]
+      rule = "PathPrefix(`/api/accounting`)"
+      service = "uiot-service-accounting"
+
+    [http.routers.uiot-service-connectivity]
+      rule = "PathPrefix(`/api/rooms/{room}/things/{thing}/connectivity`)"
+      service = "uiot-service-connectivity"
+
+    [http.routers.uiot-service-history]
+      rule = "PathPrefix(`/api/rooms/{room}/history`)"
+      service = "uiot-service-history"
+
+    [http.routers.uiot-service-rooms]
+      rule = "PathPrefix(`/api/rooms`)"
+      service = "uiot-service-rooms"
+
+    [http.routers.uiot-service-rules]
+      rule = "PathPrefix(`/api/rooms/{room}/rules`)"
+      service = "uiot-service-rules"
+
+    [http.routers.uiot-service-things]
+      rule = "PathPrefix(`/api/rooms/{room}/things`)"
+      service = "uiot-service-things"
+
+  [http.services]
+    [[http.services.uiot-service-accounting.loadBalancer.servers]]
+      url = "http://uiot-service-accounting:8080/"
+
+    [[http.services.uiot-service-connectivity.loadBalancer.servers]]
+      url = "http://uiot-service-connectivity:8080/"
+
+    [[http.services.uiot-service-history.loadBalancer.servers]]
+      url = "http://uiot-service-history:8080/"
+
+    [[http.services.uiot-service-rooms.loadBalancer.servers]]
+      url = "http://uiot-service-rooms:8080/"
+
+    [[http.services.uiot-service-rules.loadBalancer.servers]]
+      url = "http://uiot-service-rules:8080/"
+
+    [[http.services.uiot-service-things.loadBalancer.servers]]
+      url = "http://uiot-service-things:8080/"

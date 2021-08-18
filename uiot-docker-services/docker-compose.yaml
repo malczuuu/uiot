@@ -1,10 +1,17 @@
 version: "3"
 services:
 
+  uiot-gateway:
+    image: traefik:2.4.14
+    ports:
+      - 127.0.0.1:8330:80
+    volumes:
+      - ./uiot-gateway/traefik.toml:/etc/traefik/traefik.toml:ro
+    networks:
+      - uiot
+
   uiot-service-accounting:
     image: uiot-service-accounting:latest
-    ports:
-      - 127.0.0.1:8330:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-accounting
@@ -17,8 +24,6 @@ services:
 
   uiot-service-connectivity:
     image: uiot-service-connectivity:latest
-    ports:
-      - 127.0.0.1:8331:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
@@ -32,8 +37,6 @@ services:
 
   uiot-service-history:
     image: uiot-service-history:latest
-    ports:
-      - 127.0.0.1:8332:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-history
@@ -47,8 +50,6 @@ services:
 
   uiot-service-rooms:
     image: uiot-service-rooms:latest
-    ports:
-      - 127.0.0.1:8333:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-rooms
@@ -60,8 +61,6 @@ services:
 
   uiot-service-rules:
     image: uiot-service-rules:latest
-    ports:
-      - 127.0.0.1:8334:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-rules
@@ -71,8 +70,6 @@ services:
 
   uiot-service-telemetry:
     image: uiot-service-telemetry:latest
-    ports:
-      - 127.0.0.1:8335:8080
     environment:
       SPRING_RABBITMQ_ADDRESSES: rabbitmq:5672
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
@@ -86,8 +83,6 @@ services:
 
   uiot-service-things:
     image: uiot-service-things:latest
-    ports:
-      - 127.0.0.1:8336:8080
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-things
