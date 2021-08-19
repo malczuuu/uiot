@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"type", RoomDeleteEnvelope.TYPE})
-public class RoomDeleteEnvelope extends TypedEnvelope {
+public class RoomDeleteEnvelope extends Envelope {
 
   public static final String TYPE = "room_delete";
 

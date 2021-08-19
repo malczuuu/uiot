@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @JsonPropertyOrder({"type", ThingEventsEnvelope.TYPE})
-public class ThingEventsEnvelope extends TypedEnvelope {
+public class ThingEventsEnvelope extends Envelope {
 
   public static final String TYPE = "thing_events";
 

@@ -15,12 +15,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = ActionExecutionEnvelope.class, name = ActionExecutionEnvelope.TYPE),
   @JsonSubTypes.Type(value = ThingCreateEnvelope.class, name = ThingCreateEnvelope.TYPE),
 })
-public class TypedEnvelope {
+public class Envelope {
 
   private final String type;
 
   @JsonCreator
-  public TypedEnvelope(@JsonProperty("type") String type) {
+  public Envelope(@JsonProperty("type") String type) {
     this.type = type;
   }
 

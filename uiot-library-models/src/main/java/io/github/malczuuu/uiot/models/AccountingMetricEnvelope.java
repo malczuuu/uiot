@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"type", AccountingMetricEnvelope.TYPE})
-public class AccountingMetricEnvelope extends TypedEnvelope {
+public class AccountingMetricEnvelope extends Envelope {
 
   public static final String TYPE = "accounting_metric";
 

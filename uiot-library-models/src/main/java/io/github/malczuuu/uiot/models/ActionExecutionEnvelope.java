@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"type", ActionExecutionEnvelope.TYPE})
-public class ActionExecutionEnvelope extends TypedEnvelope {
+public class ActionExecutionEnvelope extends Envelope {
 
   public static final String TYPE = "action_execution";
 
