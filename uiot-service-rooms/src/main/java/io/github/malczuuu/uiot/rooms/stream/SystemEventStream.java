@@ -1,15 +1,17 @@
 package io.github.malczuuu.uiot.rooms.stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.malczuuu.uiot.models.Envelope;
 import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
+import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.rooms.core.RoomService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
 import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
+import org.springframework.kafka.support.serializer.JsonSerde;
 
 @Configuration
 @EnableKafkaStreams
@@ -43,55 +46,46 @@ public class SystemEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    Consumed<String, String> consumed =
-        Consumed.with(
-            Serdes.String(),
-            Serdes.String(),
-            new WallclockTimestampExtractor(),
-            AutoOffsetReset.LATEST);
-
-    streamsBuilder.stream(systemEventsTopic, consumed)
-        .foreach((key, value) -> processSystemEvent(value));
+    KStream<String, Envelope>[] subStreams =
+        streamsBuilder.stream(
+                systemEventsTopic,
+                Consumed.<String, Envelope>as("system_events_source")
+                    .withKeySerde(Serdes.String())
+                    .withValueSerde(getEnvelopeSerde())
+                    .withTimestampExtractor(new WallclockTimestampExtractor())
+                    .withOffsetResetPolicy(AutoOffsetReset.LATEST))
+            .branch(
+                (key, value) -> value instanceof RoomCreateEnvelope,
+                (key, value) -> value instanceof RoomDeleteEnvelope);
+    subStreams[0]
+        .mapValues(value -> (RoomCreateEnvelope) value)
+        .mapValues(RoomCreateEnvelope::getRoomCreateEvent)
+        .foreach((key, value) -> triggerRoomCreation(value));
+    subStreams[1]
+        .mapValues(value -> (RoomDeleteEnvelope) value)
+        .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
+        .foreach((key, value) -> triggerRoomDeletion(value));
   }
 
-  private void processSystemEvent(String value) {
-    try {
-      processSystemEventInternal(value);
-    } catch (JsonProcessingException ignored) {
-    }
+  private JsonSerde<Envelope> getEnvelopeSerde() {
+    return new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
   }
 
-  private void processSystemEventInternal(String value) throws JsonProcessingException {
-    JsonNode node = objectMapper.readTree(value);
-    String type = node.get("type").asText("");
-    switch (type) {
-      case RoomCreateEnvelope.TYPE:
-        triggerRoomCreation(node);
-        break;
-      case RoomDeleteEnvelope.TYPE:
-        triggerRoomDeletion(node);
-    }
-  }
-
-  private void triggerRoomCreation(JsonNode node) throws JsonProcessingException {
-    RoomCreateEnvelope envelope = objectMapper.treeToValue(node, RoomCreateEnvelope.class);
-
-    roomService.createRoom(envelope.getRoomCreateEvent());
+  private void triggerRoomCreation(RoomCreateEvent event) {
+    roomService.createRoom(event);
 
     log.info(
         "Triggered room creation via streams processing, room={}, timestamp={}",
-        envelope.getRoomCreateEvent().getRoomUid(),
-        envelope.getRoomCreateEvent().getTime());
+        event.getRoomUid(),
+        event.getTime());
   }
 
-  private void triggerRoomDeletion(JsonNode node) throws JsonProcessingException {
-    RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
-
-    roomService.deleteRoom(envelope.getRoomDeleteEvent().getRoomUid());
+  private void triggerRoomDeletion(RoomDeleteEvent event) {
+    roomService.deleteRoom(event.getRoomUid());
 
     log.info(
         "Triggered room deletion via streams processing, room_uid={}, timestamp={}",
-        envelope.getRoomDeleteEvent().getRoomUid(),
-        envelope.getRoomDeleteEvent().getTime());
+        event.getRoomUid(),
+        event.getTime());
   }
 }

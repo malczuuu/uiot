@@ -85,6 +85,7 @@ public class ThingEventStream implements InitializingBean {
         .map(rule -> buildExecutionEvent(thingEvent, rule))
         .map(ActionExecutionEnvelope::new)
         .map(e -> new KeyValue<>(thingEvent.getRoom(), e))
+        .peek(keyValue -> log.debug("Triggering action_execution={}", keyValue.value))
         .collect(Collectors.toList());
   }
 

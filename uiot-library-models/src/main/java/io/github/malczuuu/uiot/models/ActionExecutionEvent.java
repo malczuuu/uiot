@@ -65,4 +65,23 @@ public class ActionExecutionEvent {
   public String getMessage() {
     return message;
   }
+
+  @Override
+  public String toString() {
+    return "{thing_uid="
+        + getThingUid()
+        + ", property_name="
+        + getPropertyName()
+        + ", rule_uid="
+        + getRuleUid()
+        + ", value="
+        + getValue()
+        + ", value_string="
+        + getValueString()
+        + ", value_boolean="
+        + getValueBoolean()
+        + ", message="
+        + getMessage()
+        + "}";
+  }
 }

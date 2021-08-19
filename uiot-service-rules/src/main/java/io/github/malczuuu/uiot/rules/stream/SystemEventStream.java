@@ -1,8 +1,7 @@
 package io.github.malczuuu.uiot.rules.stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.malczuuu.uiot.models.Envelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.rules.core.RuleService;
@@ -45,32 +44,26 @@ public class SystemEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    setupSystemEventStream();
-  }
-
-  private void setupSystemEventStream() {
     streamsBuilder.stream(
             systemEventsTopic,
-            Consumed.<String, JsonNode>as("system_events_source")
+            Consumed.<String, Envelope>as("system_events_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(getJsonNodeSerde())
+                .withValueSerde(getEnvelopeSerde())
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withOffsetResetPolicy(AutoOffsetReset.LATEST))
-        .foreach((key, value) -> processSystemEvent(value));
+        .filter((key, value) -> value instanceof RoomDeleteEnvelope)
+        .mapValues(value -> (RoomDeleteEnvelope) value)
+        .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
+        .foreach((key, value) -> deleteRules(value));
   }
 
-  private JsonSerde<JsonNode> getJsonNodeSerde() {
-    return new JsonSerde<>(JsonNode.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
+  private JsonSerde<Envelope> getEnvelopeSerde() {
+    return new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
   }
 
-  private void processSystemEvent(JsonNode node) {
-    try {
-      if (node.hasNonNull(RoomDeleteEnvelope.TYPE)) {
-        RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
-        RoomDeleteEvent event = envelope.getRoomDeleteEvent();
-        ruleService.deleteRules(event.getRoomUid());
-      }
-    } catch (JsonProcessingException ignored) {
-    }
+  private void deleteRules(RoomDeleteEvent event) {
+    log.debug("Requested resources deletion for room_uid={}", event.getRoomUid());
+    ruleService.deleteRules(event.getRoomUid());
+    log.info("Deleted resources (rules) for room_uid={}", event.getRoomUid());
   }
 }

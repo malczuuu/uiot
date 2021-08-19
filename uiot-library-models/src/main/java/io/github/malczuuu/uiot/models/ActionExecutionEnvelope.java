@@ -21,4 +21,9 @@ public class ActionExecutionEnvelope extends Envelope {
   public ActionExecutionEvent getActionExecution() {
     return actionExecution;
   }
+
+  @Override
+  public String toString() {
+    return actionExecution.toString();
+  }
 }

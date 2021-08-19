@@ -44,24 +44,26 @@ public class SystemEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    setupSystemEventStream();
-  }
-
-  private void setupSystemEventStream() {
-    Consumed<String, Envelope> consumed =
-        Consumed.with(
-            Serdes.String(),
-            new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders(),
-            new WallclockTimestampExtractor(),
-            AutoOffsetReset.LATEST);
-    streamsBuilder.stream(systemEventsTopic, consumed)
+    streamsBuilder.stream(
+            systemEventsTopic,
+            Consumed.<String, Envelope>as("system_events_source")
+                .withKeySerde(Serdes.String())
+                .withValueSerde(getEnvelopeSerde())
+                .withTimestampExtractor(new WallclockTimestampExtractor())
+                .withOffsetResetPolicy(AutoOffsetReset.LATEST))
         .filter((key, value) -> value instanceof RoomDeleteEnvelope)
         .mapValues(value -> (RoomDeleteEnvelope) value)
+        .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
         .foreach((key, value) -> deleteThings(value));
   }
 
-  private void deleteThings(RoomDeleteEnvelope envelope) {
-    RoomDeleteEvent event = envelope.getRoomDeleteEvent();
+  private JsonSerde<Envelope> getEnvelopeSerde() {
+    return new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
+  }
+
+  private void deleteThings(RoomDeleteEvent event) {
+    log.debug("Requested resources deletion for room_uid={}", event.getRoomUid());
     thingService.deleteThings(event.getRoomUid());
+    log.info("Deleted resources (things) for room_uid={}", event.getRoomUid());
   }
 }
