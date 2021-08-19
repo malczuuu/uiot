@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rabbitmq.telemetry.common;
+package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
 import java.util.HashMap;
 import org.springframework.amqp.core.Binding;

@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rabbitmq.telemetry.common;
+package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;

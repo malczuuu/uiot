@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rabbitmq.telemetry.stream;
+package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.AccountingMetric;
@@ -34,8 +34,8 @@ public class TelemetryRabbitListener implements InitializingBean {
 
   private static final Logger log = LoggerFactory.getLogger(TelemetryRabbitListener.class);
 
-  private final DeviceEventKafkaService deviceEventKafkaService;
-  private final AccountingKafkaService accountingKafkaService;
+  private final DeviceEventKafkaSink deviceEventKafkaSink;
+  private final AccountingKafkaSink accountingKafkaSink;
   private final ObjectMapper objectMapper;
   private final Clock clock;
 
@@ -44,13 +44,13 @@ public class TelemetryRabbitListener implements InitializingBean {
   private Pattern routingKeyPattern;
 
   public TelemetryRabbitListener(
-      DeviceEventKafkaService deviceEventKafkaService,
-      AccountingKafkaService accountingKafkaService,
+      DeviceEventKafkaSink deviceEventKafkaSink,
+      AccountingKafkaSink accountingKafkaSink,
       ObjectMapper objectMapper,
       Clock clock,
       @Value("${uiot.rabbitmq-routing-key-regexp}") String routingKeyRegexp) {
-    this.deviceEventKafkaService = deviceEventKafkaService;
-    this.accountingKafkaService = accountingKafkaService;
+    this.deviceEventKafkaSink = deviceEventKafkaSink;
+    this.accountingKafkaSink = accountingKafkaSink;
     this.objectMapper = objectMapper;
     this.clock = clock;
     this.routingKeyRegexp = routingKeyRegexp;
@@ -104,7 +104,7 @@ public class TelemetryRabbitListener implements InitializingBean {
             .collect(Collectors.toList());
 
     if (events.size() > 0) {
-      deviceEventKafkaService.sink(events);
+      deviceEventKafkaSink.sink(events);
       log.info(
           "Successfully processed message on routingKey={}, payload={}",
           routingKey,
@@ -117,7 +117,7 @@ public class TelemetryRabbitListener implements InitializingBean {
     }
 
     AccountingMetric accounting = toAccountingMetric(message, arrivalTime, room, thing);
-    accountingKafkaService.sink(accounting);
+    accountingKafkaSink.sink(accounting);
   }
 
   private AccountingMetric toAccountingMetric(

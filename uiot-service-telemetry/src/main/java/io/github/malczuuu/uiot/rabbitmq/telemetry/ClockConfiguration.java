@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rabbitmq.telemetry.common;
+package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
 import java.time.Clock;
 import org.springframework.context.annotation.Bean;
