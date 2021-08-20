@@ -61,14 +61,14 @@ public class AccountingStream implements InitializingBean {
             Consumed.<String, AccountingMetricEnvelope>as("metrics_source")
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(AccountingMetricEnvelope.class)))
+                .withValueSerde(getJsonSerde(AccountingMetricEnvelope.class)))
         .filter((key, value) -> value.getAccountingEvent() != null)
         .mapValues(AccountingMetricEnvelope::getAccountingEvent)
         .groupBy(
             (key, value) -> new WindowKey(value.getType(), value.getRoomUid(), value.getTags()),
             Grouped.<WindowKey, AccountingMetric>as("metric_grouping")
-                .withKeySerde(newBasicJsonSerde(WindowKey.class))
-                .withValueSerde(newBasicJsonSerde(AccountingMetric.class)))
+                .withKeySerde(getJsonSerde(WindowKey.class))
+                .withValueSerde(getJsonSerde(AccountingMetric.class)))
         .windowedBy(TimeWindows.of(windowsSize).grace(gracePeriod))
         .aggregate(
             () -> new Aggregate(UUID.randomUUID().toString(), 0.0),
@@ -80,8 +80,8 @@ public class AccountingStream implements InitializingBean {
                         windowsSize.plus(gracePeriod).multipliedBy(2),
                         windowsSize,
                         true))
-                .withKeySerde(newBasicJsonSerde(WindowKey.class))
-                .withValueSerde(newBasicJsonSerde(Aggregate.class)))
+                .withKeySerde(getJsonSerde(WindowKey.class))
+                .withValueSerde(getJsonSerde(Aggregate.class)))
         .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
         .toStream()
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
@@ -89,10 +89,10 @@ public class AccountingStream implements InitializingBean {
             windowsTopic,
             Produced.<String, AccountingWindowEnvelope>as("accounting_source")
                 .withKeySerde(Serdes.String())
-                .withValueSerde(newBasicJsonSerde(AccountingWindowEnvelope.class)));
+                .withValueSerde(getJsonSerde(AccountingWindowEnvelope.class)));
   }
 
-  private <T> JsonSerde<T> newBasicJsonSerde(Class<T> clazz) {
+  private <T> JsonSerde<T> getJsonSerde(Class<T> clazz) {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 

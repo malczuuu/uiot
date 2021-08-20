@@ -74,7 +74,7 @@ public class RoomController {
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.ACCEPTED)
   public void createRoom(@RequestBody @Valid RoomCreateModel requestBody) {
     roomService.requestRoomCreation(requestBody);
     log.info("Created room on Rooms API POST, room={}", requestBody.getUid());

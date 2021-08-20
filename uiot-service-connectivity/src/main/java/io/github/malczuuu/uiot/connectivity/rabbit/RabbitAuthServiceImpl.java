@@ -1,15 +1,11 @@
 package io.github.malczuuu.uiot.connectivity.rabbit;
 
 import io.github.malczuuu.uiot.connectivity.core.ConnectivityRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitAuthServiceImpl implements RabbitAuthService {
-
-  private static final Logger log = LoggerFactory.getLogger(RabbitAuthService.class);
 
   private final ConnectivityRepository connectivityRepository;
 
@@ -30,9 +26,6 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
 
   @Override
   public boolean challengeCredentials(CredentialsChallenge credentials) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for credentials, username={}",
-        credentials.getUsername());
     String[] usernameSplit = credentials.getUsername().split(usernameContextSeparator, 2);
     if (usernameSplit.length != 2) {
       return false;
@@ -45,11 +38,6 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
 
   @Override
   public boolean challengeVhost(VhostChallenge vhost) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for vhost, username={}, vhost={}, ip={}",
-        vhost.getUsername(),
-        vhost.getVhost(),
-        vhost.getIp());
     return this.vhost.equals(vhost.getVhost());
   }
 
@@ -63,61 +51,25 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
       case "topic":
         return challengeTopic(resource);
     }
-    log.error(
-        "Attempting to challenge RabbitMQ authorization for unknown resource, username={}, vhost={}, resource={}, name={}, permission={}",
-        resource.getUsername(),
-        resource.getVhost(),
-        resource.getResource(),
-        resource.getName(),
-        resource.getPermission());
-    return false;
+    throw new IllegalArgumentException("unknown resource");
   }
 
   private boolean challengeExchange(ResourceChallenge resource) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for exchange resource, username={}, vhost={}, resource={}, name={}, permission={}",
-        resource.getUsername(),
-        resource.getVhost(),
-        resource.getResource(),
-        resource.getName(),
-        resource.getPermission());
     return "amq.topic".equals(resource.getName()) && "write".equals(resource.getPermission());
   }
 
   private boolean challengeQueue(ResourceChallenge resource) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for queue resource, username={}, vhost={}, resource={}, name={}, permission={}",
-        resource.getUsername(),
-        resource.getVhost(),
-        resource.getResource(),
-        resource.getName(),
-        resource.getPermission());
     return vhost.equals(resource.getVhost())
         && resource.getName().startsWith("mqtt-subscription-")
         && "configure".equals(resource.getPermission());
   }
 
   private boolean challengeTopic(ResourceChallenge resource) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for topic resource, username={}, vhost={}, resource={}, name={}, permission={}",
-        resource.getUsername(),
-        resource.getVhost(),
-        resource.getName(),
-        resource.getPermission(),
-        resource.getResource());
     return false;
   }
 
   @Override
   public boolean challengeTopic(TopicChallenge topic) {
-    log.info(
-        "Attempting to challenge RabbitMQ authorization for exchange resource, username={}, vhost={}, resource={}, name={}, permission={}, routingKey={}",
-        topic.getUsername(),
-        topic.getVhost(),
-        topic.getName(),
-        topic.getPermission(),
-        topic.getResource(),
-        topic.getRoutingKey());
     String[] usernameSplit = topic.getUsername().split(usernameContextSeparator, 2);
     if (usernameSplit.length != 2) {
       return false;
