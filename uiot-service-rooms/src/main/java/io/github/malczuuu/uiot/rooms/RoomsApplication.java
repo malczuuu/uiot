@@ -1,6 +1,7 @@
 package io.github.malczuuu.uiot.rooms;
 
 import io.github.malczuuu.problem4j.spring.web.EnableProblem;
+import java.time.Clock;
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,11 @@ public class RoomsApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(RoomsApplication.class, args);
+  }
+
+  @Bean
+  public Clock clock() {
+    return Clock.systemUTC();
   }
 
   @Bean
