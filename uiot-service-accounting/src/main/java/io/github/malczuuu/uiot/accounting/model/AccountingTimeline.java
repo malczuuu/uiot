@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AccountingPage {
+public class AccountingTimeline {
 
-  private final List<AccountingModel> content;
+  private final List<AccountingRecord> content;
 
   @JsonCreator
-  public AccountingPage(@JsonProperty("content") List<AccountingModel> content) {
+  public AccountingTimeline(@JsonProperty("content") List<AccountingRecord> content) {
     this.content = new ArrayList<>(content);
   }
 
   @JsonProperty("content")
-  public List<AccountingModel> getContent() {
+  public List<AccountingRecord> getContent() {
     return Collections.unmodifiableList(content);
   }
 }

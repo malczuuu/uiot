@@ -65,24 +65,23 @@ public class AccountingStream implements InitializingBean {
         .filter((key, value) -> value.getAccountingEvent() != null)
         .mapValues(AccountingMetricEnvelope::getAccountingEvent)
         .groupBy(
-            (key, value) ->
-                new AggregationKey(value.getType(), value.getRoomUid(), value.getTags()),
-            Grouped.<AggregationKey, AccountingMetric>as("metric_grouping")
-                .withKeySerde(newBasicJsonSerde(AggregationKey.class))
+            (key, value) -> new WindowKey(value.getType(), value.getRoomUid(), value.getTags()),
+            Grouped.<WindowKey, AccountingMetric>as("metric_grouping")
+                .withKeySerde(newBasicJsonSerde(WindowKey.class))
                 .withValueSerde(newBasicJsonSerde(AccountingMetric.class)))
         .windowedBy(TimeWindows.of(windowsSize).grace(gracePeriod))
         .aggregate(
-            () -> new AccountingAggregate(UUID.randomUUID().toString(), 0.0),
+            () -> new Aggregate(UUID.randomUUID().toString(), 0.0),
             (key, value, aggregate) -> aggregate.aggregate(value.getValue()),
             Named.as("accounting_windowing"),
-            Materialized.<AggregationKey, AccountingAggregate>as(
+            Materialized.<WindowKey, Aggregate>as(
                     Stores.inMemoryWindowStore(
                         "window_store",
                         windowsSize.plus(gracePeriod).multipliedBy(2),
                         windowsSize,
                         true))
-                .withKeySerde(newBasicJsonSerde(AggregationKey.class))
-                .withValueSerde(newBasicJsonSerde(AccountingAggregate.class)))
+                .withKeySerde(newBasicJsonSerde(WindowKey.class))
+                .withValueSerde(newBasicJsonSerde(Aggregate.class)))
         .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
         .toStream()
         .map(this::mapAccountingModel, Named.as("accounting_windowing_stream"))
@@ -98,7 +97,7 @@ public class AccountingStream implements InitializingBean {
   }
 
   private KeyValue<String, AccountingWindowEnvelope> mapAccountingModel(
-      Windowed<AggregationKey> key, AccountingAggregate value) {
+      Windowed<WindowKey> key, Aggregate value) {
     return new KeyValue<>(
         key.key().getRoomUid(),
         new AccountingWindowEnvelope(

@@ -14,6 +14,7 @@ import io.github.malczuuu.uiot.connectivity.model.ConnectivityCreateModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityUpdateModel;
 import io.github.malczuuu.uiot.connectivity.model.PasswordUpdateModel;
+import io.github.malczuuu.uiot.problems.ConcurrentUpdateException;
 import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.accounting.core;
 
-import io.github.malczuuu.uiot.accounting.model.AccountingModel;
-import io.github.malczuuu.uiot.accounting.model.AccountingPage;
+import io.github.malczuuu.uiot.accounting.model.AccountingRecord;
+import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,15 +20,16 @@ public class AccountingServiceImpl implements AccountingService {
   }
 
   @Override
-  public AccountingPage getAccounting(long since, long until, int size) {
+  public AccountingTimeline getAccounting(long since, long until, int size) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByEndTimeBetweenOrderByStartTimeDesc(
             since, until, PageRequest.of(0, size));
-    return new AccountingPage(entities.stream().map(this::toRecord).collect(Collectors.toList()));
+    return new AccountingTimeline(
+        entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }
 
-  private AccountingModel toRecord(AccountingEntity e) {
-    return new AccountingModel(
+  private AccountingRecord toRecord(AccountingEntity e) {
+    return new AccountingRecord(
         e.getRoomUid(),
         e.getType(),
         e.getValue(),
@@ -46,10 +47,11 @@ public class AccountingServiceImpl implements AccountingService {
   }
 
   @Override
-  public AccountingPage getAccounting(String roomUid, long since, long until, int size) {
+  public AccountingTimeline getAccounting(String roomUid, long since, long until, int size) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByRoomUidAndEndTimeBetweenOrderByStartTimeDesc(
             roomUid, since, until, PageRequest.of(0, size));
-    return new AccountingPage(entities.stream().map(this::toRecord).collect(Collectors.toList()));
+    return new AccountingTimeline(
+        entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }
 }

@@ -16,7 +16,7 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 
 @Configuration
 @EnableKafkaStreams
-public class AccountingAggregateStream implements InitializingBean {
+public class AggregateStream implements InitializingBean {
 
   private final StreamsBuilder streamsBuilder;
   private final ObjectMapper objectMapper;
@@ -24,7 +24,7 @@ public class AccountingAggregateStream implements InitializingBean {
 
   private final String windowsTopic;
 
-  public AccountingAggregateStream(
+  public AggregateStream(
       StreamsBuilder streamsBuilder,
       ObjectMapper objectMapper,
       AccountingRepository accountingRepository,

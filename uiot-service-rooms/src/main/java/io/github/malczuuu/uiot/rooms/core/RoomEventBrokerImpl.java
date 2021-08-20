@@ -43,11 +43,7 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
 
     kafkaOperations.send(systemEventsTopic, event.getRoomUid(), json);
 
-    log.info(
-        "Published type={} event with room={} and timestamp={}",
-        RoomCreateEnvelope.TYPE,
-        event.getRoomUid(),
-        event.getTime());
+    log.info("Published type={} event with room={}", RoomCreateEnvelope.TYPE, event.getRoomUid());
   }
 
   @Override
@@ -63,9 +59,6 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
     kafkaOperations.send(systemEventsTopic, event.getRoomUid(), json);
 
     log.info(
-        "Published type={} event with room_uid={} and timestamp={}",
-        RoomDeleteEnvelope.TYPE,
-        event.getRoomUid(),
-        event.getTime());
+        "Published type={} event with room_uid={}", RoomDeleteEnvelope.TYPE, event.getRoomUid());
   }
 }

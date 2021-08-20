@@ -2,7 +2,7 @@ package io.github.malczuuu.uiot.history.core;
 
 import io.github.malczuuu.uiot.history.model.EventHistory;
 import io.github.malczuuu.uiot.history.model.HistoryRecord;
-import io.github.malczuuu.uiot.history.stream.ThingInfo;
+import io.github.malczuuu.uiot.history.stream.ThingModel;
 import io.github.malczuuu.uiot.history.stream.TopicProperties;
 import io.github.malczuuu.uiot.models.ThingEvent;
 import java.time.Instant;
@@ -73,7 +73,7 @@ public class LastStateServiceImpl implements LastStateService {
                 topics.getKeyedThingEventsTopic(), QueryableStoreTypes.keyValueStore()));
   }
 
-  private ReadOnlyKeyValueStore<String, ThingInfo> getThingInfoStore() {
+  private ReadOnlyKeyValueStore<String, ThingModel> getThingInfoStore() {
     return kafkaStreams
         .getKafkaStreams()
         .store(
@@ -83,13 +83,13 @@ public class LastStateServiceImpl implements LastStateService {
 
   @Override
   public EventHistory getLastState(String roomUid, String thingUid) {
-    ThingInfo thingInfo = getThingInfoStore().get(getThingKey(roomUid, thingUid));
-    if (thingInfo == null) {
+    ThingModel model = getThingInfoStore().get(getThingKey(roomUid, thingUid));
+    if (model == null) {
       return new EventHistory(new ArrayList<>());
     }
 
     return new EventHistory(
-        thingInfo.getProperties().stream()
+        model.getProperties().stream()
             .sorted()
             .flatMap(property -> getLastState(roomUid, thingUid, property).stream())
             .collect(Collectors.toList()));

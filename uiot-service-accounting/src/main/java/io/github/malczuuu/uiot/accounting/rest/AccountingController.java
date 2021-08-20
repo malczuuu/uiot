@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.accounting.rest;
 
 import io.github.malczuuu.uiot.accounting.core.AccountingService;
-import io.github.malczuuu.uiot.accounting.model.AccountingPage;
+import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
@@ -22,7 +22,7 @@ public class AccountingController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public AccountingPage getAccounting(
+  public AccountingTimeline getAccounting(
       @RequestParam(name = "since", defaultValue = "") String since,
       @RequestParam(name = "until", defaultValue = "") String until,
       @RequestParam(name = "size", defaultValue = "50") String size) {
@@ -62,7 +62,7 @@ public class AccountingController {
   @GetMapping(
       params = {"room_uid"},
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public AccountingPage getAccounting(
+  public AccountingTimeline getAccounting(
       @RequestParam("room_uid") String roomUid,
       @RequestParam(name = "since", defaultValue = "") String since,
       @RequestParam(name = "until", defaultValue = "") String until,

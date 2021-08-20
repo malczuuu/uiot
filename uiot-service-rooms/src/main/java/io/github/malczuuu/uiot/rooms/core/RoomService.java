@@ -15,7 +15,7 @@ public interface RoomService {
 
   RoomModel getRoom(String uid) throws RoomNotFoundException;
 
-  RoomModel requestRoomCreation(RoomCreateModel ing);
+  void requestRoomCreation(RoomCreateModel ing);
 
   void createRoom(RoomCreateEvent room);
 

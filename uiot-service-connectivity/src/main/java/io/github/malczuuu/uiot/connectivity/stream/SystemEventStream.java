@@ -1,9 +1,8 @@
 package io.github.malczuuu.uiot.connectivity.stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.connectivity.core.ConnectivityService;
+import io.github.malczuuu.uiot.models.Envelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import org.apache.kafka.common.serialization.Serdes;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
+import org.springframework.kafka.support.serializer.JsonSerde;
 
 @Configuration
 @EnableKafkaStreams
@@ -44,40 +44,26 @@ public class SystemEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    setupSystemEventStream();
+    streamsBuilder.stream(
+            systemEventsTopic,
+            Consumed.<String, Envelope>as("system_events_source")
+                .withKeySerde(Serdes.String())
+                .withValueSerde(getEnvelopeSerde())
+                .withTimestampExtractor(new WallclockTimestampExtractor())
+                .withOffsetResetPolicy(AutoOffsetReset.LATEST))
+        .filter((key, value) -> value instanceof RoomDeleteEnvelope)
+        .mapValues(value -> (RoomDeleteEnvelope) value)
+        .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
+        .foreach((key, value) -> deleteConnectivity(value));
   }
 
-  private void setupSystemEventStream() {
-    Consumed<String, String> consumed =
-        Consumed.with(
-            Serdes.String(),
-            Serdes.String(),
-            new WallclockTimestampExtractor(),
-            AutoOffsetReset.LATEST);
-    streamsBuilder.stream(systemEventsTopic, consumed)
-        .foreach((key, value) -> processSystemEvent(value));
+  private JsonSerde<Envelope> getEnvelopeSerde() {
+    return new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
   }
 
-  private void processSystemEvent(String value) {
-    try {
-      processSystemEventInternal(value);
-    } catch (JsonProcessingException ignored) {
-    }
-  }
-
-  private void processSystemEventInternal(String value) throws JsonProcessingException {
-    JsonNode node = objectMapper.readTree(value);
-    String type = node.get("type").asText("");
-    if (RoomDeleteEnvelope.TYPE.equals(type)) {
-      deleteThings(node);
-    } else {
-      log.debug("Ignoring internal event of type={}, value={}", type, node.get("type"));
-    }
-  }
-
-  private void deleteThings(JsonNode node) throws JsonProcessingException {
-    RoomDeleteEnvelope envelope = objectMapper.treeToValue(node, RoomDeleteEnvelope.class);
-    RoomDeleteEvent event = envelope.getRoomDeleteEvent();
+  private void deleteConnectivity(RoomDeleteEvent event) {
+    log.debug("Requested resources deletion for room_uid={}", event.getRoomUid());
     thingService.deleteConnectivity(event.getRoomUid());
+    log.info("Deleted resources (connectivity) for room_uid={}", event.getRoomUid());
   }
 }

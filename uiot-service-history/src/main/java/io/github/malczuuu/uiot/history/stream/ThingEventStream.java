@@ -16,8 +16,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
@@ -26,8 +24,6 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 @Configuration
 @EnableKafkaStreams
 public class ThingEventStream implements InitializingBean {
-
-  private static final Logger log = LoggerFactory.getLogger(ThingEventStream.class);
 
   private final StreamsBuilder streamsBuilder;
   private final HistoryService historyService;
@@ -57,33 +53,35 @@ public class ThingEventStream implements InitializingBean {
   private KStream<String, ThingEventsEnvelope> initiateThingEventStream() {
     return streamsBuilder.stream(
         topics.getThingEventsTopic(),
-        Consumed.with(
-            Serdes.String(),
-            newBasicJsonSerde(ThingEventsEnvelope.class),
-            new WallclockTimestampExtractor(),
-            AutoOffsetReset.LATEST));
+        Consumed.<String, ThingEventsEnvelope>as("thing_events_source")
+            .withKeySerde(Serdes.String())
+            .withValueSerde(getJsonSerde(ThingEventsEnvelope.class))
+            .withTimestampExtractor(new WallclockTimestampExtractor())
+            .withOffsetResetPolicy(AutoOffsetReset.LATEST));
   }
 
   private void storeThingEventsInDatabase(KStream<String, ThingEventsEnvelope> thingEventStream) {
-    thingEventStream.foreach((key, value) -> processThingEvent(value));
+    thingEventStream
+        .filter((key, value) -> value.getThingEvents() != null)
+        .foreach((key, value) -> processThingEvent(value));
   }
 
   private void storeThingMetadataInKTable(KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
         .flatMap((key, value) -> splitByThingKey(value))
-        .groupByKey(Grouped.with(Serdes.String(), newBasicJsonSerde(ThingEvent.class)))
+        .groupByKey(Grouped.with(Serdes.String(), getJsonSerde(ThingEvent.class)))
         .aggregate(
-            ThingInfo::new,
+            ThingModel::new,
             (key, value, aggregate) -> aggregateProperties(value, aggregate),
-            Materialized.with(Serdes.String(), newBasicJsonSerde(ThingInfo.class)))
+            Materialized.with(Serdes.String(), getJsonSerde(ThingModel.class)))
         .toStream()
         .to(
             topics.getThingMetadataTopic(),
-            Produced.with(Serdes.String(), newBasicJsonSerde(ThingInfo.class)));
+            Produced.with(Serdes.String(), getJsonSerde(ThingModel.class)));
 
     streamsBuilder.globalTable(
         topics.getThingMetadataTopic(),
-        Consumed.with(Serdes.String(), newBasicJsonSerde(ThingInfo.class)),
+        Consumed.with(Serdes.String(), getJsonSerde(ThingModel.class)),
         Materialized.as(topics.getThingMetadataTopic()));
   }
 
@@ -93,22 +91,20 @@ public class ThingEventStream implements InitializingBean {
         .flatMap((key, value) -> splitByPropertyKey(value))
         .to(
             topics.getKeyedThingEventsTopic(),
-            Produced.with(Serdes.String(), newBasicJsonSerde(ThingEvent.class)));
+            Produced.with(Serdes.String(), getJsonSerde(ThingEvent.class)));
 
     streamsBuilder.globalTable(
         topics.getKeyedThingEventsTopic(),
-        Consumed.with(Serdes.String(), newBasicJsonSerde(ThingEvent.class)),
+        Consumed.with(Serdes.String(), getJsonSerde(ThingEvent.class)),
         Materialized.as(topics.getKeyedThingEventsTopic()));
   }
 
-  private <T> JsonSerde<T> newBasicJsonSerde(Class<T> clazz) {
+  private <T> JsonSerde<T> getJsonSerde(Class<T> clazz) {
     return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
   private void processThingEvent(ThingEventsEnvelope value) {
-    if (value.getThingEvents() != null) {
-      value.getThingEvents().forEach(historyService::storeEvent);
-    }
+    value.getThingEvents().forEach(historyService::storeEvent);
   }
 
   private Iterable<KeyValue<String, ThingEvent>> splitByThingKey(ThingEventsEnvelope value) {
@@ -137,7 +133,7 @@ public class ThingEventStream implements InitializingBean {
     return event.getRoom() + "::" + event.getThing() + "::" + event.getProperty();
   }
 
-  private ThingInfo aggregateProperties(ThingEvent value, ThingInfo aggregate) {
+  private ThingModel aggregateProperties(ThingEvent value, ThingModel aggregate) {
     return aggregate.withNewProperty(value.getProperty());
   }
 }

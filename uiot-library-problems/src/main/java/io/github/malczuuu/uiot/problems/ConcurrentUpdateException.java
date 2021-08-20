@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.connectivity.core;
+package io.github.malczuuu.uiot.problems;
 
 import io.github.malczuuu.problem4j.core.Problem;
 import io.github.malczuuu.problem4j.core.ProblemException;

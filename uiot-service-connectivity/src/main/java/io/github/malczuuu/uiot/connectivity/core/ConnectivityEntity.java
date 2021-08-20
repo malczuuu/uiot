@@ -9,24 +9,31 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(collection = "connectivity")
 public class ConnectivityEntity {
 
+  public static final String ID = "_id";
+  public static final String ROOM_UID = "roomUid";
+  public static final String THING_UID = "thingUid";
+  public static final String PASSWORD = "password";
+  public static final String ENABLED = "enabled";
+  public static final String VERSION = "version";
+
   @MongoId
-  @Field("_id")
+  @Field(ID)
   private ObjectId id;
 
-  @Field("roomUid")
+  @Field(ROOM_UID)
   private String roomUid;
 
-  @Field("thingUid")
+  @Field(THING_UID)
   private String thingUid;
 
-  @Field("password")
+  @Field(PASSWORD)
   private String password;
 
-  @Field("enabled")
+  @Field(ENABLED)
   private Boolean enabled;
 
   @Version
-  @Field("version")
+  @Field(VERSION)
   private Long version;
 
   ConnectivityEntity() {}

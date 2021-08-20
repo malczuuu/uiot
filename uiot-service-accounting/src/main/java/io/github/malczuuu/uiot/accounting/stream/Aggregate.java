@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AccountingAggregate {
+public class Aggregate {
 
   private final String uuid;
   private final Double value;
 
   @JsonCreator
-  public AccountingAggregate(
-      @JsonProperty("uuid") String uuid, @JsonProperty("value") Double value) {
+  public Aggregate(@JsonProperty("uuid") String uuid, @JsonProperty("value") Double value) {
     this.uuid = uuid;
     this.value = value;
   }
@@ -27,7 +26,7 @@ public class AccountingAggregate {
   }
 
   @JsonIgnore
-  public AccountingAggregate aggregate(double value) {
-    return new AccountingAggregate(getUuid(), getValue() + value);
+  public Aggregate aggregate(double value) {
+    return new Aggregate(getUuid(), getValue() + value);
   }
 }

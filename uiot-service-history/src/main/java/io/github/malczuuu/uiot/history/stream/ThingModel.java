@@ -5,23 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ThingInfo {
+public class ThingModel {
 
   private final Set<String> properties;
 
-  public ThingInfo() {
+  public ThingModel() {
     this(new HashSet<>());
   }
 
   @JsonCreator
-  public ThingInfo(@JsonProperty("properties") Set<String> properties) {
+  public ThingModel(@JsonProperty("properties") Set<String> properties) {
     this.properties = properties;
   }
 
-  public ThingInfo withNewProperty(String property) {
+  public ThingModel withNewProperty(String property) {
     Set<String> properties = new HashSet<>(this.properties);
     properties.add(property);
-    return new ThingInfo(properties);
+    return new ThingModel(properties);
   }
 
   @JsonProperty("properties")

@@ -8,7 +8,6 @@ import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
 import io.github.malczuuu.uiot.rooms.model.RoomModel;
 import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
 import java.time.Clock;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,13 +20,11 @@ public class RoomServiceImpl implements RoomService {
 
   private final RoomRepository roomRepository;
   private final RoomEventBroker roomEventBroker;
-  private final Clock clock;
 
   public RoomServiceImpl(
       RoomRepository roomRepository, RoomEventBroker roomEventBroker, Clock clock) {
     this.roomRepository = roomRepository;
     this.roomEventBroker = roomEventBroker;
-    this.clock = clock;
   }
 
   @Override
@@ -62,11 +59,9 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public RoomModel requestRoomCreation(RoomCreateModel room) {
+  public void requestRoomCreation(RoomCreateModel room) {
     RoomModel model = new RoomModel(room.getUid(), room.getName(), null);
-    long time = nowAsNano();
-    roomEventBroker.publish(new RoomCreateEvent(model.getUid(), model.getName(), time));
-    return model;
+    roomEventBroker.publish(new RoomCreateEvent(model.getUid(), model.getName()));
   }
 
   @Override
@@ -93,15 +88,7 @@ public class RoomServiceImpl implements RoomService {
 
   @Override
   public void requestRoomDeletion(String uid) {
-    if (roomRepository.existsByUid(uid)) {
-      long time = nowAsNano();
-      roomEventBroker.publish(new RoomDeleteEvent(uid, time));
-    }
-  }
-
-  private long nowAsNano() {
-    Instant timestamp = clock.instant();
-    return timestamp.getEpochSecond() * 1000_000_000L + timestamp.getNano();
+    roomEventBroker.publish(new RoomDeleteEvent(uid));
   }
 
   @Override

@@ -74,18 +74,12 @@ public class SystemEventStream implements InitializingBean {
   private void triggerRoomCreation(RoomCreateEvent event) {
     roomService.createRoom(event);
 
-    log.info(
-        "Triggered room creation via streams processing, room={}, timestamp={}",
-        event.getRoomUid(),
-        event.getTime());
+    log.info("Triggered room creation via streams processing, room={}", event.getRoomUid());
   }
 
   private void triggerRoomDeletion(RoomDeleteEvent event) {
     roomService.deleteRoom(event.getRoomUid());
 
-    log.info(
-        "Triggered room deletion via streams processing, room_uid={}, timestamp={}",
-        event.getRoomUid(),
-        event.getTime());
+    log.info("Triggered room deletion via streams processing, room_uid={}", event.getRoomUid());
   }
 }

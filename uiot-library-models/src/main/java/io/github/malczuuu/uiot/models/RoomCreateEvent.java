@@ -7,16 +7,12 @@ public class RoomCreateEvent {
 
   private final String roomUid;
   private final String roomName;
-  private final Long time;
 
   @JsonCreator
   public RoomCreateEvent(
-      @JsonProperty("room_uid") String roomUid,
-      @JsonProperty("room_name") String roomName,
-      @JsonProperty("time") Long time) {
+      @JsonProperty("room_uid") String roomUid, @JsonProperty("room_name") String roomName) {
     this.roomUid = roomUid;
     this.roomName = roomName;
-    this.time = time;
   }
 
   @JsonProperty("room_uid")
@@ -27,10 +23,5 @@ public class RoomCreateEvent {
   @JsonProperty("room_name")
   public String getRoomName() {
     return roomName;
-  }
-
-  @JsonProperty("time")
-  public Long getTime() {
-    return time;
   }
 }

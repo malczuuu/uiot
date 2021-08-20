@@ -4,6 +4,7 @@ import io.github.malczuuu.uiot.connectivity.model.ConnectivityCreateModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityUpdateModel;
 import io.github.malczuuu.uiot.connectivity.model.PasswordUpdateModel;
+import io.github.malczuuu.uiot.problems.ConcurrentUpdateException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.Map;
 
-public class AccountingModel {
+public class AccountingRecord {
 
   private final String roomUid;
   private final String type;
@@ -17,7 +17,7 @@ public class AccountingModel {
   private final Map<String, String> tags;
 
   @JsonCreator
-  public AccountingModel(
+  public AccountingRecord(
       @JsonProperty("room_uid") String roomUid,
       @JsonProperty("type") String type,
       @JsonProperty("value") Double value,

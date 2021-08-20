@@ -74,11 +74,10 @@ public class RoomController {
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  public RoomModel createRoom(@RequestBody @Valid RoomCreateModel requestBody) {
-    RoomModel responseBody = roomService.requestRoomCreation(requestBody);
-    log.info("Created room on Rooms API POST, room={}", responseBody.getUid());
-    return responseBody;
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void createRoom(@RequestBody @Valid RoomCreateModel requestBody) {
+    roomService.requestRoomCreation(requestBody);
+    log.info("Created room on Rooms API POST, room={}", requestBody.getUid());
   }
 
   @GetMapping(path = "/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
