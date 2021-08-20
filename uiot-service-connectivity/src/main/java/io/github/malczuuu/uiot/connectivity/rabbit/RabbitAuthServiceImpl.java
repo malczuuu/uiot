@@ -1,11 +1,15 @@
 package io.github.malczuuu.uiot.connectivity.rabbit;
 
 import io.github.malczuuu.uiot.connectivity.core.ConnectivityRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitAuthServiceImpl implements RabbitAuthService {
+
+  private static final Logger log = LoggerFactory.getLogger(RabbitAuthServiceImpl.class);
 
   private final ConnectivityRepository connectivityRepository;
 
@@ -51,7 +55,14 @@ public class RabbitAuthServiceImpl implements RabbitAuthService {
       case "topic":
         return challengeTopic(resource);
     }
-    throw new IllegalArgumentException("unknown resource");
+    log.error(
+        "Requested unknown resource challenge for username={}, vhost={}, resource={}, name={}, permission={}",
+        resource.getUsername(),
+        resource.getVhost(),
+        resource.getResource(),
+        resource.getName(),
+        resource.getPermission());
+    return false;
   }
 
   private boolean challengeExchange(ResourceChallenge resource) {
