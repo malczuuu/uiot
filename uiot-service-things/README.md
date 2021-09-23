@@ -2,6 +2,12 @@
 
 Microservice for things management. Offers a single REST API endpoint.
 
+| Ports  | Description |
+| ------ | ----------- |
+| `8336` | HTTP API    |
+
+Note that in Docker, HTTP API is served on `8080`.
+
 ## Configuration
 
 | Environment variable                     | Description                                                                            |

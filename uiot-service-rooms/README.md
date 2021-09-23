@@ -2,6 +2,12 @@
 
 Microservice for rooms management. Offers a single REST API endpoint.
 
+| Ports  | Description |
+| ------ | ----------- |
+| `8333` | HTTP API    |
+
+Note that in Docker, HTTP API is served on `8080`.
+
 ## Configuration
 
 | Environment variable                     | Description                                                              |

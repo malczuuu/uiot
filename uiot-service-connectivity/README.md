@@ -3,6 +3,12 @@
 Microservice for rooms management. Offers REST API endpoints for connectivity management and for
 RabbitMQ integration.
 
+| Ports  | Description |
+| ------ | ----------- |
+| `8331` | HTTP API    |
+
+Note that in Docker, HTTP API is served on `8080`.
+
 ## Configuration
 
 | Environment variable                     | Description                                                                    |
