@@ -4,7 +4,7 @@ services:
   uiot-gateway:
     image: traefik:2.4.14
     ports:
-      - 127.0.0.1:8330:80
+      - "127.0.0.1:8330:80"
     volumes:
       - ./uiot-gateway/traefik.toml:/etc/traefik/traefik.toml:ro
     networks:
