@@ -1,6 +1,6 @@
 # uIoT Service Things
 
-Microservice for things management. Offers a single REST API endpoint.
+A microservice for things management. Offers a single REST API endpoint.
 
 | Ports  | Description |
 | ------ | ----------- |

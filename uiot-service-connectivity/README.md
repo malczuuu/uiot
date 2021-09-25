@@ -1,6 +1,6 @@
 # uIoT Service Rooms
 
-Microservice for rooms management. Offers REST API endpoints for connectivity management and for
+A microservice for rooms management. Offers REST API endpoints for connectivity management and for
 RabbitMQ integration.
 
 | Ports  | Description |
@@ -23,6 +23,9 @@ Note that in Docker, HTTP API is served on `8080`.
 | `UIOT_SYSTEM_EVENTS_TOPIC`               | Kafka topic for system events. See [here](#rooms-deletion-integration).        |
 
 ## REST API
+
+Connectivity information are grouped within rooms, which are managed by different service. Each
+connectivity corresponds to a single thing.
 
 | Method   | Endpoint                                        |
 | -------- | ----------------------------------------------- |

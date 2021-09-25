@@ -1,7 +1,7 @@
 # uIoT Accounting Service
 
-Microservice for resources usage accounting. It processes accounting streaming data and serves HTTP
-API for it.
+A microservice for resources usage accounting. It processes accounting streaming data and serves
+HTTP API for it.
 
 | Ports  | Description |
 | ------ | ----------- |

@@ -1,6 +1,6 @@
 # uIoT Service Rooms
 
-Microservice for rooms management. Offers a single REST API endpoint.
+A microservice for rooms management. Offers a single REST API endpoint.
 
 | Ports  | Description |
 | ------ | ----------- |
@@ -19,6 +19,8 @@ Note that in Docker, HTTP API is served on `8080`.
 | `UIOT_SYSTEM_EVENTS_TOPIC`               | Kafka topic for system events. See [here](#rooms-deletion-integration).  |
 
 ## REST API
+
+Rooms are top-level hierarchy in uIoT system.
 
 | Method   | Endpoint             |
 | -------- | -------------------- |
