@@ -1,39 +1,47 @@
 # uIoT Service Rooms
 
-A microservice for rooms management. Offers a single REST API endpoint.
+A microservice for room management that serves as the top-level hierarchy container in the uIoT system. Rooms contain
+Things (IoT devices) and provide organizational structure for the entire system.
 
-| Ports  | Description |
-| ------ | ----------- |
-| `8333` | HTTP API    |
+| Port   | Description |
+|--------|-------------|
+| `8334` | HTTP API    |
 
-Note that in Docker, HTTP API is served on `8080`.
+> **Note:** In Docker, the HTTP API is served on port `8080`.
 
 ## Configuration
 
-| Environment variable                     | Description                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
-| `SPRING_DATA_MONGODB_URI`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.            |
-| `SPRING_DATA_MONGODB_DATABASE`           | MongoDB database, default: `uiot-service-rooms`.                         |
-| `SPRING_KAFKA_STREAMS_APPLICATION_ID`    | Kafka Streams `application.id` property, default: `uiot-service-rooms`.  |
-| `SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS` | Comma-separated `bootstrap.servers` property, default: `localhost:9092`. |
-| `UIOT_SYSTEM_EVENTS_TOPIC`               | Kafka topic for system events. See [here](#rooms-deletion-integration).  |
+| Property                                 | Description                                                               |
+|------------------------------------------|---------------------------------------------------------------------------|
+| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
+| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-rooms`.                     |
+| `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`. |
+| `uiot.system-events-topic`               | Kafka topic for system events. See [Room Events](#room-events).           |
+
+Properties can also be overridden via Environment Variables or Config Trees. See Spring Boot documentation for details.
 
 ## REST API
 
-Rooms are top-level hierarchy in uIoT system.
+Up-to-date API documentation is available at `/swagger-ui/index.html`. The OpenAPI specification is auto-generated.
 
-| Method   | Endpoint             |
-| -------- | -------------------- |
-| `GET`    | `/api/rooms`         |
-| `POST`   | `/api/rooms`         |
-| `GET`    | `/api/rooms/{room}`  |
-| `PUT`    | `/api/rooms/{room}`  |
-| `DELETE` | `/api/rooms/{room}`  |
+## Room Events
 
-## Rooms deletion integration
+This service uses an event-first approach: all room operations are published as events on the Kafka topic to allow other
+services to react to changes in room state. The service itself consumes these events and creates or deletes rooms
+asynchronously. The topic is named `uiot-system-events` by default.
 
-This service publishes room deletion events on Kafka topic. Such topic is named `uiot-system-events`
-by default. The expected model is following.
+**Example room creation event:**
+
+```json
+{
+  "type": "room_create",
+  "room_create": {
+    "room_uid": "{room}"
+  }
+}
+```
+
+**Example room deletion event:**
 
 ```json
 {

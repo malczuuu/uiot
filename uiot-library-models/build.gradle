@@ -1,25 +1,5 @@
-plugins {
-    id "java-library"
-    id "com.github.sherter.google-java-format" version "0.9"
-}
-
-group = "io.github.malczuuu"
-version = "1.0.0-SNAPSHOT"
-
-sourceCompatibility = "11"
-
-repositories {
-    mavenCentral()
-}
+apply plugin: "java-library"
 
 dependencies {
     api("com.fasterxml.jackson.core:jackson-databind:2.12.3")
-}
-
-test {
-    useJUnitPlatform()
-}
-
-googleJavaFormat {
-    toolVersion = "1.8"
 }

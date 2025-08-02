@@ -1,46 +1,43 @@
 # uIoT Service Things
 
-A microservice for things management. Offers a single REST API endpoint.
+A microservice for IoT device (Thing) management within the uIoT system. This service handles the lifecycle of IoT
+devices, which are organized within rooms and represent physical devices that send telemetry data.
 
-| Ports  | Description |
-| ------ | ----------- |
-| `8336` | HTTP API    |
+| Port   | Description |
+|--------|-------------|
+| `8337` | HTTP API    |
 
-Note that in Docker, HTTP API is served on `8080`.
+> **Note:** In Docker, the HTTP API is served on port `8080`.
 
 ## Configuration
 
-| Environment variable                     | Description                                                                            |
-| ---------------------------------------- | -------------------------------------------------------------------------------------- |
-| `SPRING_DATA_MONGODB_URI`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                          |
-| `SPRING_DATA_MONGODB_DATABASE`           | MongoDB database, default: `uiot-service-things`.                                      |
-| `SPRING_KAFKA_STREAMS_APPLICATION_ID`    | Kafka Streams `application.id` property, default: `uiot-service-things`.               |
-| `SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS` | Comma-separated `bootstrap.servers` property, default: `localhost:9092`.               |
-| `UIOT_CONNECTIVITY_INTEGRATION_URL`      | Integration URL for connectivity management. See [here](#things-deletion-integration). |
-| `UIOT_SYSTEM_EVENTS_TOPIC`               | Kafka topic for system events. See [here](#rooms-deletion-integration).                |
+| Property                                 | Description                                                                                             |
+|------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                                           |
+| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-things`.                                                  |
+| `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`.                               |
+| `uiot.connectivity.integration-url`      | Integration URL for connectivity management. See [Connectivity Integration](#connectivity-integration). |
+| `uiot.system-events-topic`               | Kafka topic for system events. See [Room Events](#room-events).                                         |
+
+Properties can also be overridden via Environment Variables or Config Trees. See Spring Boot documentation for details.
 
 ## REST API
 
-Things are grouped within rooms, which are managed by different service.
+Up-to-date API documentation is available at `/swagger-ui/index.html`. The OpenAPI specification is auto-generated.
 
-| Method   | Endpoint                           |
-| -------- | ---------------------------------- |
-| `GET`    | `/api/rooms/{room}/things`         |
-| `POST`   | `/api/rooms/{room}/things`         |
-| `GET`    | `/api/rooms/{room}/things/{thing}` |
-| `PUT`    | `/api/rooms/{room}/things/{thing}` |
-| `DELETE` | `/api/rooms/{room}/things/{thing}` |
+## Connectivity Integration
 
-## Things deletion integration
+When a thing is deleted, this service requests connectivity cleanup from the `uiot-service-connectivity` via direct REST
+API call. This ensures that device authentication credentials and MQTT permissions are properly removed.
 
-This service requests deletion in `uiot-service-connectivity` directly via REST API. URL for such
-integration is configurable via `UIOT_CONNECTIVITY_INTEGRATION_URL`. By default, it points
-to `http://localhost:8333/api/rooms/{roomUid}/things/{thingUid}/connectivity`
+**Integration URL:** Configurable via `UIOT_CONNECTIVITY_INTEGRATION_URL`
 
-## Rooms deletion integration
+## Room Events
 
-This service accepts also room deletion events on Kafka topic. Input topic for this purpose is
-named `uiot-system-events` by default. The expected model is following.
+This service listens to room deletion events on the Kafka topic to clean up all things associated with a deleted room.
+The input topic is named `uiot-system-events` by default.
+
+**Example room deletion event:**
 
 ```json
 {

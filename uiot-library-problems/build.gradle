@@ -1,26 +1,5 @@
-plugins {
-    id "java-library"
-    id "com.github.sherter.google-java-format" version "0.9"
-}
-
-group = "io.github.malczuuu"
-version = "1.0.0-SNAPSHOT"
-
-sourceCompatibility = "11"
-
-repositories {
-    mavenCentral()
-    maven { url "https://jitpack.io" }
-}
+apply plugin: "java-library"
 
 dependencies {
     api("io.github.malczuuu.problem4j:problem4j-core:2.0.0")
-}
-
-test {
-    useJUnitPlatform()
-}
-
-googleJavaFormat {
-    toolVersion = "1.8"
 }

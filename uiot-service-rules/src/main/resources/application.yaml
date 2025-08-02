@@ -1,5 +1,5 @@
 server:
-  port: 8334
+  port: 8335
 spring:
   application:
     name: uiot-service-rules

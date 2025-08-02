@@ -20,11 +20,13 @@ public class AccountingApplication {
 
   @Bean
   public Docket docket() {
+    String version = AccountingApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT Accounting API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",

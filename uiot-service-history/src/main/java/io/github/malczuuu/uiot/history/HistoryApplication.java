@@ -22,11 +22,13 @@ public class HistoryApplication {
 
   @Bean
   public Docket docket() {
+    String version = HistoryApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT History API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",

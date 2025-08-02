@@ -1,5 +1,5 @@
 server:
-  port: 8332
+  port: 8333
 spring:
   application:
     name: uiot-service-history

@@ -1,42 +1,345 @@
 # uIoT
 
-A prototype of an IoT Telemetry system, presenting microservices communication over Apache Kafka and
-REST API. Implemented as a part of the master's thesis _Analysis of selected communication
-techniques in systems based on microservices architecture_ at
-[Cracow University of Technology](https://pk.edu.pl) by Damian Malczewski in 2021.
+**Pronounced: _"micro IoT"_.**
 
-See `README.md` files of each service repository for more details.
+A prototype of an IoT Telemetry system, presenting microservices communication over Apache Kafka and REST API.
+Implemented as a part of the master's thesis _Analysis of selected communication techniques in systems based on
+microservices architecture_ at [Cracow University of Technology](https://pk.edu.pl) by Damian Malczewski in 2021.
+
+Afterward, it serves the purpose of testing new features in Spring Boot.
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [System Overview](#system-overview)
+- [Microservices](#microservices)
+- [Notable Use Cases](#notable-use-cases)
+    - [Room Creation Flow](#room-creation-flow)
+    - [IoT Device Registration and Authentication](#iot-device-registration-and-authentication)
+    - [Telemetry Data Processing](#telemetry-data-processing)
+    - [Rule Engine and Automation](#rule-engine-and-automation)
+    - [Room Deletion with Cascade Cleanup](#room-deletion-with-cascade-cleanup)
+- [Tools](#tools)
+- [Running in Docker environment](#running-in-docker-environment)
+
+## Prerequisites
+
+1. **Java 11**. Required for building and running Spring Boot services.
+2. **Gradle 7.0.2**. Build tool, included as wrapper in the project.
+3. **Docker and Docker Compose**. Container runtime, required for running services in a containerized environment.
+4. [**Kaf CLI Tool**](#kaf-cli-tool).
+5. [**Mosquitto MQTT Clients**](#mosquitto-mqtt-clients).
+6. **MongoDB Compass**. GUI client for MongoDB, optional but recommended for inspecting data.
+
+## System Overview
+
+The uIoT system is built using a microservices architecture with event-driven communication through Apache Kafka. The
+system provides:
+
+- **IoT Device Management**: Registration, authentication, and lifecycle management.
+- **Real-time Telemetry Processing**: MQTT to Kafka bridge with stream processing.
+- **Rule Engine**: Automated actions based on telemetry data conditions.
+- **Historical Data Storage**: Time-series data with query capabilities.
+- **Resource Management**: Hierarchical organization with rooms containing devices.
+
+## Microservices
+
+The system consists of 7 microservices, each with specific responsibilities. Each service has its own `README.md` with
+detailed documentation.
+
+| Service                                                              | Port   | Description                                             |
+|----------------------------------------------------------------------|--------|---------------------------------------------------------|
+| [**uiot-service-accounting**](uiot-service-accounting/README.md)     | `8331` | Resource usage accounting and billing analytics.        |
+| [**uiot-service-connectivity**](uiot-service-connectivity/README.md) | `8332` | Device authentication and RabbitMQ MQTT integration.    |
+| [**uiot-service-history**](uiot-service-history/README.md)           | `8333` | Historical telemetry storage and last-state management. |
+| [**uiot-service-rooms**](uiot-service-rooms/README.md)               | `8334` | Room management and top-level hierarchy container.      |
+| [**uiot-service-rules**](uiot-service-rules/README.md)               | `8335` | Rule engine for automated actions on telemetry events.  |
+| [**uiot-service-telemetry**](uiot-service-telemetry/README.md)       | `8336` | MQTT to Kafka bridge for telemetry data ingestion.      |
+| [**uiot-service-things**](uiot-service-things/README.md)             | `8337` | IoT device (Thing) lifecycle management within rooms.   |
+
+> **Note:** In Docker environment, all HTTP APIs are served on port `8080` for unification purposes.
+
+### Supporting Libraries
+
+| Library                                                      | Description                                       |
+|--------------------------------------------------------------|---------------------------------------------------|
+| [**uiot-library-models**](uiot-library-models/README.md)     | Shared DTOs for Kafka and RabbitMQ communication. |
+| [**uiot-library-problems**](uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
+
+## Notable Use Cases
+
+### Room Creation Flow
+
+Demonstrates the event-first approach used throughout the system:
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant RoomsService as uiot-service-rooms
+    participant Kafka as Apache Kafka
+    participant HistoryService as uiot-service-history
+    participant MongoDB as MongoDB
+
+    Client->>RoomsService: POST /api/rooms
+    activate RoomsService
+    RoomsService->>Kafka: Publish room_create event
+    RoomsService-->>Client: 202 Accepted
+    deactivate RoomsService
+
+    par Parallel Processing
+        Kafka->>RoomsService: Consume room_create event
+        activate RoomsService
+        RoomsService->>MongoDB: Create room document
+        deactivate RoomsService
+    and
+        Kafka->>HistoryService: Consume room_create event
+        activate HistoryService
+        HistoryService->>MongoDB: Initialize room storage
+        deactivate HistoryService
+    end
+```
+
+### IoT Device Registration and Authentication
+
+#### Device Registration
+
+IoT device registration and connectivity setup:
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ThingsAPI as uiot-service-things
+    participant ConnectivityAPI as uiot-service-connectivity
+    participant MongoDB as MongoDB
+
+    Client->>ThingsAPI: POST /api/rooms/{room}/things
+    activate ThingsAPI
+    ThingsAPI->>MongoDB: Create thing document
+    ThingsAPI-->>Client: 202 Accepted
+    deactivate ThingsAPI
+
+    Client->>ConnectivityAPI: POST /api/rooms/{room}/things/{thing}/connectivity
+    activate ConnectivityAPI
+    ConnectivityAPI->>MongoDB: Create connectivity document
+    ConnectivityAPI-->>Client: 201 Created with credentials
+    deactivate ConnectivityAPI
+
+    Client->>ConnectivityAPI: PUT /api/rooms/{room}/things/{thing}/connectivity/password
+    activate ConnectivityAPI
+    ConnectivityAPI->>MongoDB: Set connectivity password
+    ConnectivityAPI-->>Client: 204 No Content
+    deactivate ConnectivityAPI
+```
+
+#### MQTT Authentication Flow
+
+Device authentication and authorization for MQTT communication:
+
+```mermaid
+sequenceDiagram
+    participant IoTDevice as IoT Device
+    participant RabbitMQ as RabbitMQ
+    participant ConnectivityAPI as uiot-service-connectivity
+    participant MongoDB as MongoDB
+
+    IoTDevice->>RabbitMQ: MQTT Connect
+    
+    RabbitMQ->>ConnectivityAPI: POST /auth/user
+    activate ConnectivityAPI
+    ConnectivityAPI->>MongoDB: Query connectivity by room.thing
+    MongoDB-->>ConnectivityAPI: Connectivity document
+    ConnectivityAPI->>ConnectivityAPI: Validate password
+    ConnectivityAPI-->>RabbitMQ: "allow"
+    
+    RabbitMQ->>ConnectivityAPI: POST /auth/topic
+    ConnectivityAPI->>ConnectivityAPI: Validate routing key matches username
+    ConnectivityAPI-->>RabbitMQ: "allow"
+    deactivate ConnectivityAPI
+    
+    RabbitMQ-->>IoTDevice: MQTT CONNACK (Connected)
+```
+
+### Telemetry Data Processing
+
+End-to-end telemetry flow from MQTT to Kafka with message transformation:
+
+```mermaid
+sequenceDiagram
+    participant IoTDevice as IoT Device
+    participant RabbitMQ as RabbitMQ
+    participant TelemetryService as uiot-service-telemetry
+    participant Kafka as Apache Kafka
+    participant HistoryService as uiot-service-history
+    participant MongoDB as MongoDB
+
+    IoTDevice->>RabbitMQ: MQTT Publish
+    
+    RabbitMQ->>TelemetryService: Message from queue
+    activate TelemetryService
+    TelemetryService->>Kafka: Publish thing_events
+    TelemetryService->>Kafka: Publish accounting_metric
+    deactivate TelemetryService
+    
+    Kafka->>HistoryService: Consume thing_events
+    activate HistoryService
+    HistoryService->>MongoDB: Store individual ThingEvents
+    HistoryService->>HistoryService: Update last state per property
+    deactivate HistoryService
+```
+
+### Rule Engine and Automation
+
+Real-time telemetry processing with automated rule matching and action triggering:
+
+```mermaid
+sequenceDiagram
+    participant Kafka as Apache Kafka
+    participant RulesService as uiot-service-rules
+    participant MongoDB
+
+    Kafka->>RulesService: Consume thing_events
+    activate RulesService
+    
+    loop For each ThingEvent
+        RulesService->>MongoDB: Query matching rules
+        MongoDB-->>RulesService: List of matching rules
+        
+        alt Rules matched
+            RulesService->>Kafka: Publish action_execution
+        end
+    end
+    deactivate RulesService
+```
+
+### Room Deletion with Cascade Cleanup
+
+Shows distributed cleanup coordination across all microservices:
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant RoomsService as uiot-service-rooms
+    participant Kafka as Apache Kafka
+    participant ThingsService as uiot-service-things
+    participant ConnectivityService as uiot-service-connectivity
+    participant HistoryService as uiot-service-history
+    participant RulesService as uiot-service-rules
+    participant MongoDB as MongoDB
+
+    Client->>RoomsService: DELETE /api/rooms/{room}
+    activate RoomsService
+    RoomsService->>Kafka: Publish room_delete event
+    RoomsService-->>Client: 204 No Content
+    deactivate RoomsService
+
+    Note over Kafka: Event distributed to all consuming services
+    
+    par Parallel Processing
+        Kafka->>RoomsService: Consume room_delete event<br/>(Stream Processor)
+        activate RoomsService
+        RoomsService->>MongoDB: Delete room document
+        deactivate RoomsService
+    and
+        Kafka->>ThingsService: Consume room_delete event
+        activate ThingsService
+        ThingsService->>MongoDB: Delete all things in room<br/>(with connectivity cleanup)
+        deactivate ThingsService
+    and
+        Kafka->>ConnectivityService: Consume room_delete event
+        activate ConnectivityService
+        ConnectivityService->>MongoDB: Delete connectivity configurations
+        deactivate ConnectivityService
+    and
+        Kafka->>HistoryService: Consume room_delete event
+        activate HistoryService
+        HistoryService->>MongoDB: Archive/delete historical data
+        deactivate HistoryService
+    and
+        Kafka->>RulesService: Consume room_delete event
+        activate RulesService
+        RulesService->>MongoDB: Delete rules for room
+        deactivate RulesService
+    end
+```
+
+## Tools
+
+### Kaf CLI Tool
+
+For managing Kafka topics, you can use the [`kaf`](https://github.com/birdayz/kaf) CLI tool. Follow its installation
+manual on linked GitHub repository page.
+
+After installation, you can add a cluster configuration for local Kafka instance.
+
+```bash
+kaf config add-cluster uiot_local -b localhost:9092
+```
+
+Kaf stores its configuration in `~/.kaf/config` file. To verify if the configuration is correct, browse that file.
+
+If you have multiple clusters configured, you can select the one you want to use with the following command.
+
+```bash
+kaf config select-cluster
+```
+
+### Mosquitto MQTT Clients
+
+Tool for testing MQTT communication. Note to install `mosquitto-clients` package, not `mosquitto` itself.
+
+```bash
+sudo apt install mosquitto mosquitto-clients
+```
+
+To publish a message to a topic, you can use the `mosquitto_pub` command. For example, for `room_uid=main` and
+`thing_uid=sensor01`, you can publish a telemetry message like this:
+
+```bash
+mosquitto_pub \
+    -t "telemetry/main/sensor01" \
+    -m '[{"n":"urn:dev:uiot:main:sensor01:value","v":12}]' \
+    -u 'main.sensor01' \
+    -P 'string' \
+    -q 1 \
+    -h localhost -p 1883
+```
 
 ## Running in Docker environment
 
-1. Create `uiot` network.
+1. Create `uiot` network. It's external and used by two `docker-compose.yaml` files (one for environment services and
+   one for application services).
 
    ```bash
-   $ docker network uiot create
+   docker network uiot create
    ```
 
-2. Launch environment services of MongoDB, RabbitMQ and Kafka.
+2. Launch environment services - MongoDB, RabbitMQ and Kafka.
 
    ```bash
-   $ cd uiot-docker-environment/
-   $ docker-compose up -d
+   cd uiot-docker-environment/
+   docker-compose up -d
    ```
 
    Setting up can take a while. You can verify if everything is up and running.
 
    ```bash
-   $ docker-compose ps
+   docker-compose ps
    ```
 
-3. Prepare Kafka topics.
+3. Prepare Kafka topics. Note that this step requires you to have [Kaf CLI Tool](#kaf-cli-tool) installed and configured
+   for local Kafka.
+
+   ```bash 
+   ./kafka-topics.sh
+   ```
+
+4. After everything works fine, start application services.
 
    ```bash
-   $ ./kafka-topics.sh
+   cd uiot-docker-services/
+   docker-compose up -d
    ```
 
-5. After everything works fine, start application services.
-
-   ```bash
-   $ cd uiot-docker-services/
-   $ docker-compose up -d
-   ```
+5. Navigate to http://localhost:8330/ to access the Swagger UI documentation of all services. Note that services take
+   some time to start, so you may need to wait a moment before the documentation is available. You can switch between
+   service APIs using the dropdown in the top-right corner of the Swagger UI (dropdown named `Select a definition`).

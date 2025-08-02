@@ -1,30 +1,51 @@
-# uIoT Accounting Service
+# uIoT Service Accounting
 
-A microservice for resources usage accounting. It processes accounting streaming data and serves
-HTTP API for it.
+A microservice for resource usage accounting and billing analytics. This service processes streaming telemetry data to
+track resource consumption, generate usage metrics, and provide billing information for IoT devices and rooms.
 
-| Ports  | Description |
-| ------ | ----------- |
-| `8330` | HTTP API    |
+| Port   | Description |
+|--------|-------------|
+| `8331` | HTTP API    |
 
-Note that in Docker, HTTP API is served on `8080`.
+> **Note:** In Docker, the HTTP API is served on port `8080`.
 
-## HTTP API
+## Configuration
 
-| Method   | Endpoint                       | Parameters                   |
-| -------- | ------------------------------ | ---------------------------- |
-| `GET`    | `/api/rooms/{room}/accounting` | `room_uid`, `since`, `until` |
+| Property                                 | Description                                                               |
+|------------------------------------------|---------------------------------------------------------------------------|
+| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
+| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-accounting`.                |
+| `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`. |
+| `uiot.metrics-topic`                     | Kafka topic for raw accounting metrics, default: `uiot-accounting`.       |
+| `uiot.windows-topic`                     | Kafka topic for windowed metrics, default: `uiot-accounting-windows`.     |
+| `uiot.windows-size`                      | Time window size for aggregation, default: `1m`.                          |
 
-## Kafka accounting messages
+Properties can also be overridden via Environment Variables or Config Trees. See Spring Boot documentation for details.
 
-1. Message produced on raw accounting topic (`uiot-accounting` by default).
+## REST API
 
-    ```json
-    {"type":"mqtt_inbound","room_uid":"room1","value":12,"time":1231231,"tags":{"thing_uid":"thing1"}}
-    ```
+Up-to-date API documentation is available at `/swagger-ui/index.html`. The OpenAPI specification is auto-generated.
 
-1. Message produced on time-windowed accounting topic (`uiot-accounting-windowed` by default).
+## Stream Processing
 
-    ```json
-    {"room_uid":"room1","tags":{"thing_uid":"thing1"},"times":[1628939340,1628939400],"type":"mqtt_inbound","uuid":"f9612419-d3f4-4a4b-a2cd-5aa61ccb3159","value":12}
-    ```
+The service gathers data from the `uiot-accounting` topic, which contains raw accounting metrics. These metrics may come
+from various places in the entire system. The service aggregates these messages in a **time-windowed** fashion and
+publishes them to the `uiot-accounting-windows` topic.
+
+**Example accounting metric message:**
+
+```json
+{
+  "type": "accounting_metric",
+  "accounting_metric": {
+    "uuid": "f9612419-d3f4-4a4b-a2cd-5aa61ccb3159",
+    "type": "inbound_mqtt",
+    "room_uid": "room1",
+    "value": 12,
+    "time": 1628939340,
+    "tags": {
+      "thing_uid": "thing1"
+    }
+  }
+}
+```

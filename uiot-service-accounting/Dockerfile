@@ -6,7 +6,7 @@ ENV SERVER_PORT 8080
 
 EXPOSE 8080
 
-COPY ./uiot-service-accounting-1.0.0-SNAPSHOT.jar /app/app.jar
+COPY ./uiot-service-accounting-*.jar /app/app.jar
 
 ENTRYPOINT [ "java" ]
 CMD [ "-Dfile.encoding=UTF-8", "-Duser.timezone=UTC", "-XX:+UseG1GC", "-jar", "/app/app.jar" ]

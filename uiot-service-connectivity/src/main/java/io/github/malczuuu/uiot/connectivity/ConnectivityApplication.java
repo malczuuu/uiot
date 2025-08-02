@@ -20,11 +20,13 @@ public class ConnectivityApplication {
 
   @Bean
   public Docket docket() {
+    String version = ConnectivityApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT Connectivity API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",
@@ -33,7 +35,7 @@ public class ConnectivityApplication {
     return new Docket(DocumentationType.OAS_30)
         .apiInfo(apiInfo)
         .select()
-        .paths(path -> path.startsWith("/api"))
+        .paths(path -> path.startsWith("/api") || path.startsWith("/auth"))
         .build();
   }
 }

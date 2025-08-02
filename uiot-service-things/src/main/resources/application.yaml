@@ -1,5 +1,5 @@
 server:
-  port: 8336
+  port: 8337
 spring:
   application:
     name: uiot-service-things

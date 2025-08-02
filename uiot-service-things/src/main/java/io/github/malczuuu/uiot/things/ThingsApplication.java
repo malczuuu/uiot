@@ -20,11 +20,13 @@ public class ThingsApplication {
 
   @Bean
   public Docket docket() {
+    String version = ThingsApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT Things API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",

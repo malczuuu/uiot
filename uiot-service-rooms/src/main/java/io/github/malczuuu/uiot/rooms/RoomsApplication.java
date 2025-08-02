@@ -26,11 +26,13 @@ public class RoomsApplication {
 
   @Bean
   public Docket docket() {
+    String version = RoomsApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT Rooms API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",

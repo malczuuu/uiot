@@ -1,0 +1,46 @@
+plugins {
+    id "net.nemerosa.versioning" version "3.1.0" apply false
+    id "org.springframework.boot" version "2.5.0" apply false
+    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
+    id "com.github.sherter.google-java-format" version "0.9" apply false
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "net.nemerosa.versioning"
+    apply plugin: "com.github.sherter.google-java-format"
+
+    group = "io.github.malczuuu"
+    version = (versioning.info.tag ?: "${versioning.info.lastTag}-${versioning.info.build}") \
+           + (versioning.info.dirty ? "-dirty" : "")
+
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+
+        options.encoding = 'UTF-8'
+        options.compilerArgs += ['-parameters']
+    }
+
+    tasks.withType(Jar).configureEach {
+        manifest {
+            attributes "Implementation-Version": project.version
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    googleJavaFormat {
+        toolVersion = "1.8"
+    }
+}

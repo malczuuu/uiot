@@ -20,11 +20,13 @@ public class RulesApplication {
 
   @Bean
   public Docket docket() {
+    String version = RulesApplication.class.getPackage().getImplementationVersion();
+
     ApiInfo apiInfo =
         new ApiInfo(
             "uIoT Rules API",
             "",
-            "1.0.0-SNAPSHOT",
+            version,
             "",
             new Contact("", "", ""),
             "",

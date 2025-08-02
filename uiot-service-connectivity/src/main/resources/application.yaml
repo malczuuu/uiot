@@ -1,5 +1,5 @@
 server:
-  port: 8331
+  port: 8332
 spring:
   application:
     name: uiot-service-connectivity

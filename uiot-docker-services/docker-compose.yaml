@@ -10,8 +10,22 @@ services:
     networks:
       - uiot
 
+  uiot-swagger-ui:
+    image: swaggerapi/swagger-ui:v5.27.1
+    environment:
+      URLS: '[
+          { "url" : "/accounting/v3/api-docs",   "name" : "Accounting"   },
+          { "url" : "/connectivity/v3/api-docs", "name" : "Connectivity" },
+          { "url" : "/history/v3/api-docs",      "name" : "History"      },
+          { "url" : "/rooms/v3/api-docs",        "name" : "Rooms"        },
+          { "url" : "/rules/v3/api-docs",        "name" : "Rules"        },
+          { "url" : "/things/v3/api-docs",       "name" : "Things"       }
+        ]'
+    networks:
+      - uiot
+
   uiot-service-accounting:
-    image: uiot-service-accounting:latest
+    image: malczuuu/uiot-service-accounting:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-accounting
@@ -23,7 +37,7 @@ services:
       - uiot
 
   uiot-service-connectivity:
-    image: uiot-service-connectivity:latest
+    image: malczuuu/uiot-service-connectivity:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
@@ -36,7 +50,7 @@ services:
       - uiot
 
   uiot-service-history:
-    image: uiot-service-history:latest
+    image: malczuuu/uiot-service-history:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-history
@@ -49,7 +63,7 @@ services:
       - uiot
 
   uiot-service-rooms:
-    image: uiot-service-rooms:latest
+    image: malczuuu/uiot-service-rooms:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-rooms
@@ -60,7 +74,7 @@ services:
       - uiot
 
   uiot-service-rules:
-    image: uiot-service-rules:latest
+    image: malczuuu/uiot-service-rules:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
@@ -72,7 +86,7 @@ services:
       - uiot
 
   uiot-service-telemetry:
-    image: uiot-service-telemetry:latest
+    image: malczuuu/uiot-service-telemetry:latest
     environment:
       SPRING_RABBITMQ_ADDRESSES: rabbitmq:5672
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
@@ -85,7 +99,7 @@ services:
       - uiot
 
   uiot-service-things:
-    image: uiot-service-things:latest
+    image: malczuuu/uiot-service-things:latest
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_DATA_MONGODB_DATABASE: uiot-service-things
