@@ -7,6 +7,8 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-08-06
+
 This release introduces a minimalistic, microservice-based IoT system. The system is composed of loosely coupled
 services responsible for device management, telemetry processing, basic rules, and historical data access. Services are
 implemented in Spring Boot and communicate via **Kafka** or internal REST API. Public REST APIs are exposed via a
