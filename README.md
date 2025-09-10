@@ -1,6 +1,6 @@
 # uIoT
 
-**Pronounced: _"micro IoT"_.**
+> **Pronounced: _"micro IoT"_.**
 
 A prototype of an IoT telemetry system, demonstrating microservices communication over Apache Kafka and REST APIs.
 Implemented as a part of the master's thesis _Analysis of selected communication techniques in systems based on
@@ -22,13 +22,14 @@ and microservices.
     - [Room Deletion with Cascade Cleanup](#room-deletion-with-cascade-cleanup)
 - [Tools](#tools)
 - [Running in Docker environment](#running-in-docker-environment)
+    - [Building Docker images](#building-docker-images)
     - [`uiot-docker-localhost`](#uiot-docker-localhost)
     - [`uiot-docker-compose`](#uiot-docker-compose)
 
 ## Prerequisites
 
-1. **Java 11**. Required for building and running Spring Boot services.
-2. **Gradle 7.0.2**. Build tool, included as wrapper in the project.
+1. **Java 17**. Required for building and running Spring Boot services.
+2. **Gradle 9.0.0**. Build tool, included as wrapper in the project.
 3. **Docker and Docker Compose**. Container runtime, required for running services in a containerized environment.
 4. [**Kaf CLI Tool**](#kaf-cli-tool). Useful for managing, listening to and debugging Kafka topics.
 5. [**Mosquitto MQTT Clients**](#mosquitto-mqtt-clients). Useful for testing MQTT communication.
@@ -305,6 +306,18 @@ There are two main Docker Compose stacks:
 
 Note that both stacks rely on `depends_on` and healthcheck, so make sure to use most recent Docker Compose version, as
 older ones didn't support it fully.
+
+### Building Docker images
+
+To build Docker images for all services use `docker.sh` script. It runs `./gradlew clean build` and then builds
+Docker images for all services with the same version tag.
+
+```bash
+UIOT_VERSION=latest ./docker.sh
+```
+
+It's not necessary, as Docker images are published to Docker Hub with tags matching GitHub releases, but to run the
+system with latest changes, you need to build images locally.
 
 ### `uiot-docker-localhost`
 
