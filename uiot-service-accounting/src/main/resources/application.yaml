@@ -1,5 +1,13 @@
 server:
   port: 8331
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 spring:
   application:
     name: uiot-service-accounting
@@ -13,6 +21,9 @@ spring:
       bootstrap-servers: localhost:9092
   jackson:
     default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    path: /v3/api-docs
 uiot:
   metrics-topic: uiot-accounting
   windows-topic: uiot-accounting-windows

@@ -5,7 +5,8 @@ import io.github.malczuuu.uiot.rooms.model.CursorPage;
 import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
 import io.github.malczuuu.uiot.rooms.model.RoomModel;
 import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
-import javax.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(path = "/api/rooms")
@@ -47,7 +47,7 @@ public class RoomController {
     return sizeAsInt;
   }
 
-  @ApiIgnore
+  @Operation(hidden = true)
   @GetMapping(
       produces = MediaType.APPLICATION_JSON_VALUE,
       params = {"cursor"})

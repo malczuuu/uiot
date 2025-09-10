@@ -7,11 +7,14 @@ import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
+import java.util.Map;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
+import org.apache.kafka.streams.kstream.Branched;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Named;
 import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,7 @@ public class SystemEventStream implements InitializingBean {
 
   @Override
   public void afterPropertiesSet() {
-    KStream<String, Envelope>[] subStreams =
+    Map<String, KStream<String, Envelope>> branches =
         streamsBuilder.stream(
                 topics.getSystemEventsTopic(),
                 Consumed.<String, Envelope>as("system_events_source")
@@ -52,14 +55,19 @@ public class SystemEventStream implements InitializingBean {
                     .withValueSerde(getEnvelopeSerde())
                     .withTimestampExtractor(new WallclockTimestampExtractor())
                     .withOffsetResetPolicy(AutoOffsetReset.LATEST))
-            .branch(
-                (key, value) -> value instanceof RoomCreateEnvelope,
-                (key, value) -> value instanceof RoomDeleteEnvelope);
-    subStreams[0]
+            .split(Named.as("system_events_"))
+            .branch((key, value) -> value instanceof RoomCreateEnvelope, Branched.as("room_create"))
+            .branch((key, value) -> value instanceof RoomDeleteEnvelope, Branched.as("room_delete"))
+            .noDefaultBranch();
+
+    branches
+        .get("system_events_room_create")
         .mapValues(value -> (RoomCreateEnvelope) value)
         .mapValues(RoomCreateEnvelope::getRoomCreateEvent)
         .foreach((key, value) -> createStorage(value));
-    subStreams[1]
+
+    branches
+        .get("system_events_room_delete")
         .mapValues(value -> (RoomDeleteEnvelope) value)
         .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
         .foreach((key, value) -> deleteStorage(value));

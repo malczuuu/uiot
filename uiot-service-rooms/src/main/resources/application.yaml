@@ -1,5 +1,13 @@
 server:
   port: 8334
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 spring:
   application:
     name: uiot-service-rooms
@@ -16,5 +24,8 @@ spring:
       retries: 3
   jackson:
     default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    path: /v3/api-docs
 uiot:
   system-events-topic: uiot-system-events

@@ -3,7 +3,7 @@ package io.github.malczuuu.uiot.rules.rest;
 import io.github.malczuuu.uiot.rules.core.RuleService;
 import io.github.malczuuu.uiot.rules.model.RuleModel;
 import io.github.malczuuu.uiot.rules.model.RulesPage;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

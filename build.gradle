@@ -1,30 +1,56 @@
 plugins {
-    id "net.nemerosa.versioning" version "3.1.0" apply false
-    id "org.springframework.boot" version "2.5.0" apply false
-    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
-    id "com.github.sherter.google-java-format" version "0.9" apply false
+    id("net.nemerosa.versioning") version "3.1.0" apply false
+    id("org.springframework.boot") version "3.5.5" apply false
+    id("io.spring.dependency-management") version "1.1.7" apply false
+    id("com.diffplug.spotless") version "7.2.1" apply false
 }
 
 subprojects {
     apply plugin: "java"
     apply plugin: "net.nemerosa.versioning"
-    apply plugin: "com.github.sherter.google-java-format"
+    apply plugin: "com.diffplug.spotless"
 
     group = "io.github.malczuuu"
-    version = (versioning.info.tag ?: "${versioning.info.lastTag}-${versioning.info.build}") \
-           + (versioning.info.dirty ? "-dirty" : "")
+    version = (versioning.info.tag ?: "${versioning.info.lastTag}-${versioning.info.build}") + (versioning.info.dirty ? "-dirty" : "")
 
     repositories {
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven { url = "https://jitpack.io" }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    spotless {
+        format "misc", {
+            target "*.gradle", ".gitattributes", ".gitignore"
+
+            trimTrailingWhitespace()
+            leadingTabsToSpaces(4)
+            endWithNewline()
+        }
+
+        format "yaml", {
+            target "**/*.yml", "**/*.yaml"
+
+            trimTrailingWhitespace()
+            leadingTabsToSpaces(2)
+            endWithNewline()
+        }
+
+        java {
+            target "src/**/*.java"
+
+            googleJavaFormat("1.27.0")
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-
-        options.encoding = 'UTF-8'
-        options.compilerArgs += ['-parameters']
+        options.encoding = "UTF-8"
+        options.compilerArgs += ["-parameters"]
     }
 
     tasks.withType(Jar).configureEach {
@@ -33,14 +59,21 @@ subprojects {
         }
     }
 
-    test {
+    tasks.withType(Test).configureEach {
         useJUnitPlatform()
         testLogging {
             events "passed", "skipped", "failed"
         }
     }
 
-    googleJavaFormat {
-        toolVersion = "1.8"
+    /**
+     * Scripts that build Docker image require that there's only one jar.
+     */
+    pluginManager.withPlugin("org.springframework.boot") {
+        tasks.withType(Jar).configureEach {
+            if (name != "bootJar") {
+                enabled = false
+            }
+        }
     }
 }

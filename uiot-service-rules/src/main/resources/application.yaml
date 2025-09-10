@@ -1,5 +1,13 @@
 server:
   port: 8335
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 spring:
   application:
     name: uiot-service-rules
@@ -9,6 +17,9 @@ spring:
       database: uiot-service-rules
   jackson:
     default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    path: /v3/api-docs
 uiot:
   system-events-topic: uiot-system-events
   thing-events-topic: uiot-thing-events

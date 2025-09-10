@@ -1,5 +1,13 @@
 server:
   port: 8333
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 spring:
   application:
     name: uiot-service-history
@@ -13,6 +21,9 @@ spring:
       bootstrap-servers: localhost:9092
   jackson:
     default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    path: /v3/api-docs
 uiot:
   thing-events-topic: uiot-thing-events
   thing-metadata-topic: uiot-service-history_thing-metadata

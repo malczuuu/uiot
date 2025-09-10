@@ -5,7 +5,7 @@ import io.github.malczuuu.uiot.connectivity.model.ConnectivityCreateModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityModel;
 import io.github.malczuuu.uiot.connectivity.model.ConnectivityUpdateModel;
 import io.github.malczuuu.uiot.connectivity.model.PasswordUpdateModel;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;

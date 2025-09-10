@@ -1,15 +1,15 @@
 package io.github.malczuuu.uiot.history.core;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import kotlin.text.Charsets;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StorageNameServiceImpl implements StorageNameService {
 
-  private final Hex hex = new Hex(Charsets.UTF_8);
+  private final Hex hex = new Hex(StandardCharsets.UTF_8);
 
   @Override
   public String getStorageName(String room) {

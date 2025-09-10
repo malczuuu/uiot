@@ -1,11 +1,9 @@
 package io.github.malczuuu.uiot.history.stream;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @ConfigurationProperties(prefix = "uiot")
-@ConstructorBinding
 public class TopicProperties {
 
   private final String thingEventsTopic;

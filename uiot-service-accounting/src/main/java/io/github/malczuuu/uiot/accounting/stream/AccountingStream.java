@@ -69,7 +69,7 @@ public class AccountingStream implements InitializingBean {
             Grouped.<WindowKey, AccountingMetric>as("metric_grouping")
                 .withKeySerde(getJsonSerde(WindowKey.class))
                 .withValueSerde(getJsonSerde(AccountingMetric.class)))
-        .windowedBy(TimeWindows.of(windowsSize).grace(gracePeriod))
+        .windowedBy(TimeWindows.ofSizeAndGrace(windowsSize, gracePeriod))
         .aggregate(
             () -> new Aggregate(UUID.randomUUID().toString(), 0.0),
             (key, value, aggregate) -> aggregate.aggregate(value.getValue()),

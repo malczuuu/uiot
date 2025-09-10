@@ -6,12 +6,12 @@ pluginManagement {
 
 rootProject.name = "uiot"
 
-include ":uiot-library-models"
-include ":uiot-library-problems"
-include ":uiot-service-accounting"
-include ":uiot-service-connectivity"
-include ":uiot-service-history"
-include ":uiot-service-rooms"
-include ":uiot-service-rules"
-include ":uiot-service-telemetry"
-include ":uiot-service-things"
+include(":uiot-library-models")
+include(":uiot-library-problems")
+include(":uiot-service-accounting")
+include(":uiot-service-connectivity")
+include(":uiot-service-history")
+include(":uiot-service-rooms")
+include(":uiot-service-rules")
+include(":uiot-service-telemetry")
+include(":uiot-service-things")

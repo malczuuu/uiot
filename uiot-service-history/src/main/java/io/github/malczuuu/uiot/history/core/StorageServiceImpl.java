@@ -33,11 +33,11 @@ public class StorageServiceImpl implements StorageService {
     mongoOperations.createCollection(storageName);
 
     IndexOperations indexOperations = mongoOperations.indexOps(storageName);
-    indexOperations.ensureIndex(
+    indexOperations.createIndex(
         new Index()
             .on(ThingEventEntity.ROOM_UID, Direction.ASC)
             .on(ThingEventEntity.ARRIVAL_TIME_FIELD, Direction.ASC));
-    indexOperations.ensureIndex(
+    indexOperations.createIndex(
         new Index()
             .on(ThingEventEntity.ROOM_UID, Direction.ASC)
             .on(ThingEventEntity.THING_UID_FIELD, Direction.ASC)

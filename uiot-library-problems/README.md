@@ -10,7 +10,7 @@ This library uses [problem4j-core](https://github.com/malczuuu/problem4j) for RF
 
 ```groovy
 dependencies {
-    api("io.github.malczuuu.problem4j:problem4j-core:2.0.0")
+    api("com.github.malczuuu:problem4j-core:3.0.0-rc4")
 }
 ```
 

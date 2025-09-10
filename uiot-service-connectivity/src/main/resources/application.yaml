@@ -1,5 +1,13 @@
 server:
   port: 8332
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 spring:
   application:
     name: uiot-service-connectivity
@@ -11,6 +19,9 @@ spring:
     streams:
       application-id: ${spring.application.name}
       bootstrap-servers: localhost:9092
+springdoc:
+  api-docs:
+    path: /v3/api-docs
 uiot:
   vhost: /
   routing-key-template: telemetry.%s.%s
