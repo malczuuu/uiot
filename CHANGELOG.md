@@ -7,6 +7,24 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Add `spring-boot-starter-actuator` dependency to microservices and enable healthcheck and metrics endpoints.
+
+### Changed
+
+- Update Java to 17.
+- Update Spring Boot to 3.5.5 and various utility libraries.
+- Update Gradle to 9.0.0.
+- Replace marked deprecations in Kafka Streams usage.
+- Replace SpringFox Swagger with SpringDoc OpenAPI.
+- Update `uiot-docker-{...}` modules to differentiate local development environment and full-stack demo setup.
+- Replace `com.github.sherter.google-java-format` with `com.diffplug.spotless` Gradle plugin for code formatting.
+
+### Removed
+
+- Remove `zookeeper` from Docker setups as Kafka now supports KRaft mode (no external Zookeeper needed).
+
 ## [1.0.0] - 2025-08-06
 
 This release introduces a minimalistic, microservice-based IoT system. The system is composed of loosely coupled
