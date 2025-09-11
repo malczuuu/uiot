@@ -1,133 +1,29 @@
 [log]
-  level = "DEBUG"
+    level = "INFO"
+
+[ping]
+    entryPoint = "metrics"
+
+[metrics]
+    [metrics.prometheus]
+        entryPoint = "metrics"
 
 [entryPoints]
-  [entryPoints.http]
-   address = ":80"
+    # port for webapi
+    [entryPoints.web]
+        address = ":80"
+            [entryPoints.web.forwardedHeaders]
+                insecure = true
+            [entryPoints.web.transport]
+                [entryPoints.web.transport.lifeCycle]
+                    requestAcceptGraceTimeout = "10s"
 
-[providers.file]
-  filename = "/etc/traefik/traefik.toml"
+    [entryPoints.metrics]
+        address = ":9100"
 
-[http]
-  [http.routers]
+[providers]
+    [providers.file]
+    filename = "/etc/traefik/traefik_dynamic.toml"
 
-    #########################
-    ###  Service Routers  ###
-    #########################
-
-    [http.routers.uiot-service-accounting]
-      rule = """Method(`GET`) && Path(`/api/accounting`)"""
-      service = "uiot-service-accounting"
-
-    [http.routers.uiot-service-connectivity]
-      rule = """Method(`GET`) && Path(`/api/rooms/{room}/things/{thing}/connectivity`) || Method(`POST`) && Path(`/api/rooms/{room}/things/{thing}/connectivity`) || Method(`PUT`) && Path(`/api/rooms/{room}/things/{thing}/connectivity`) || Method(`DELETE`) && Path(`/api/rooms/{room}/things/{thing}/connectivity`) || Method(`PUT`) && Path(`/api/rooms/{room}/things/{thing}/connectivity/password`) || Method(`POST`) && Path(`/auth/resource`) || Method(`POST`) && Path(`/auth/topic`) || Method(`POST`) && Path(`/auth/user`) || Method(`POST`) && Path(`/auth/vhost`)"""
-      service = "uiot-service-connectivity"
-
-    [http.routers.uiot-service-history]
-      rule = """Method(`GET`) && Path(`/api/rooms/{room}/history`) || Method(`GET`) && Path(`/api/rooms/{room}/things/{thing}/last-state`)"""
-      service = "uiot-service-history"
-
-    [http.routers.uiot-service-rooms]
-      rule = """Method(`GET`) && Path(`/api/rooms`) || Method(`POST`) && Path(`/api/rooms`) || Method(`GET`) && Path(`/api/rooms/{room}`) || Method(`PUT`) && Path(`/api/rooms/{room}`) || Method(`DELETE`) && Path(`/api/rooms/{room}`)"""
-      service = "uiot-service-rooms"
-
-    [http.routers.uiot-service-rules]
-      rule = """Method(`GET`) && Path(`/api/rooms/{room}/rules`) || Method(`POST`) && Path(`/api/rooms/{room}/rules`) || Method(`GET`) && Path(`/api/rooms/{room}/rules/{rule}`) || Method(`DELETE`) && Path(`/api/rooms/{room}/rules/{rule}`)"""
-      service = "uiot-service-rules"
-
-    [http.routers.uiot-service-things]
-      rule = """Method(`GET`) && Path(`/api/rooms/{room}/things`) || Method(`POST`) && Path(`/api/rooms/{room}/things`) || Method(`GET`) && Path(`/api/rooms/{room}/things/{thing}`) || Method(`PUT`) && Path(`/api/rooms/{room}/things/{thing}`) || Method(`DELETE`) && Path(`/api/rooms/{room}/things/{thing}`)"""
-      service = "uiot-service-things"
-
-    ############################
-    ###  Swagger UI Routers  ###
-    ############################
-
-    [http.routers.uiot-swagger-ui]
-      rule = """Path(`/`) || Path(`/swagger-ui.css`) || Path(`/index.css`) || Path(`/swagger-ui-bundle.js`) || Path(`/swagger-ui-standalone-preset.js`) || Path(`/swagger-initializer.js`) || Path(`/favicon-16x16.png`) || Path(`/favicon-32x32.png`)"""
-      service = "uiot-swagger-ui"
-
-    [http.routers.accounting-swagger]
-      rule = "Path(`/accounting/v3/api-docs`)"
-      service = "uiot-service-accounting"
-      middlewares = ["accounting-swagger-strip"]
-
-    [http.routers.connectivity-swagger]
-      rule = "Path(`/connectivity/v3/api-docs`)"
-      service = "uiot-service-connectivity"
-      middlewares = ["connectivity-swagger-strip"]
-
-    [http.routers.history-swagger]
-      rule = "Path(`/history/v3/api-docs`)"
-      service = "uiot-service-history"
-      middlewares = ["history-swagger-strip"]
-
-    [http.routers.rooms-swagger]
-      rule = "Path(`/rooms/v3/api-docs`)"
-      service = "uiot-service-rooms"
-      middlewares = ["rooms-swagger-strip"]
-
-    [http.routers.rules-swagger]
-      rule = "Path(`/rules/v3/api-docs`)"
-      service = "uiot-service-rules"
-      middlewares = ["rules-swagger-strip"]
-
-    [http.routers.things-swagger]
-      rule = "Path(`/things/v3/api-docs`)"
-      service = "uiot-service-things"
-      middlewares = ["things-swagger-strip"]
-
-  [http.middlewares]
-
-    ################################
-    ###  Swagger UI Middlewares  ###
-    ################################
-
-    [http.middlewares.accounting-swagger-strip.stripPrefix]
-      prefixes = ["/accounting"]
-
-    [http.middlewares.connectivity-swagger-strip.stripPrefix]
-      prefixes = ["/connectivity"]
-
-    [http.middlewares.history-swagger-strip.stripPrefix]
-      prefixes = ["/history"]
-
-    [http.middlewares.rooms-swagger-strip.stripPrefix]
-      prefixes = ["/rooms"]
-
-    [http.middlewares.rules-swagger-strip.stripPrefix]
-      prefixes = ["/rules"]
-
-    [http.middlewares.things-swagger-strip.stripPrefix]
-      prefixes = ["/things"]
-
-  [http.services]
-
-    ##################
-    ###  Services  ###
-    ##################
-
-    [[http.services.uiot-service-accounting.loadBalancer.servers]]
-      url = "http://uiot-service-accounting:8080/"
-
-    [[http.services.uiot-service-connectivity.loadBalancer.servers]]
-      url = "http://uiot-service-connectivity:8080/"
-
-    [[http.services.uiot-service-history.loadBalancer.servers]]
-      url = "http://uiot-service-history:8080/"
-
-    [[http.services.uiot-service-rooms.loadBalancer.servers]]
-      url = "http://uiot-service-rooms:8080/"
-
-    [[http.services.uiot-service-rules.loadBalancer.servers]]
-      url = "http://uiot-service-rules:8080/"
-
-    [[http.services.uiot-service-things.loadBalancer.servers]]
-      url = "http://uiot-service-things:8080/"
-
-    ############################
-    ###  Swagger UI Service  ###
-    ############################
-
-    [[http.services.uiot-swagger-ui.loadBalancer.servers]]
-      url = "http://uiot-swagger-ui:8080/"
+# enable accessLog with default settings (therefore it is empty)
+[accessLog]

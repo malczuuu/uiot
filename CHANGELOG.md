@@ -20,6 +20,7 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Replace SpringFox Swagger with SpringDoc OpenAPI.
 - Update `uiot-docker-{...}` modules to differentiate local development environment and full-stack demo setup.
 - Replace `com.github.sherter.google-java-format` with `com.diffplug.spotless` Gradle plugin for code formatting.
+- Update Traefik to 3.x and adjust configuration accordingly.
 
 ### Removed
 

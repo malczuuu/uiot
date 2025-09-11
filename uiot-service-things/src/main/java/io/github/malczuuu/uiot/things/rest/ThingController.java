@@ -60,7 +60,7 @@ public class ThingController {
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.ACCEPTED)
+  @ResponseStatus(HttpStatus.CREATED)
   public ThingModel createThing(
       @PathVariable("room") String room, @RequestBody @Valid ThingCreateModel requestBody) {
     return thingService.createThing(room, requestBody);
