@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rooms.core;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
@@ -28,9 +29,9 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public CursorPage<RoomModel> getRooms(int size) {
-    List<RoomEntity> entities = roomRepository.findWithoutCursor(size);
-    return toNextPage(entities, size);
+  public CursorPage<RoomModel> getRooms(Pagination pagination) {
+    List<RoomEntity> entities = roomRepository.findWithoutCursor(pagination.getSize());
+    return toNextPage(entities, pagination.getSize());
   }
 
   private CursorPage<RoomModel> toNextPage(List<RoomEntity> entities, int size) {

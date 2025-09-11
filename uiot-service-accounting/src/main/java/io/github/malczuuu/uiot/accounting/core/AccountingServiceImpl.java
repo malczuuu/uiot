@@ -2,6 +2,7 @@ package io.github.malczuuu.uiot.accounting.core;
 
 import io.github.malczuuu.uiot.accounting.model.AccountingRecord;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
+import io.github.malczuuu.uiot.models.Pagination;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,10 +21,10 @@ public class AccountingServiceImpl implements AccountingService {
   }
 
   @Override
-  public AccountingTimeline getAccounting(long since, long until, int size) {
+  public AccountingTimeline getAccounting(long since, long until, Pagination pagination) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByEndTimeBetweenOrderByStartTimeDesc(
-            since, until, PageRequest.of(0, size));
+            since, until, PageRequest.of(0, pagination.getSize()));
     return new AccountingTimeline(
         entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }
@@ -47,10 +48,11 @@ public class AccountingServiceImpl implements AccountingService {
   }
 
   @Override
-  public AccountingTimeline getAccounting(String roomUid, long since, long until, int size) {
+  public AccountingTimeline getAccounting(
+      String roomUid, long since, long until, Pagination pagination) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByRoomUidAndEndTimeBetweenOrderByStartTimeDesc(
-            roomUid, since, until, PageRequest.of(0, size));
+            roomUid, since, until, PageRequest.of(0, pagination.getSize()));
     return new AccountingTimeline(
         entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }

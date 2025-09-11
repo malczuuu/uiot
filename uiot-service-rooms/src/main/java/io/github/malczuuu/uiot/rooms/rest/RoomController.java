@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rooms.rest;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.rooms.core.RoomService;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
 import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
@@ -33,18 +34,8 @@ public class RoomController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public CursorPage<RoomModel> getRooms(
       @RequestParam(name = "size", defaultValue = "20") String size) {
-    int sizeAsInt = parseSize(size);
-    return roomService.getRooms(sizeAsInt);
-  }
-
-  private int parseSize(String size) {
-    int sizeAsInt;
-    try {
-      sizeAsInt = Integer.parseInt(size);
-    } catch (NumberFormatException e) {
-      sizeAsInt = 20;
-    }
-    return sizeAsInt;
+    Pagination pagination = Pagination.parseSize(size);
+    return roomService.getRooms(pagination);
   }
 
   @Operation(hidden = true)

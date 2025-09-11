@@ -2,6 +2,7 @@ package io.github.malczuuu.uiot.accounting.rest;
 
 import io.github.malczuuu.uiot.accounting.core.AccountingService;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
+import io.github.malczuuu.uiot.models.Pagination;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
@@ -28,8 +29,8 @@ public class AccountingController {
       @RequestParam(name = "size", defaultValue = "50") String size) {
     long sinceAsLong = parseTimeParameter(since, true);
     long untilAsLong = parseTimeParameter(until, false);
-    int sizeAsInt = parseSize(size);
-    return accountingService.getAccounting(sinceAsLong, untilAsLong, sizeAsInt);
+    Pagination pagination = Pagination.parseSize(size, 50);
+    return accountingService.getAccounting(sinceAsLong, untilAsLong, pagination);
   }
 
   private long parseTimeParameter(String time, boolean isSince) {
@@ -51,14 +52,6 @@ public class AccountingController {
     return instant.getEpochSecond() * 1000_000_000L + instant.getNano();
   }
 
-  private int parseSize(String size) {
-    try {
-      return Integer.parseInt(size);
-    } catch (NumberFormatException e) {
-      return 50;
-    }
-  }
-
   @GetMapping(
       params = {"room_uid"},
       produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +62,7 @@ public class AccountingController {
       @RequestParam(name = "size", defaultValue = "50") String size) {
     long sinceAsLong = parseTimeParameter(since, true);
     long untilAsLong = parseTimeParameter(until, false);
-    int sizeAsInt = parseSize(size);
-    return accountingService.getAccounting(roomUid, sinceAsLong, untilAsLong, sizeAsInt);
+    Pagination pagination = Pagination.parseSize(size, 50);
+    return accountingService.getAccounting(roomUid, sinceAsLong, untilAsLong, pagination);
   }
 }

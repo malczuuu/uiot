@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rules.rest;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.rules.core.RuleService;
 import io.github.malczuuu.uiot.rules.model.RuleModel;
 import io.github.malczuuu.uiot.rules.model.RulesPage;
@@ -28,16 +29,8 @@ public class RuleController {
   public RulesPage getRules(
       @PathVariable("room") String room,
       @RequestParam(name = "size", defaultValue = "20") String size) {
-    int sizeAsInt = parseSize(size);
-    return ruleService.getRules(room, sizeAsInt);
-  }
-
-  private int parseSize(String size) {
-    try {
-      return Integer.parseInt(size);
-    } catch (NumberFormatException e) {
-      return 20;
-    }
+    Pagination pagination = Pagination.parseSize(size);
+    return ruleService.getRules(room, pagination);
   }
 
   @GetMapping(path = "/{rule}", produces = MediaType.APPLICATION_JSON_VALUE)

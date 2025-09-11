@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.things.core;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.problems.InternalServerErrorException;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.things.model.CursorPage;
@@ -26,9 +27,9 @@ public class ThingServiceImpl implements ThingService {
   }
 
   @Override
-  public CursorPage<ThingModel> getThings(String roomUid, int size) {
-    List<ThingEntity> entities = thingRepository.findWithoutCursor(roomUid, size);
-    return toNextPage(entities, size);
+  public CursorPage<ThingModel> getThings(String roomUid, Pagination pagination) {
+    List<ThingEntity> entities = thingRepository.findWithoutCursor(roomUid, pagination.getSize());
+    return toNextPage(entities, pagination.getSize());
   }
 
   private CursorPage<ThingModel> toNextPage(List<ThingEntity> entities, int size) {

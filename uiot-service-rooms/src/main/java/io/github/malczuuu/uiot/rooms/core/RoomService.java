@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rooms.core;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.rooms.model.CursorPage;
@@ -9,7 +10,7 @@ import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
 
 public interface RoomService {
 
-  CursorPage<RoomModel> getRooms(int size);
+  CursorPage<RoomModel> getRooms(Pagination pagination);
 
   CursorPage<RoomModel> getRooms(String cursorString) throws InvalidCursorException;
 

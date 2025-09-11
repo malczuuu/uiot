@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.things.core;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
 import io.github.malczuuu.uiot.things.model.CursorPage;
 import io.github.malczuuu.uiot.things.model.ThingCreateModel;
@@ -8,7 +9,7 @@ import io.github.malczuuu.uiot.things.model.ThingUpdateModel;
 
 public interface ThingService {
 
-  CursorPage<ThingModel> getThings(String roomUid, int size);
+  CursorPage<ThingModel> getThings(String roomUid, Pagination pagination);
 
   CursorPage<ThingModel> getThings(String roomUid, String cursorString)
       throws InvalidCursorException;

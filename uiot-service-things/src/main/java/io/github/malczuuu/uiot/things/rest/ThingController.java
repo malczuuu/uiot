@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.things.rest;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.things.core.ThingService;
 import io.github.malczuuu.uiot.things.model.CursorPage;
 import io.github.malczuuu.uiot.things.model.ThingCreateModel;
@@ -34,18 +35,8 @@ public class ThingController {
   public CursorPage<ThingModel> getThings(
       @PathVariable("room") String room,
       @RequestParam(name = "size", defaultValue = "20") String size) {
-    int sizeAsInt = parseSize(size);
-    return thingService.getThings(room, sizeAsInt);
-  }
-
-  private int parseSize(String size) {
-    int sizeAsInt;
-    try {
-      sizeAsInt = Integer.parseInt(size);
-    } catch (NumberFormatException e) {
-      sizeAsInt = 20;
-    }
-    return sizeAsInt;
+    Pagination pagination = Pagination.parseSize(size);
+    return thingService.getThings(room, pagination);
   }
 
   @Operation(hidden = true)

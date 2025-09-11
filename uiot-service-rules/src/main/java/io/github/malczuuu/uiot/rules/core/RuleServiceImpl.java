@@ -1,5 +1,6 @@
 package io.github.malczuuu.uiot.rules.core;
 
+import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.models.ThingEvent;
 import io.github.malczuuu.uiot.rules.model.ConditionModel;
 import io.github.malczuuu.uiot.rules.model.RuleModel;
@@ -23,8 +24,9 @@ public class RuleServiceImpl implements RuleService {
   }
 
   @Override
-  public RulesPage getRules(String roomUid, int size) {
-    Page<RuleEntity> rules = ruleRepository.findAllByRoomUid(roomUid, PageRequest.of(0, size));
+  public RulesPage getRules(String roomUid, Pagination pagination) {
+    Page<RuleEntity> rules =
+        ruleRepository.findAllByRoomUid(roomUid, PageRequest.of(0, pagination.getSize()));
     return new RulesPage(rules.stream().map(ruleMapper::toRuleModel).collect(Collectors.toList()));
   }
 
