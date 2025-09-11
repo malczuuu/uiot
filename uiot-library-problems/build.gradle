@@ -1,5 +1,5 @@
 apply plugin: "java-library"
 
 dependencies {
-    compileOnly("com.github.malczuuu:problem4j-core:3.1.0")
+    compileOnly("com.github.malczuuu:problem4j-core:${problem4jCoreVersion}")
 }

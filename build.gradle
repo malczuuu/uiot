@@ -1,8 +1,8 @@
 plugins {
-    id("net.nemerosa.versioning") version "3.1.0" apply false
-    id("org.springframework.boot") version "3.5.5" apply false
-    id("io.spring.dependency-management") version "1.1.7" apply false
-    id("com.diffplug.spotless") version "7.2.1" apply false
+    id("net.nemerosa.versioning") version "${versioningPlugin}" apply false
+    id("org.springframework.boot") version "${springBootPlugin}" apply false
+    id("io.spring.dependency-management") version "${dependencyManagementPlugin}" apply false
+    id("com.diffplug.spotless") version "${spotlessPlugin}" apply false
 }
 
 subprojects {
@@ -44,7 +44,7 @@ subprojects {
         java {
             target "src/**/*.java"
 
-            googleJavaFormat("1.27.0")
+            googleJavaFormat("${googleJavaFormatVersion}")
         }
     }
 

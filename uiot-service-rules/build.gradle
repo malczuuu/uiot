@@ -13,9 +13,9 @@ dependencies {
 
     implementation("io.micrometer:micrometer-registry-prometheus")
 
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
 
-    implementation("com.github.malczuuu:problem4j-spring-web:3.1.0-rc5")
+    implementation("com.github.malczuuu:problem4j-spring-web:${problem4jSpringWebVersion}")
 
     implementation("org.springframework.kafka:spring-kafka")
 
