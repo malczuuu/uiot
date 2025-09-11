@@ -7,7 +7,7 @@ import io.github.malczuuu.uiot.models.AccountingWindow;
 import io.github.malczuuu.uiot.models.AccountingWindowEnvelope;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -106,7 +106,7 @@ public class AccountingStream implements InitializingBean {
                 key.key().getType(),
                 key.key().getRoomUid(),
                 value.getValue(),
-                Arrays.asList(toMillis(key.window().startTime()), toMillis(key.window().endTime())),
+                List.of(toMillis(key.window().startTime()), toMillis(key.window().endTime())),
                 key.key().getTags())));
   }
 

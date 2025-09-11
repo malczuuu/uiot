@@ -8,7 +8,7 @@ import java.util.List;
 public class CursorPage<T> {
 
   public static <T> CursorPage<T> empty() {
-    return new CursorPage<>(Collections.emptyList(), null);
+    return new CursorPage<>(List.of(), null);
   }
 
   private final List<T> content;

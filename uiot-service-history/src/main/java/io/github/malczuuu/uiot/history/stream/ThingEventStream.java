@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.history.core.HistoryService;
 import io.github.malczuuu.uiot.models.ThingEvent;
 import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -113,7 +113,7 @@ public class ThingEventStream implements InitializingBean {
           .map(event -> new KeyValue<>(getThingKey(event), event))
           .collect(Collectors.toList());
     }
-    return Collections.emptyList();
+    return List.of();
   }
 
   private Iterable<KeyValue<String, ThingEvent>> splitByPropertyKey(ThingEventsEnvelope value) {
@@ -122,7 +122,7 @@ public class ThingEventStream implements InitializingBean {
           .map(event -> new KeyValue<>(getPropertyKey(event), event))
           .collect(Collectors.toList());
     }
-    return Collections.emptyList();
+    return List.of();
   }
 
   private String getThingKey(ThingEvent event) {

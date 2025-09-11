@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
@@ -39,7 +39,7 @@ public class LastStateServiceImpl implements LastStateService {
     OffsetDateTime parsedArrivalTime = parseTime(event.getArrivalTime());
 
     return new EventHistory(
-        Collections.singletonList(
+        List.of(
             new HistoryRecord(
                 event.getName(),
                 event.getTime() / 1000_000_000.0d,
