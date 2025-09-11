@@ -103,7 +103,7 @@ public class TelemetryRabbitListener implements InitializingBean {
             .filter(e -> e.getRoom().equals(room) && e.getThing().equals(thing))
             .collect(Collectors.toList());
 
-    if (events.size() > 0) {
+    if (!events.isEmpty()) {
       deviceEventKafkaSink.sink(events);
       log.info(
           "Successfully processed message on routingKey={}, payload={}",
