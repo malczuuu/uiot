@@ -117,7 +117,7 @@ services:
         condition: service_healthy
 
   uiot-swagger-ui:
-    image: swaggerapi/swagger-ui:v5.27.1
+    image: swaggerapi/swagger-ui:v5.29.0
     environment:
       URLS: '[
           { "url" : "/accounting/v3/api-docs",   "name" : "Accounting"   },
