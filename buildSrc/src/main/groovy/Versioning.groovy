@@ -10,7 +10,6 @@ class Versioning {
 
     private static final String UNSPECIFIED = "unspecified"
 
-
     /**
      * Get the version of the project.
      * - Returns the abbreviated commit hash of HEAD.
