@@ -1,5 +1,4 @@
 plugins {
-    id("net.nemerosa.versioning") version "${versioningPlugin}" apply false
     id("org.springframework.boot") version "${springBootPlugin}" apply false
     id("io.spring.dependency-management") version "${dependencyManagementPlugin}" apply false
     id("com.diffplug.spotless") version "${spotlessPlugin}" apply false
@@ -7,11 +6,17 @@ plugins {
 
 subprojects {
     apply plugin: "java"
-    apply plugin: "net.nemerosa.versioning"
     apply plugin: "com.diffplug.spotless"
 
     group = "io.github.malczuuu"
-    version = (versioning.info.tag ?: "${versioning.info.lastTag}-${versioning.info.build}") + (versioning.info.dirty ? "-dirty" : "")
+
+    /**
+     * Conditional approach to versioning. If `-Pversion=...` is specified on the command line, it will be used as the
+     * version. Otherwise, the version is derived from the git tag and build number.
+     */
+    if (version == null || version == "unspecified") {
+        version = Versioning.getVersion(rootProject.rootDir)
+    }
 
     repositories {
         mavenCentral()
@@ -45,6 +50,12 @@ subprojects {
             target "src/**/*.java"
 
             googleJavaFormat("${googleJavaFormatVersion}")
+        }
+    }
+
+    tasks.register("printVersion") {
+        doLast {
+            println "Project version: ${Versioning.getVersion(rootProject.rootDir)}"
         }
     }
 
