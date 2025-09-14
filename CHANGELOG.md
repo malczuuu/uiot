@@ -7,6 +7,8 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-09-14
+
 ### Added
 
 - Add `spring-boot-starter-actuator` dependency to microservices and enable healthcheck and metrics endpoints.
