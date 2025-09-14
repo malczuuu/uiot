@@ -23,7 +23,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build -Pversion=${{ github.ref_name }}
 
       - name: Upload service jars
         uses: actions/upload-artifact@v4
@@ -55,15 +55,6 @@ jobs:
         with:
           name: service-jars
           path: .
-
-      # - name: Prepare jar in service root
-      #   run: |
-      #     set -euo pipefail
-      #     # Copy the built (non -plain) jar for this service to the module root so Dockerfile COPY works.
-      #     jar_source=$(ls ${{ matrix.service }}/build/libs/${{ matrix.service }}-*.jar | head -n1)
-      #     echo "Using jar: $jar_source"
-      #     cp "$jar_source" ${{ matrix.service }}/
-      #     ls -l ${{ matrix.service }}/ | grep .jar || (echo "Jar not found in service root" && exit 1)
 
       - name: Log in to Docker Hub
         if: startsWith(github.ref, 'refs/tags/')
