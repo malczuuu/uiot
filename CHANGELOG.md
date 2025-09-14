@@ -10,6 +10,7 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Add `spring-boot-starter-actuator` dependency to microservices and enable healthcheck and metrics endpoints.
+- Enable JSON logging for all microservices in Docker containers.
 
 ### Changed
 
