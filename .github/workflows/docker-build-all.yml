@@ -22,6 +22,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # Property -Pversion=<version> is used to set the version of the built jars to the tag name.
+      # Otherwise, project uses git commit hash as version.
       - name: Build with Gradle Wrapper
         run: ./gradlew build -Pversion=${{ github.ref_name }}
 

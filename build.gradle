@@ -15,7 +15,7 @@ subprojects {
      * version. Otherwise, the version is derived from the git tag and build number.
      */
     if (version == null || version == "unspecified") {
-        version = Versioning.getVersion(rootProject.rootDir)
+        version = Versioning.getSnapshotVersion(rootProject.rootDir)
     }
 
     repositories {
@@ -55,7 +55,7 @@ subprojects {
 
     tasks.register("printVersion") {
         doLast {
-            println "Project version: ${Versioning.getVersion(rootProject.rootDir)}"
+            println "Project version: ${version}"
         }
     }
 
