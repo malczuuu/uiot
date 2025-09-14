@@ -1,6 +1,7 @@
 package io.github.malczuuu.uiot.accounting;
 
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,12 @@ public class AccountingApplication {
   @Bean
   public OpenApiCustomizer openApiPathSorter() {
     return openApi -> {
+      String version = getClass().getPackage().getImplementationVersion();
+      openApi.setInfo(
+          new Info()
+              .version(version != null ? version : "compiled")
+              .title("uIoT Accounting Service API"));
+
       Paths paths = new Paths();
 
       openApi.getPaths().keySet().stream()

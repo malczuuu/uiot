@@ -3,9 +3,7 @@ package io.github.malczuuu.uiot.accounting.rest;
 import io.github.malczuuu.uiot.accounting.core.AccountingService;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
 import io.github.malczuuu.uiot.models.Pagination;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeParseException;
+import io.github.malczuuu.uiot.models.TimeRange;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,29 +25,9 @@ public class AccountingController {
       @RequestParam(name = "since", defaultValue = "") String since,
       @RequestParam(name = "until", defaultValue = "") String until,
       @RequestParam(name = "size", defaultValue = "50") String size) {
-    long sinceAsLong = parseTimeParameter(since, true);
-    long untilAsLong = parseTimeParameter(until, false);
+    TimeRange timeRange = TimeRange.parse(since, until);
     Pagination pagination = Pagination.parseSize(size, 50);
-    return accountingService.getAccounting(sinceAsLong, untilAsLong, pagination);
-  }
-
-  private long parseTimeParameter(String time, boolean isSince) {
-    try {
-      return (long) (Double.parseDouble(time) * 1000_000_000L);
-    } catch (NumberFormatException e) {
-      return fallbackThroughIso(time, isSince);
-    }
-  }
-
-  private long fallbackThroughIso(String time, boolean isSince) {
-    OffsetDateTime dateTime;
-    try {
-      dateTime = OffsetDateTime.parse(time);
-    } catch (DateTimeParseException e) {
-      dateTime = isSince ? OffsetDateTime.MIN : OffsetDateTime.MAX;
-    }
-    Instant instant = dateTime.toInstant();
-    return instant.getEpochSecond() * 1000_000_000L + instant.getNano();
+    return accountingService.getAccounting(timeRange, pagination);
   }
 
   @GetMapping(
@@ -60,9 +38,8 @@ public class AccountingController {
       @RequestParam(name = "since", defaultValue = "") String since,
       @RequestParam(name = "until", defaultValue = "") String until,
       @RequestParam(name = "size", defaultValue = "50") String size) {
-    long sinceAsLong = parseTimeParameter(since, true);
-    long untilAsLong = parseTimeParameter(until, false);
+    TimeRange timeRange = TimeRange.parse(since, until);
     Pagination pagination = Pagination.parseSize(size, 50);
-    return accountingService.getAccounting(roomUid, sinceAsLong, untilAsLong, pagination);
+    return accountingService.getAccounting(roomUid, timeRange, pagination);
   }
 }

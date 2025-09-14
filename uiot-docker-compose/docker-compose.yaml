@@ -1,26 +1,25 @@
 services:
 
   kafka:
-    image: &kafka-image bitnami/kafka:4.0.0
+    image: &kafka-image apache/kafka:4.1.0
     ports:
       - "127.0.0.1:9092:9092"
     environment:
-      KAFKA_CLUSTER_ID: 0
-      KAFKA_CREATE_TOPICS: "uiot-accounting:1:1,uiot-accounting-windows:1:1,uiot-thing-events:1:1,uiot-action-execution-events:1:1,uiot-system-events:1:1,uiot-service-history_thing-metadata:1:1,uiot-service-history_keyed-thing-events:1:1"
-      KAFKA_CFG_NODE_ID: 0
-      KAFKA_CFG_PROCESS_ROLES: controller,broker
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:49092
-      KAFKA_CFG_LISTENERS: EXTERNAL://:9092,INTERNAL://:29092,CONTROLLER://:49092
-      KAFKA_CFG_ADVERTISED_LISTENERS: EXTERNAL://localhost:9092,INTERNAL://kafka:29092,CONTROLLER://kafka:49092
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: INTERNAL
+      CLUSTER_ID: 0
+      KAFKA_NODE_ID: 0
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@kafka:49092
+      KAFKA_LISTENERS: EXTERNAL://:9092,INTERNAL://:29092,CONTROLLER://:49092
+      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://localhost:9092,INTERNAL://kafka:29092,CONTROLLER://kafka:49092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
     volumes:
-      - kafka_data:/bitnami:rw
+      - kafka_data:/var/lib/kafka/data:rw
     networks:
       - uiot
     healthcheck:
-      test: [ "CMD", "sh", "-c", "kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1" ]
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,7 +27,6 @@ services:
 
   kafka-init-job:
     image: *kafka-image
-    working_dir: /opt/bitnami/kafka/bin
     entrypoint: /bin/bash
     networks:
       - uiot
@@ -37,13 +35,13 @@ services:
         condition: service_healthy
     command: |
       -c "
-        kafka-topics.sh --create --if-not-exists --topic uiot-accounting --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-accounting-windows --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-thing-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-action-execution-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-system-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-service-history_thing-metadata --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
-        kafka-topics.sh --create --if-not-exists --topic uiot-service-history_keyed-thing-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-accounting --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-accounting-windows --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-thing-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-action-execution-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-system-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-service-history_thing-metadata --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic uiot-service-history_keyed-thing-events --replication-factor=1 --partitions=5 --bootstrap-server kafka:29092
       "
 
   mongo:
@@ -98,23 +96,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    depends_on:
-      uiot-swagger-ui:
-        condition: service_healthy
-      uiot-service-accounting:
-        condition: service_healthy
-      uiot-service-connectivity:
-        condition: service_healthy
-      uiot-service-history:
-        condition: service_healthy
-      uiot-service-rooms:
-        condition: service_healthy
-      uiot-service-rules:
-        condition: service_healthy
-      uiot-service-telemetry:
-        condition: service_healthy
-      uiot-service-things:
-        condition: service_healthy
 
   uiot-swagger-ui:
     image: swaggerapi/swagger-ui:v5.29.0
@@ -135,21 +116,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    depends_on:
-      uiot-service-accounting:
-        condition: service_healthy
-      uiot-service-connectivity:
-        condition: service_healthy
-      uiot-service-history:
-        condition: service_healthy
-      uiot-service-rooms:
-        condition: service_healthy
-      uiot-service-rules:
-        condition: service_healthy
-      uiot-service-telemetry:
-        condition: service_healthy
-      uiot-service-things:
-        condition: service_healthy
 
   uiot-service-accounting:
     image: malczuuu/uiot-service-accounting:${UIOT_VERSION}

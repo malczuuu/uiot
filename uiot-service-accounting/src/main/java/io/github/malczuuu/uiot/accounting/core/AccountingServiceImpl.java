@@ -3,6 +3,7 @@ package io.github.malczuuu.uiot.accounting.core;
 import io.github.malczuuu.uiot.accounting.model.AccountingRecord;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
 import io.github.malczuuu.uiot.models.Pagination;
+import io.github.malczuuu.uiot.models.TimeRange;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -21,10 +22,12 @@ public class AccountingServiceImpl implements AccountingService {
   }
 
   @Override
-  public AccountingTimeline getAccounting(long since, long until, Pagination pagination) {
+  public AccountingTimeline getAccounting(TimeRange timeRange, Pagination pagination) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByEndTimeBetweenOrderByStartTimeDesc(
-            since, until, PageRequest.of(0, pagination.getSize()));
+            timeRange.getSinceInNano(),
+            timeRange.getUntilInNano(),
+            PageRequest.of(0, pagination.getSize()));
     return new AccountingTimeline(
         entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }
@@ -49,10 +52,13 @@ public class AccountingServiceImpl implements AccountingService {
 
   @Override
   public AccountingTimeline getAccounting(
-      String roomUid, long since, long until, Pagination pagination) {
+      String roomUid, TimeRange timeRange, Pagination pagination) {
     Page<AccountingEntity> entities =
         accountingRepository.findAllByRoomUidAndEndTimeBetweenOrderByStartTimeDesc(
-            roomUid, since, until, PageRequest.of(0, pagination.getSize()));
+            roomUid,
+            timeRange.getSinceInNano(),
+            timeRange.getUntilInNano(),
+            PageRequest.of(0, pagination.getSize()));
     return new AccountingTimeline(
         entities.stream().map(this::toRecord).collect(Collectors.toList()));
   }

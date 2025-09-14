@@ -1,6 +1,7 @@
 package io.github.malczuuu.uiot.rooms;
 
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
 import java.time.Clock;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +27,12 @@ public class RoomsApplication {
   @Bean
   public OpenApiCustomizer openApiPathSorter() {
     return openApi -> {
+      String version = getClass().getPackage().getImplementationVersion();
+      openApi.setInfo(
+          new Info()
+              .version(version != null ? version : "compiled")
+              .title("uIoT Rooms Service API"));
+
       Paths paths = new Paths();
 
       openApi.getPaths().keySet().stream()
