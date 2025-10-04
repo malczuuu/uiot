@@ -8,7 +8,7 @@ subprojects {
     apply plugin: "java"
     apply plugin: "com.diffplug.spotless"
 
-    group = "io.github.malczuuu"
+    group = "io.github.malczuuu.uiot"
 
     /**
      * Conditional approach to versioning. If `-Pversion=...` is specified on the command line, it will be used as the
@@ -20,6 +20,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        mavenLocal()
         maven { url = "https://jitpack.io" }
     }
 

@@ -15,7 +15,7 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
 
-    implementation("com.github.malczuuu:problem4j-spring-web:${problem4jSpringWebVersion}")
+    implementation("io.github.malczuuu.problem4j:problem4j-spring-webmvc:${problem4jSpringWebVersion}")
 
     implementation("org.springframework.kafka:spring-kafka")
 

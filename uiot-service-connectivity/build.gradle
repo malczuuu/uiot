@@ -18,7 +18,7 @@ dependencies {
 
     implementation("org.apache.kafka:kafka-streams")
 
-    implementation("com.github.malczuuu:problem4j-spring-web:${problem4jSpringWebVersion}")
+    implementation("io.github.malczuuu.problem4j:problem4j-spring-webmvc:${problem4jSpringWebVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
