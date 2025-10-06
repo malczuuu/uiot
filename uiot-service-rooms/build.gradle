@@ -2,6 +2,7 @@ apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 
 dependencies {
+    implementation(platform("io.github.malczuuu.problem4j:problem4j-spring-bom:${problem4jSpringVersion}"))
 
     implementation(project(":uiot-library-models"))
     implementation(project(":uiot-library-problems"))
@@ -15,7 +16,7 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
 
-    implementation("io.github.malczuuu.problem4j:problem4j-spring-webmvc:${problem4jSpringWebVersion}")
+    implementation("io.github.malczuuu.problem4j:problem4j-spring-webmvc")
 
     implementation("org.springframework.kafka:spring-kafka")
 
