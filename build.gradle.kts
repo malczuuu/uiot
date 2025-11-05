@@ -1,9 +1,9 @@
 import com.diffplug.spotless.LineEnding
 
 plugins {
-    id("org.springframework.boot").version("3.5.5").apply(false)
-    id("io.spring.dependency-management").version("1.1.7").apply(false)
-    id("com.diffplug.spotless").version("8.0.0")
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.spring.boot).apply(false)
+    alias(libs.plugins.spring.dependency.management).apply(false)
 }
 
 allprojects {
