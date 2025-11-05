@@ -2,7 +2,7 @@
 spring-boot = "3.5.5"
 problem4j-spring = "1.0.1"
 springdoc-openapi = "2.8.13"
-commons-codec = "1.19.0"
+commons-codec = "1.20.0"
 
 [libraries]
 
