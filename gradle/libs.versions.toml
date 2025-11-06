@@ -1,10 +1,9 @@
 [versions]
-commons-codec = "1.20.0"
+problem4j-spring = "1.0.1"
 spotless = "8.0.0"
 spring-boot = "3.5.7"
 spring-dependency-management = "1.1.7"
 springdoc-openapi = "2.8.14"
-problem4j-spring = "1.0.1"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -12,12 +11,10 @@ spring-dependency-management = { id = "io.spring.dependency-management", version
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
-
-spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+# BOMs
 problem4j-spring-bom = { module = "io.github.malczuuu.problem4j:problem4j-spring-bom", version.ref = "problem4j-spring" }
-springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
-
-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", version.ref = "springdoc-openapi" }
 
 # managed by spring-boot-dependencies
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
@@ -28,6 +25,7 @@ spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-start
 
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
 
+commons-codec = { module = "commons-codec:commons-codec" }
 kafka-streams = { module = "org.apache.kafka:kafka-streams" }
 
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
