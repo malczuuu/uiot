@@ -1,11 +1,15 @@
 [versions]
-commons-beanutils = "1.11.0"
-commons-io = "2.20.0"
-problem4j-spring = "1.0.1"
 spotless = "8.0.0"
 spring-boot = "3.5.7"
 spring-dependency-management = "1.1.7"
+
+# BOMs
+problem4j-spring = "1.0.1"
 springdoc-openapi = "2.8.14"
+
+# dependency overrides for uiot-library-bom
+commons-beanutils = "1.11.0"
+commons-io = "2.20.0"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
