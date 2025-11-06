@@ -9,6 +9,8 @@ java {
 }
 
 dependencies {
+    implementation(platform(project(":uiot-libraries:uiot-library-bom")))
+
     implementation(project(":uiot-libraries:uiot-library-models"))
 
     implementation(libs.spring.boot.starter.actuator)

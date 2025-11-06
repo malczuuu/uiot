@@ -10,8 +10,10 @@ plugins {
 
 rootProject.name = "uiot"
 
+include(":uiot-libraries:uiot-library-bom")
 include(":uiot-libraries:uiot-library-models")
 include(":uiot-libraries:uiot-library-problems")
+
 include(":uiot-services:uiot-service-accounting")
 include(":uiot-services:uiot-service-connectivity")
 include(":uiot-services:uiot-service-history")

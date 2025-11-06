@@ -1,4 +1,6 @@
 [versions]
+commons-beanutils = "1.11.0"
+commons-io = "2.20.0"
 problem4j-spring = "1.0.1"
 spotless = "8.0.0"
 spring-boot = "3.5.7"
@@ -15,6 +17,10 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 problem4j-spring-bom = { module = "io.github.malczuuu.problem4j:problem4j-spring-bom", version.ref = "problem4j-spring" }
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", version.ref = "springdoc-openapi" }
+
+# dependency overrides for uiot-library-bom
+commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 
 # managed by spring-boot-dependencies
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
