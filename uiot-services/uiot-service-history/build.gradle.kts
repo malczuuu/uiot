@@ -1,14 +1,19 @@
 plugins {
+    id("java")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 dependencies {
     implementation(platform(libs.problem4j.spring.bom))
     implementation(platform(libs.springdoc.openapi.bom))
 
-    implementation(project(":uiot-library-models"))
-    implementation(project(":uiot-library-problems"))
+    implementation(project(":uiot-libraries:uiot-library-models"))
+    implementation(project(":uiot-libraries:uiot-library-problems"))
 
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.data.mongodb)
@@ -23,6 +28,8 @@ dependencies {
 
     implementation(libs.spring.kafka)
     implementation(libs.kafka.streams)
+
+    implementation(libs.commons.codec)
 
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.kafka.test)

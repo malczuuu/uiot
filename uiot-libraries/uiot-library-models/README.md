@@ -9,6 +9,6 @@ This library is included as a dependency in all uIoT microservices.
 
 ```groovy
 dependencies {
-    implementation project(":uiot-library-models")
+    implementation project(":uiot-libraries:uiot-library-models")
 }
 ```

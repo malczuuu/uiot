@@ -51,24 +51,24 @@ system provides:
 The system consists of 7 microservices, each with specific responsibilities. Each service has its own `README.md` with
 detailed documentation.
 
-| Service                                                              | Port   | Description                                             |
-|----------------------------------------------------------------------|--------|---------------------------------------------------------|
-| [**uiot-service-accounting**](uiot-service-accounting/README.md)     | `8331` | Resource usage accounting and billing analytics.        |
-| [**uiot-service-connectivity**](uiot-service-connectivity/README.md) | `8332` | Device authentication and RabbitMQ MQTT integration.    |
-| [**uiot-service-history**](uiot-service-history/README.md)           | `8333` | Historical telemetry storage and last-state management. |
-| [**uiot-service-rooms**](uiot-service-rooms/README.md)               | `8334` | Room management and top-level hierarchy container.      |
-| [**uiot-service-rules**](uiot-service-rules/README.md)               | `8335` | Rule engine for automated actions on telemetry events.  |
-| [**uiot-service-telemetry**](uiot-service-telemetry/README.md)       | `8336` | MQTT to Kafka bridge for telemetry data ingestion.      |
-| [**uiot-service-things**](uiot-service-things/README.md)             | `8337` | IoT device (Thing) lifecycle management within rooms.   |
+| Service                                                                            | Port   | Description                                             |
+|------------------------------------------------------------------------------------|--------|---------------------------------------------------------|
+| [**uiot-service-accounting**](uiot-services/uiot-service-accounting/README.md)     | `8331` | Resource usage accounting and billing analytics.        |
+| [**uiot-service-connectivity**](uiot-services/uiot-service-connectivity/README.md) | `8332` | Device authentication and RabbitMQ MQTT integration.    |
+| [**uiot-service-history**](uiot-services/uiot-service-history/README.md)           | `8333` | Historical telemetry storage and last-state management. |
+| [**uiot-service-rooms**](uiot-services/uiot-service-rooms/README.md)               | `8334` | Room management and top-level hierarchy container.      |
+| [**uiot-service-rules**](uiot-services/uiot-service-rules/README.md)               | `8335` | Rule engine for automated actions on telemetry events.  |
+| [**uiot-service-telemetry**](uiot-services/uiot-service-telemetry/README.md)       | `8336` | MQTT to Kafka bridge for telemetry data ingestion.      |
+| [**uiot-service-things**](uiot-services/uiot-service-things/README.md)             | `8337` | IoT device (Thing) lifecycle management within rooms.   |
 
 > **Note:** In Docker environment, all HTTP APIs are served on port `8080` for unification purposes.
 
 ### Supporting Libraries
 
-| Library                                                      | Description                                       |
-|--------------------------------------------------------------|---------------------------------------------------|
-| [**uiot-library-models**](uiot-library-models/README.md)     | Shared DTOs for Kafka and RabbitMQ communication. |
-| [**uiot-library-problems**](uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
+| Library                                                                      | Description                                       |
+|------------------------------------------------------------------------------|---------------------------------------------------|
+| [**uiot-library-models**](uiot-libraries/uiot-library-models/README.md)      | Shared DTOs for Kafka and RabbitMQ communication. |
+| [**uiot-library-problems**](uiot-libraries/ uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
 
 ## Notable Use Cases
 
@@ -324,7 +324,7 @@ system with latest changes, you need to build images locally.
 Run services with following command.
 
 ```bash
-cd uiot-docker-localhost/
+cd uiot-docker/uiot-docker-localhost/
 docker-compose up -d
 ```
 
@@ -333,7 +333,7 @@ Then, after a while, your services will be ready for local development. Kafka to
 ### `uiot-docker-compose`
 
 ```bash
-cd uiot-docker-compose/
+cd uiot-docker/uiot-docker-compose/
 docker-compose up -d
 ```
 

@@ -1,10 +1,15 @@
 plugins {
+    id("java")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
 }
 
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
 dependencies {
-    implementation(project(":uiot-library-models"))
+    implementation(project(":uiot-libraries:uiot-library-models"))
 
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.amqp)

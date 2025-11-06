@@ -10,12 +10,12 @@ plugins {
 
 rootProject.name = "uiot"
 
-include(":uiot-library-models")
-include(":uiot-library-problems")
-include(":uiot-service-accounting")
-include(":uiot-service-connectivity")
-include(":uiot-service-history")
-include(":uiot-service-rooms")
-include(":uiot-service-rules")
-include(":uiot-service-telemetry")
-include(":uiot-service-things")
+include(":uiot-libraries:uiot-library-models")
+include(":uiot-libraries:uiot-library-problems")
+include(":uiot-services:uiot-service-accounting")
+include(":uiot-services:uiot-service-connectivity")
+include(":uiot-services:uiot-service-history")
+include(":uiot-services:uiot-service-rooms")
+include(":uiot-services:uiot-service-rules")
+include(":uiot-services:uiot-service-telemetry")
+include(":uiot-services:uiot-service-things")

@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: service-jars
-          path: uiot-service-*/build/libs/uiot-service-*.jar
+          path: uiot-services/uiot-service-*/build/libs/uiot-service-*.jar
           retention-days: 1
           if-no-files-found: error
 
@@ -69,8 +69,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./${{ matrix.service }}
-          file: ./${{ matrix.service }}/Dockerfile
+          context: ./uiot-services/${{ matrix.service }}
+          file: ./uiot-services/${{ matrix.service }}/Dockerfile
           push: ${{ startsWith(github.ref, 'refs/tags/') }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:${{ github.ref_name }}

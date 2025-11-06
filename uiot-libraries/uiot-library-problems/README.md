@@ -20,6 +20,6 @@ Services include this library to provide base exceptions used by HTTP services.
 
 ```groovy
 dependencies {
-    implementation project(":uiot-library-problems")
+    implementation project(":uiot-libraries:uiot-library-problems")
 }
 ```

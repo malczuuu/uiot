@@ -13,8 +13,6 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java")
-
     group = "io.github.malczuuu.uiot"
 
     /**
@@ -27,10 +25,6 @@ subprojects {
         } else {
             version
         }
-
-    extensions.configure<JavaPluginExtension> {
-        toolchain.languageVersion = JavaLanguageVersion.of(17)
-    }
 
     /**
      * Usage:
@@ -93,7 +87,7 @@ spotless {
     }
 
     java {
-        target("uiot-*/src/**/*.java")
+        target("**/src/**/*.java")
 
         googleJavaFormat("1.28.0")
     }
