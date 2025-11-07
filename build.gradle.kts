@@ -63,6 +63,15 @@ subprojects {
     }
 
     /**
+     * Configure Java 25 to all java submodules.
+     */
+    pluginManager.withPlugin("java") {
+        configure<JavaPluginExtension> {
+            toolchain.languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+
+    /**
      * Scripts that build Docker image require that there's only one jar.
      */
     pluginManager.withPlugin(rootProject.libs.plugins.spring.boot.get().pluginId) {

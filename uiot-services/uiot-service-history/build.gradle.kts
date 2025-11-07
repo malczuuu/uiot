@@ -3,10 +3,6 @@ plugins {
     alias(libs.plugins.spring.boot)
 }
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
-}
-
 dependencies {
     implementation(platform(project(":uiot-libraries:uiot-library-bom")))
 
