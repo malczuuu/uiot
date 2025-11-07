@@ -1,15 +1,14 @@
 [versions]
 commons-beanutils = "1.11.0"
 commons-io = "2.20.0"
+commons-lang3 = "3.19.0"
 problem4j-spring = "1.0.1"
 spotless = "8.0.0"
 spring-boot = "3.5.7"
-spring-dependency-management = "1.1.7"
 springdoc-openapi = "2.8.14"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
@@ -42,3 +41,4 @@ springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openap
 # manually managed due to vulnerabilities in transitive dependency from spring-kafka
 commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }

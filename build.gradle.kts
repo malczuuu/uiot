@@ -1,9 +1,15 @@
 import com.diffplug.spotless.LineEnding
 
+buildscript {
+    dependencies {
+        // version included via libs.plugins.spring.boot is affected by CVE-2025-48924
+        classpath(libs.commons.lang3)
+    }
+}
+
 plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.spring.boot).apply(false)
-    alias(libs.plugins.spring.dependency.management).apply(false)
 }
 
 allprojects {
@@ -59,11 +65,9 @@ subprojects {
     /**
      * Scripts that build Docker image require that there's only one jar.
      */
-    pluginManager.withPlugin("org.springframework.boot") {
-        tasks.withType<Jar>().configureEach {
-            if (name != "bootJar") {
-                enabled = false
-            }
+    pluginManager.withPlugin(rootProject.libs.plugins.spring.boot.get().pluginId) {
+        tasks.withType<Jar>().matching { it.name != "bootJar" }.configureEach {
+            enabled = false
         }
     }
 }
@@ -88,7 +92,7 @@ spotless {
     kotlinGradle {
         target("**/*.gradle.kts")
 
-        ktlint()
+        ktlint("1.7.1").editorConfigOverride(mapOf("max_line_length" to "120"))
         endWithNewline()
         lineEndings = LineEnding.UNIX
     }

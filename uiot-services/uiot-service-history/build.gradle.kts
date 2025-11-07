@@ -1,7 +1,6 @@
 plugins {
     id("java")
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
+    alias(libs.plugins.spring.boot)
 }
 
 java {
