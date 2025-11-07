@@ -29,7 +29,7 @@ and microservices.
 ## Prerequisites
 
 1. **Java 25**. Required for building and running Spring Boot services.
-2. **Gradle 9.0.0**. Build tool, included as wrapper in the project.
+2. **Gradle 9.2.0**. Build tool, included as wrapper in the project.
 3. **Docker and Docker Compose**. Container runtime, required for running services in a containerized environment.
 4. [**Kaf CLI Tool**](#kaf-cli-tool). Useful for managing, listening to and debugging Kafka topics.
 5. [**Mosquitto MQTT Clients**](#mosquitto-mqtt-clients). Useful for testing MQTT communication.
@@ -65,10 +65,10 @@ detailed documentation.
 
 ### Supporting Libraries
 
-| Library                                                                      | Description                                       |
-|------------------------------------------------------------------------------|---------------------------------------------------|
-| [**uiot-library-models**](uiot-libraries/uiot-library-models/README.md)      | Shared DTOs for Kafka and RabbitMQ communication. |
-| [**uiot-library-problems**](uiot-libraries/ uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
+| Library                                                                     | Description                                       |
+|-----------------------------------------------------------------------------|---------------------------------------------------|
+| [**uiot-library-models**](uiot-libraries/uiot-library-models/README.md)     | Shared DTOs for Kafka and RabbitMQ communication. |
+| [**uiot-library-problems**](uiot-libraries/uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
 
 ## Notable Use Cases
 
