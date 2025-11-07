@@ -1,25 +1,25 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "sunday"
+      interval: weekly
+      day: sunday
       time: "00:00"
-      timezone: "Europe/Warsaw"
+      timezone: Europe/Warsaw
     open-pull-requests-limit: 10
 
-  - package-ecosystem: "gradle"
-    directory: "/"
+  - package-ecosystem: gradle
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "sunday"
+      interval: weekly
+      day: sunday
       time: "00:00"
-      timezone: "Europe/Warsaw"
+      timezone: Europe/Warsaw
     open-pull-requests-limit: 10
     allow:
-      - dependency-type: "direct"
+      - dependency-type: direct
     ignore:
       - dependency-name: "*"
         update-types:
-          - "version-update:semver-major"
+          - version-update:semver-major

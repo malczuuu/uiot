@@ -1,15 +1,11 @@
 [versions]
+commons-beanutils = "1.11.0"
+commons-io = "2.20.0"
+problem4j-spring = "1.0.1"
 spotless = "8.0.0"
 spring-boot = "3.5.7"
 spring-dependency-management = "1.1.7"
-
-# BOMs
-problem4j-spring = "1.0.1"
 springdoc-openapi = "2.8.14"
-
-# dependency overrides for uiot-library-bom
-commons-beanutils = "1.11.0"
-commons-io = "2.20.0"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -17,38 +13,32 @@ spring-dependency-management = { id = "io.spring.dependency-management", version
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
-# BOMs
-problem4j-spring-bom = { module = "io.github.malczuuu.problem4j:problem4j-spring-bom", version.ref = "problem4j-spring" }
-spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
-springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", version.ref = "springdoc-openapi" }
-
-# dependency overrides for uiot-library-bom
-commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
-
 # managed by spring-boot-dependencies
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
 spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
-
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
-
 commons-codec = { module = "commons-codec:commons-codec" }
 kafka-streams = { module = "org.apache.kafka:kafka-streams" }
-
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
-
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
 
 # managed by problem4j-spring-bom
+problem4j-spring-bom = { module = "io.github.malczuuu.problem4j:problem4j-spring-bom", version.ref = "problem4j-spring" }
 problem4j-core = { module = "io.github.malczuuu.problem4j:problem4j-core" }
 problem4j-spring-webmvc = { module = "io.github.malczuuu.problem4j:problem4j-spring-webmvc" }
 
 # managed by springdoc-openapi-bom
+springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", version.ref = "springdoc-openapi" }
 springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui" }
+
+# manually managed due to vulnerabilities in transitive dependency from spring-kafka
+commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }

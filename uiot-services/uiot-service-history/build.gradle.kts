@@ -9,9 +9,6 @@ java {
 }
 
 dependencies {
-    implementation(platform(libs.problem4j.spring.bom))
-    implementation(platform(libs.springdoc.openapi.bom))
-
     implementation(platform(project(":uiot-libraries:uiot-library-bom")))
 
     implementation(project(":uiot-libraries:uiot-library-models"))

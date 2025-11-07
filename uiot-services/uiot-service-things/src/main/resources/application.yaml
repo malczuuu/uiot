@@ -4,7 +4,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus
+        include: "health,metrics,prometheus"
   endpoint:
     health:
       show-details: always
@@ -17,7 +17,7 @@ spring:
       database: uiot-service-things
   kafka:
     streams:
-      application-id: ${spring.application.name}
+      application-id: "${spring.application.name}"
       bootstrap-servers: localhost:9092
   jackson:
     default-property-inclusion: non_null
@@ -25,5 +25,5 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 uiot:
-  connectivity-integration-url: http://localhost:8333/api/rooms/{roomUid}/things/{thingUid}/connectivity
+  connectivity-integration-url: "http://localhost:8333/api/rooms/{roomUid}/things/{thingUid}/connectivity"
   system-events-topic: uiot-system-events

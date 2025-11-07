@@ -4,7 +4,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus
+        include: "health,metrics,prometheus"
   endpoint:
     health:
       show-details: always
@@ -17,7 +17,7 @@ spring:
     password: user
   kafka:
     producer:
-      client-id: ${spring.application.name}
+      client-id: "${spring.application.name}"
       bootstrap-servers: localhost:9092
       retries: 3
   jackson:

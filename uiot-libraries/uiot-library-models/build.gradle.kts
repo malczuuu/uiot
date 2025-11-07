@@ -7,6 +7,7 @@ java {
 }
 
 dependencies {
-    implementation(platform(libs.spring.boot.dependencies))
+    compileOnly(platform(project(":uiot-libraries:uiot-library-bom")))
+
     compileOnly(libs.jackson.databind)
 }

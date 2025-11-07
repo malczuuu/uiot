@@ -12,23 +12,23 @@ private const val UNSPECIFIED = "unspecified"
  * @param projectRootDir the root directory of the project (containing .git)
  */
 fun getSnapshotVersion(projectRootDir: File): String {
-    return try {
-        val builder =
-                FileRepositoryBuilder()
-                        .setGitDir(File(projectRootDir, ".git"))
-                        .readEnvironment()
-                        .findGitDir()
+  return try {
+    val builder =
+        FileRepositoryBuilder()
+            .setGitDir(File(projectRootDir, ".git"))
+            .readEnvironment()
+            .findGitDir()
 
-        builder.build().use { repository ->
-            val headId = repository.resolve("HEAD") ?: return UNSPECIFIED
+    builder.build().use { repository ->
+      val headId = repository.resolve("HEAD") ?: return UNSPECIFIED
 
-            RevWalk(repository).use { revWalk ->
-                val headCommit: RevCommit = revWalk.parseCommit(headId)
-                headCommit.id.name.substring(0, 7)
-            }
-        }
-    } catch (e: Exception) {
-        System.err.println("Error determining version: $e")
-        UNSPECIFIED
+      RevWalk(repository).use { revWalk ->
+        val headCommit: RevCommit = revWalk.parseCommit(headId)
+        headCommit.id.name.substring(0, 7)
+      }
     }
+  } catch (e: Exception) {
+    System.err.println("Error determining version: $e")
+    UNSPECIFIED
+  }
 }

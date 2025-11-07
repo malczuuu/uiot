@@ -7,7 +7,7 @@ java {
 }
 
 dependencies {
-    implementation(platform(libs.problem4j.spring.bom))
+    compileOnly(platform(project(":uiot-libraries:uiot-library-bom")))
 
     compileOnly(libs.problem4j.core)
 }

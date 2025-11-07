@@ -69,11 +69,26 @@ subprojects {
 }
 
 spotless {
-    format("misc") {
-        target("**/.gitattributes", "**/.gitignore")
+    java {
+        target("**/src/**/*.java")
 
-        trimTrailingWhitespace()
-        leadingTabsToSpaces(4)
+        googleJavaFormat("1.28.0")
+        endWithNewline()
+        lineEndings = LineEnding.UNIX
+    }
+
+    kotlin {
+        target("**/src/**/*.kt")
+
+        ktfmt("0.59").metaStyle()
+        endWithNewline()
+        lineEndings = LineEnding.UNIX
+    }
+
+    kotlinGradle {
+        target("**/*.gradle.kts")
+
+        ktlint()
         endWithNewline()
         lineEndings = LineEnding.UNIX
     }
@@ -84,18 +99,14 @@ spotless {
         trimTrailingWhitespace()
         leadingTabsToSpaces(2)
         endWithNewline()
+        lineEndings = LineEnding.UNIX
     }
 
-    java {
-        target("**/src/**/*.java")
+    format("misc") {
+        target("**/.gitattributes", "**/.gitignore")
 
-        googleJavaFormat("1.28.0")
-    }
-
-    kotlinGradle {
-        target("**/*.gradle.kts")
-
-        ktlint()
+        trimTrailingWhitespace()
+        leadingTabsToSpaces(4)
         endWithNewline()
         lineEndings = LineEnding.UNIX
     }
