@@ -13,17 +13,11 @@ ENV JAVA_OPTS_DEFAULT="\
 -XX:+UseContainerSupport \
 -XX:MaxRAMPercentage=75.0 \
 -XX:+ExitOnOutOfMemoryError \
--Dfile.encoding=UTF-8 \
--Duser.timezone=UTC \
 -XX:+HeapDumpOnOutOfMemoryError \
 -XX:HeapDumpPath=/tmp"
 
-ENV EXTRA_JAVA_OPTS=""
-
-ENV SPRING_PROFILES_ACTIVE="production"
+ENV JAVA_OPTS_EXTRA=""
 
 ENV APP_ARGS=""
 
-ENV JAVA_OPTS="$JAVA_OPTS_DEFAULT $EXTRA_JAVA_OPTS"
-
-ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar $APP_ARGS"]
+CMD ["/bin/sh", "-c", "exec java $JAVA_OPTS_DEFAULT $JAVA_OPTS_EXTRA -jar /app/app.jar $APP_ARGS"]
