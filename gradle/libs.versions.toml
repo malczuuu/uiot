@@ -1,6 +1,6 @@
 [versions]
 commons-beanutils = "1.11.0"
-commons-io = "2.20.0"
+commons-io = "2.21.0"
 commons-lang3 = "3.19.0"
 problem4j-spring = "1.0.1"
 spotless = "8.0.0"
