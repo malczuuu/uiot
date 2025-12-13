@@ -4,12 +4,14 @@ updates:
     directory: /
     schedule:
       interval: "quarterly"
+    target-branch: main
     open-pull-requests-limit: 10
 
   - package-ecosystem: gradle
     directory: /
     schedule:
       interval: "quarterly"
+    target-branch: main
     open-pull-requests-limit: 10
     allow:
       - dependency-type: direct
@@ -17,3 +19,17 @@ updates:
       - dependency-name: "*"
         update-types:
           - version-update:semver-major
+
+  - package-ecosystem: "docker-compose"
+    directory: "/uiot-docker/uiot-docker-compose"
+    schedule:
+      interval: "quarterly"
+    target-branch: main
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "docker-compose"
+    directory: "/uiot-docker/uiot-docker-localhost"
+    schedule:
+      interval: "quarterly"
+    target-branch: main
+    open-pull-requests-limit: 5
