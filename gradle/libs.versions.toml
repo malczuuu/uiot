@@ -1,6 +1,4 @@
 [versions]
-commons-beanutils = "1.11.0"
-commons-io = "2.21.0"
 commons-lang3 = "3.19.0"
 problem4j-spring = "1.1.0"
 spotless = "8.0.0"
@@ -39,6 +37,4 @@ springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", versio
 springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui" }
 
 # manually managed due to vulnerabilities in transitive dependency from spring-kafka
-commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }

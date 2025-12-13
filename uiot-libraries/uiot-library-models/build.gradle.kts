@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(platform(project(":uiot-libraries:uiot-library-bom")))
+    api(platform(project(":uiot-libraries:uiot-library-bom")))
 
-    compileOnly(libs.jackson.databind)
+    api(libs.jackson.databind)
 }
