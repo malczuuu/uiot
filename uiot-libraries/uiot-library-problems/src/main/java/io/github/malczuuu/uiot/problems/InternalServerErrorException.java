@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.problems;
 
-import io.github.malczuuu.problem4j.core.Problem;
-import io.github.malczuuu.problem4j.core.ProblemException;
+import io.github.problem4j.core.Problem;
+import io.github.problem4j.core.ProblemException;
 
 public class InternalServerErrorException extends ProblemException {
 
