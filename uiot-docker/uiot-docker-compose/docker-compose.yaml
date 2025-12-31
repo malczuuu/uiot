@@ -82,7 +82,7 @@ services:
       start_period: 10s
 
   uiot-gateway:
-    image: traefik:3.6.4
+    image: traefik:3.6.6
     ports:
       - "127.0.0.1:8330:80"
     volumes:
