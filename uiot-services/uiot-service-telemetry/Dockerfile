@@ -7,7 +7,7 @@ ENV LOGGING_STRUCTURED_FORMAT_CONSOLE=ecs
 
 EXPOSE 8080
 
-COPY ./uiot-service-telemetry-*.jar /app/app.jar
+COPY ./build/libs/uiot-service-telemetry-*.jar /app/app.jar
 
 ENV JAVA_OPTS_DEFAULT="\
 -XX:+UseContainerSupport \
