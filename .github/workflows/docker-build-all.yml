@@ -71,7 +71,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: "./jars/uiot-services/${{ matrix.service }}"
+          context: "./jars/${{ matrix.service }}"
           file: "./uiot-services/${{ matrix.service }}/Dockerfile"
           push: "${{ startsWith(github.ref, 'refs/tags/') }}"
           tags: |
