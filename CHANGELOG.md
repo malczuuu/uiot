@@ -7,6 +7,12 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-01-17
+
+### Fixed
+
+- Fix missing `jar`-files in Docker images.
+
 ## [1.1.1] - 2025-11-06
 
 ### Fixed
