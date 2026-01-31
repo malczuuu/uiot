@@ -1,6 +1,6 @@
 [versions]
 commons-lang3 = "3.20.0"
-problem4j-spring = "1.2.1"
+problem4j-spring = "1.2.2"
 spotless = "8.1.0"
 spring-boot = "3.5.9"
 springdoc-openapi = "2.8.15"
