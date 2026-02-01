@@ -1,6 +1,5 @@
 plugins {
-    id("java")
-    alias(libs.plugins.spring.boot)
+    id("internal.spring-app-convention")
 }
 
 dependencies {
