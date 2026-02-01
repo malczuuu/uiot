@@ -29,7 +29,7 @@ and microservices.
 ## Prerequisites
 
 1. **Java 25**. Required for building and running Spring Boot services.
-2. **Gradle 9.2.0**. Build tool, included as wrapper in the project.
+2. **Gradle**. Build tool, included as wrapper in the project.
 3. **Docker and Docker Compose**. Container runtime, required for running services in a containerized environment.
 4. [**Kaf CLI Tool**](#kaf-cli-tool). Useful for managing, listening to and debugging Kafka topics.
 5. [**Mosquitto MQTT Clients**](#mosquitto-mqtt-clients). Useful for testing MQTT communication.
