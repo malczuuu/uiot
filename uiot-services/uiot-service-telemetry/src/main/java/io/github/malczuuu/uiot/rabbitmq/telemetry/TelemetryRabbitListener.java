@@ -1,11 +1,9 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.AccountingMetric;
 import io.github.malczuuu.uiot.models.Pack;
 import io.github.malczuuu.uiot.models.Record;
 import io.github.malczuuu.uiot.models.ThingEvent;
-import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Base64;
@@ -27,6 +25,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 @Component
 @RabbitListener(queues = {"${uiot.rabbitmq-input-queue}"})
@@ -36,7 +36,7 @@ public class TelemetryRabbitListener implements InitializingBean {
 
   private final DeviceEventKafkaSink deviceEventKafkaSink;
   private final AccountingKafkaSink accountingKafkaSink;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
   private final Clock clock;
 
   private final String routingKeyRegexp;
@@ -46,12 +46,12 @@ public class TelemetryRabbitListener implements InitializingBean {
   public TelemetryRabbitListener(
       DeviceEventKafkaSink deviceEventKafkaSink,
       AccountingKafkaSink accountingKafkaSink,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       Clock clock,
       @Value("${uiot.rabbitmq-routing-key-regexp}") String routingKeyRegexp) {
     this.deviceEventKafkaSink = deviceEventKafkaSink;
     this.accountingKafkaSink = accountingKafkaSink;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.clock = clock;
     this.routingKeyRegexp = routingKeyRegexp;
   }
@@ -66,8 +66,8 @@ public class TelemetryRabbitListener implements InitializingBean {
       @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey, @Payload byte[] message) {
     Pack pack;
     try {
-      pack = objectMapper.readValue(message, Pack.class);
-    } catch (IOException e) {
+      pack = jsonMapper.readValue(message, Pack.class);
+    } catch (JacksonException e) {
       log.info(
           "Received message is not a valid pack, routingKey={}, payload={}",
           routingKey,

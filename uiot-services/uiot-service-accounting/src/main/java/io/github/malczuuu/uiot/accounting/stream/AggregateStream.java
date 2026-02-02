@@ -1,6 +1,5 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.accounting.core.AccountingEntity;
 import io.github.malczuuu.uiot.accounting.core.AccountingRepository;
 import io.github.malczuuu.uiot.models.AccountingWindow;
@@ -12,25 +11,26 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
-import org.springframework.kafka.support.serializer.JsonSerde;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @EnableKafkaStreams
 public class AggregateStream implements InitializingBean {
 
   private final StreamsBuilder streamsBuilder;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
   private final AccountingRepository accountingRepository;
 
   private final String windowsTopic;
 
   public AggregateStream(
       StreamsBuilder streamsBuilder,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       AccountingRepository accountingRepository,
       @Value("${uiot.windows-topic}") String windowsTopic) {
     this.streamsBuilder = streamsBuilder;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.accountingRepository = accountingRepository;
     this.windowsTopic = windowsTopic;
   }
@@ -38,13 +38,14 @@ public class AggregateStream implements InitializingBean {
   @Override
   public void afterPropertiesSet() {
     streamsBuilder.stream(windowsTopic, Consumed.with(Serdes.String(), newBasicJsonSerde()))
-        .filter((key, value) -> value.getWindowEvent() != null)
+        .filter((_, value) -> value.getWindowEvent() != null)
         .mapValues(AccountingWindowEnvelope::getWindowEvent)
-        .foreach((key, value) -> storeAccountingAggregate(value));
+        .foreach((_, value) -> storeAccountingAggregate(value));
   }
 
-  private JsonSerde<AccountingWindowEnvelope> newBasicJsonSerde() {
-    return new JsonSerde<>(AccountingWindowEnvelope.class, objectMapper)
+  @SuppressWarnings("resource")
+  private JacksonJsonSerde<AccountingWindowEnvelope> newBasicJsonSerde() {
+    return new JacksonJsonSerde<>(AccountingWindowEnvelope.class, jsonMapper)
         .ignoreTypeHeaders()
         .noTypeInfo();
   }

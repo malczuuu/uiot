@@ -1,7 +1,5 @@
 package io.github.malczuuu.uiot.rooms.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
@@ -11,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.json.JsonMapper;
 
 @Service
 public class RoomEventBrokerImpl implements RoomEventBroker {
@@ -18,28 +17,23 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
   private static final Logger log = LoggerFactory.getLogger(RoomEventBrokerImpl.class);
 
   private final KafkaOperations<String, String> kafkaOperations;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
 
   private final String systemEventsTopic;
 
   public RoomEventBrokerImpl(
       KafkaOperations<String, String> kafkaOperations,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.kafkaOperations = kafkaOperations;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.systemEventsTopic = systemEventsTopic;
   }
 
   @Override
   public void publish(RoomCreateEvent event) {
     RoomCreateEnvelope envelope = new RoomCreateEnvelope(event);
-    String json;
-    try {
-      json = objectMapper.writeValueAsString(envelope);
-    } catch (JsonProcessingException e) {
-      return;
-    }
+    String json = jsonMapper.writeValueAsString(envelope);
 
     kafkaOperations.send(systemEventsTopic, event.getRoomUid(), json);
 
@@ -49,12 +43,7 @@ public class RoomEventBrokerImpl implements RoomEventBroker {
   @Override
   public void publish(RoomDeleteEvent event) {
     RoomDeleteEnvelope envelope = new RoomDeleteEnvelope(event);
-    String json;
-    try {
-      json = objectMapper.writeValueAsString(envelope);
-    } catch (JsonProcessingException e) {
-      return;
-    }
+    String json = jsonMapper.writeValueAsString(envelope);
 
     kafkaOperations.send(systemEventsTopic, event.getRoomUid(), json);
 

@@ -1,9 +1,8 @@
 [versions]
-commons-lang3 = "3.20.0"
-problem4j-spring = "1.2.2"
+problem4j-spring = "2.1.2"
 spotless = "8.2.1"
-spring-boot = "3.5.10"
-springdoc-openapi = "2.8.15"
+spring-boot = "4.0.2"
+springdoc-openapi = "3.0.1"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -14,17 +13,17 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
+spring-boot-starter-amqp-test = { module = "org.springframework.boot:spring-boot-starter-amqp-test" }
 spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
-spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
-commons-codec = { module = "commons-codec:commons-codec" }
-kafka-streams = { module = "org.apache.kafka:kafka-streams" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+spring-boot-starter-kafka = { module = "org.springframework.boot:spring-boot-starter-kafka" }
+spring-boot-starter-kafka-test = { module = "org.springframework.boot:spring-boot-starter-kafka-test" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
-spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
-spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
+commons-codec = { module = "commons-codec:commons-codec" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+kafka-streams = { module = "org.apache.kafka:kafka-streams" }
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
 
 # managed by problem4j-spring-bom
@@ -35,6 +34,3 @@ problem4j-spring-webmvc = { module = "io.github.problem4j:problem4j-spring-webmv
 # managed by springdoc-openapi-bom
 springdoc-openapi-bom = { module = "org.springdoc:springdoc-openapi-bom", version.ref = "springdoc-openapi" }
 springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui" }
-
-# manually managed due to vulnerabilities in transitive dependency from spring-kafka
-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }

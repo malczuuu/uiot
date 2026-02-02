@@ -1,6 +1,5 @@
 package io.github.malczuuu.uiot.rooms.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.Envelope;
 import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
@@ -9,8 +8,8 @@ import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.rooms.core.RoomService;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.AutoOffsetReset;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.Topology.AutoOffsetReset;
 import org.apache.kafka.streams.kstream.Branched;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
@@ -22,7 +21,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
-import org.springframework.kafka.support.serializer.JsonSerde;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @EnableKafkaStreams
@@ -31,18 +31,18 @@ public class SystemEventStream implements InitializingBean {
   private static final Logger log = LoggerFactory.getLogger(SystemEventStream.class);
 
   private final StreamsBuilder streamsBuilder;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
   private final RoomService roomService;
 
   private final String systemEventsTopic;
 
   public SystemEventStream(
       StreamsBuilder streamsBuilder,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       RoomService roomService,
       @Value("${uiot.system-events-topic}") String systemEventsTopic) {
     this.streamsBuilder = streamsBuilder;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.roomService = roomService;
     this.systemEventsTopic = systemEventsTopic;
   }
@@ -56,27 +56,28 @@ public class SystemEventStream implements InitializingBean {
                     .withKeySerde(Serdes.String())
                     .withValueSerde(getEnvelopeSerde())
                     .withTimestampExtractor(new WallclockTimestampExtractor())
-                    .withOffsetResetPolicy(AutoOffsetReset.LATEST))
+                    .withOffsetResetPolicy(AutoOffsetReset.latest()))
             .split(Named.as("system_events_"))
-            .branch((key, value) -> value instanceof RoomCreateEnvelope, Branched.as("room_create"))
-            .branch((key, value) -> value instanceof RoomDeleteEnvelope, Branched.as("room_delete"))
+            .branch((_, value) -> value instanceof RoomCreateEnvelope, Branched.as("room_create"))
+            .branch((_, value) -> value instanceof RoomDeleteEnvelope, Branched.as("room_delete"))
             .noDefaultBranch();
 
     branches
         .get("system_events_room_create")
         .mapValues(value -> (RoomCreateEnvelope) value)
         .mapValues(RoomCreateEnvelope::getRoomCreateEvent)
-        .foreach((key, value) -> triggerRoomCreation(value));
+        .foreach((_, value) -> triggerRoomCreation(value));
 
     branches
         .get("system_events_room_delete")
         .mapValues(value -> (RoomDeleteEnvelope) value)
         .mapValues(RoomDeleteEnvelope::getRoomDeleteEvent)
-        .foreach((key, value) -> triggerRoomDeletion(value));
+        .foreach((_, value) -> triggerRoomDeletion(value));
   }
 
-  private JsonSerde<Envelope> getEnvelopeSerde() {
-    return new JsonSerde<>(Envelope.class, objectMapper).noTypeInfo().ignoreTypeHeaders();
+  @SuppressWarnings("resource")
+  private JacksonJsonSerde<Envelope> getEnvelopeSerde() {
+    return new JacksonJsonSerde<>(Envelope.class, jsonMapper).noTypeInfo().ignoreTypeHeaders();
   }
 
   private void triggerRoomCreation(RoomCreateEvent event) {

@@ -9,14 +9,13 @@ dependencies {
 
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.amqp)
-    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.kafka)
+    implementation(libs.spring.boot.starter.webmvc)
 
     implementation(libs.micrometer.registry.prometheus)
 
-    implementation(libs.spring.kafka)
-
     testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.spring.rabbit.test)
-    testImplementation(libs.spring.kafka.test)
+    testImplementation(libs.spring.boot.starter.amqp.test)
+    testImplementation(libs.spring.boot.starter.kafka.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

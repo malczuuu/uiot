@@ -1,6 +1,5 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.models.AccountingMetric;
 import io.github.malczuuu.uiot.models.AccountingMetricEnvelope;
 import io.github.malczuuu.uiot.models.AccountingWindow;
@@ -26,14 +25,15 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
-import org.springframework.kafka.support.serializer.JsonSerde;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @EnableKafkaStreams
 public class AccountingStream implements InitializingBean {
 
   private final StreamsBuilder streamsBuilder;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
 
   private final String metricsTopic;
   private final String windowsTopic;
@@ -43,12 +43,12 @@ public class AccountingStream implements InitializingBean {
 
   public AccountingStream(
       StreamsBuilder streamsBuilder,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       @Value("${uiot.metrics-topic}") String metricsTopic,
       @Value("${uiot.windows-topic}") String windowsTopic,
       @Value("${uiot.windows-size}") Duration windowsSize) {
     this.streamsBuilder = streamsBuilder;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.metricsTopic = metricsTopic;
     this.windowsTopic = windowsTopic;
     this.windowsSize = windowsSize;
@@ -62,17 +62,17 @@ public class AccountingStream implements InitializingBean {
                 .withTimestampExtractor(new WallclockTimestampExtractor())
                 .withKeySerde(Serdes.String())
                 .withValueSerde(getJsonSerde(AccountingMetricEnvelope.class)))
-        .filter((key, value) -> value.getAccountingEvent() != null)
+        .filter((_, value) -> value.getAccountingEvent() != null)
         .mapValues(AccountingMetricEnvelope::getAccountingEvent)
         .groupBy(
-            (key, value) -> new WindowKey(value.getType(), value.getRoomUid(), value.getTags()),
+            (_, value) -> new WindowKey(value.getType(), value.getRoomUid(), value.getTags()),
             Grouped.<WindowKey, AccountingMetric>as("metric_grouping")
                 .withKeySerde(getJsonSerde(WindowKey.class))
                 .withValueSerde(getJsonSerde(AccountingMetric.class)))
         .windowedBy(TimeWindows.ofSizeAndGrace(windowsSize, gracePeriod))
         .aggregate(
             () -> new Aggregate(UUID.randomUUID().toString(), 0.0),
-            (key, value, aggregate) -> aggregate.aggregate(value.getValue()),
+            (_, value, aggregate) -> aggregate.aggregate(value.getValue()),
             Named.as("accounting_windowing"),
             Materialized.<WindowKey, Aggregate>as(
                     Stores.inMemoryWindowStore(
@@ -92,8 +92,9 @@ public class AccountingStream implements InitializingBean {
                 .withValueSerde(getJsonSerde(AccountingWindowEnvelope.class)));
   }
 
-  private <T> JsonSerde<T> getJsonSerde(Class<T> clazz) {
-    return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
+  @SuppressWarnings("resource")
+  private <T> JacksonJsonSerde<T> getJsonSerde(Class<T> clazz) {
+    return new JacksonJsonSerde<>(clazz, jsonMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
   private KeyValue<String, AccountingWindowEnvelope> mapAccountingModel(

@@ -1,15 +1,14 @@
 package io.github.malczuuu.uiot.history.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malczuuu.uiot.history.core.HistoryService;
 import io.github.malczuuu.uiot.models.ThingEvent;
 import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.AutoOffsetReset;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.Topology.AutoOffsetReset;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KStream;
@@ -19,7 +18,8 @@ import org.apache.kafka.streams.processor.WallclockTimestampExtractor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
-import org.springframework.kafka.support.serializer.JsonSerde;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @EnableKafkaStreams
@@ -27,18 +27,18 @@ public class ThingEventStream implements InitializingBean {
 
   private final StreamsBuilder streamsBuilder;
   private final HistoryService historyService;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
 
   private final TopicProperties topics;
 
   public ThingEventStream(
       StreamsBuilder streamsBuilder,
       HistoryService historyService,
-      ObjectMapper objectMapper,
+      JsonMapper jsonMapper,
       TopicProperties topics) {
     this.streamsBuilder = streamsBuilder;
     this.historyService = historyService;
-    this.objectMapper = objectMapper;
+    this.jsonMapper = jsonMapper;
     this.topics = topics;
   }
 
@@ -57,22 +57,22 @@ public class ThingEventStream implements InitializingBean {
             .withKeySerde(Serdes.String())
             .withValueSerde(getJsonSerde(ThingEventsEnvelope.class))
             .withTimestampExtractor(new WallclockTimestampExtractor())
-            .withOffsetResetPolicy(AutoOffsetReset.LATEST));
+            .withOffsetResetPolicy(AutoOffsetReset.latest()));
   }
 
   private void storeThingEventsInDatabase(KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
-        .filter((key, value) -> value.getThingEvents() != null)
-        .foreach((key, value) -> processThingEvent(value));
+        .filter((_, value) -> value.getThingEvents() != null)
+        .foreach((_, value) -> processThingEvent(value));
   }
 
   private void storeThingMetadataInKTable(KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
-        .flatMap((key, value) -> splitByThingKey(value))
+        .flatMap((_, value) -> splitByThingKey(value))
         .groupByKey(Grouped.with(Serdes.String(), getJsonSerde(ThingEvent.class)))
         .aggregate(
             ThingModel::new,
-            (key, value, aggregate) -> aggregateProperties(value, aggregate),
+            (_, value, aggregate) -> aggregateProperties(value, aggregate),
             Materialized.with(Serdes.String(), getJsonSerde(ThingModel.class)))
         .toStream()
         .to(
@@ -88,7 +88,7 @@ public class ThingEventStream implements InitializingBean {
   private void storePropertyLastStateInKTable(
       KStream<String, ThingEventsEnvelope> thingEventStream) {
     thingEventStream
-        .flatMap((key, value) -> splitByPropertyKey(value))
+        .flatMap((_, value) -> splitByPropertyKey(value))
         .to(
             topics.getKeyedThingEventsTopic(),
             Produced.with(Serdes.String(), getJsonSerde(ThingEvent.class)));
@@ -99,8 +99,9 @@ public class ThingEventStream implements InitializingBean {
         Materialized.as(topics.getKeyedThingEventsTopic()));
   }
 
-  private <T> JsonSerde<T> getJsonSerde(Class<T> clazz) {
-    return new JsonSerde<>(clazz, objectMapper).ignoreTypeHeaders().noTypeInfo();
+  @SuppressWarnings("resource")
+  private <T> JacksonJsonSerde<T> getJsonSerde(Class<T> clazz) {
+    return new JacksonJsonSerde<>(clazz, jsonMapper).ignoreTypeHeaders().noTypeInfo();
   }
 
   private void processThingEvent(ThingEventsEnvelope value) {
