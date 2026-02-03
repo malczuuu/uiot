@@ -8,10 +8,12 @@ import static io.github.malczuuu.uiot.rule.core.ConditionEntity.VALUE_BOOLEAN;
 import static io.github.malczuuu.uiot.rule.core.ConditionEntity.VALUE_STRING;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+@Document(collection = "rules")
 public class RuleEntity {
 
   public static final String UID = "uid";
