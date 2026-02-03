@@ -7,6 +7,13 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade Spring Boot to 4.0.2 (and drop deprecations).
+- Rename `uiot-service-rooms` to `uiot-service-room`.
+- Rename `uiot-service-rules` to `uiot-service-rule`.
+- Rename `uiot-service-things` to `uiot-service-thing`.
+
 ## [1.1.2] - 2026-01-17
 
 ### Fixed
@@ -55,14 +62,14 @@ models and error handling.
 
 ### Added
 
-- Enable creation of rooms for separation of devices in logical groups (`uiot-service-rooms`).
-- Enable registering and managing devices (`uiot-service-things`).
+- Enable creation of rooms for separation of devices in logical groups (`uiot-service-room`).
+- Enable registering and managing devices (`uiot-service-thing`).
 - Enable managing device connectivity and credentials (`uiot-service-connectivity`).
 - Add HTTP API for backing `rabbitmq_auth_backend_http` **RabbitMQ** plugin (`uiot-service-connectivity`).
 - Use **RabbitMQ** to collect telemetry data from edge devices and ingest it into the system (`uiot-service-telemetry`).
 - Store and query historical telemetry and event data (`uiot-service-history`).
 - Store in time windows data involving MQTT inbound traffic (`uiot-service-accounting`).
-- Introduce basic (naive) rules engine for automating device behavior based on events (`uiot-service-rules`).
+- Introduce basic (naive) rules engine for automating device behavior based on events (`uiot-service-rule`).
 - Introduce inter-service communication via **Kafka** for distributed resources management (e.g. creation or cleanup).
 - Containerize all services and provide **Docker Compose** setups for development and production.
 - Route all HTTP traffic through API gateway with **Traefik**.
