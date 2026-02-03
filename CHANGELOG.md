@@ -13,6 +13,16 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Rename `uiot-service-rooms` to `uiot-service-room`.
 - Rename `uiot-service-rules` to `uiot-service-rule`.
 - Rename `uiot-service-things` to `uiot-service-thing`.
+- Demonstrate **Testcontainers** usage for integration testing in `uiot-service-room` module:
+    - See [`uiot-library-testkit`][uiot-library-testkit] submodule for reusable test utilities.
+    - See [`RoomControllerTest`][RoomControllerTest] class for test example.
+    - See [`uiot-service-room/.../testkit`][uiot-service-room_testkit] package for service-specific setup.
+
+[uiot-library-testkit]: uiot-libraries/uiot-library-testkit
+
+[RoomControllerTest]: uiot-services/uiot-service-room/src/test/java/io/github/malczuuu/uiot/room/rest/RoomControllerTest.java
+
+[uiot-service-room_testkit]: uiot-services/uiot-service-room/src/test/java/io/github/malczuuu/uiot/room/testkit
 
 ## [1.1.2] - 2026-01-17
 
