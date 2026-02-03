@@ -7,8 +7,8 @@ system. This library ensures consistency in data structures and reduces code dup
 
 This library is included as a dependency in all uIoT microservices.
 
-```groovy
+```kotlin
 dependencies {
-    implementation project(":uiot-libraries:uiot-library-model")
+    implementation(project(":uiot-libraries:uiot-library-model"))
 }
 ```

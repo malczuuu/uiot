@@ -65,9 +65,10 @@ detailed documentation.
 
 ### Supporting Libraries
 
-| Library                                                                | Description           |
-|------------------------------------------------------------------------|-----------------------|
-| [**uiot-library-models**](uiot-libraries/uiot-library-model/README.md) | Shared model classes. |
+| Library                                                                   | Description            |
+|---------------------------------------------------------------------------|------------------------|
+| [**uiot-library-models**](uiot-libraries/uiot-library-model/README.md)    | Shared model classes.  |
+| [**uiot-library-testkit**](uiot-libraries/uiot-library-testkit/README.md) | Shared test utilities. |
 
 ## Notable Use Cases
 
