@@ -1,13 +1,13 @@
-package io.github.malczuuu.uiot.rooms.core;
+package io.github.malczuuu.uiot.room.core;
 
 import io.github.malczuuu.uiot.models.Pagination;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
 import io.github.malczuuu.uiot.problems.InvalidCursorException;
-import io.github.malczuuu.uiot.rooms.model.CursorPage;
-import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
-import io.github.malczuuu.uiot.rooms.model.RoomModel;
-import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
+import io.github.malczuuu.uiot.room.model.CursorPage;
+import io.github.malczuuu.uiot.room.model.RoomCreateModel;
+import io.github.malczuuu.uiot.room.model.RoomModel;
+import io.github.malczuuu.uiot.room.model.RoomUpdateModel;
 import java.time.Clock;
 import java.util.List;
 import java.util.Optional;

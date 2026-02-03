@@ -1,6 +1,6 @@
-package io.github.malczuuu.uiot.rooms.testkit;
+package io.github.malczuuu.uiot.room.testkit;
 
-import io.github.malczuuu.uiot.rooms.core.RoomEntity;
+import io.github.malczuuu.uiot.room.core.RoomEntity;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package io.github.malczuuu.uiot.rooms.rest;
+package io.github.malczuuu.uiot.room.rest;
 
 import io.github.malczuuu.uiot.models.Pagination;
-import io.github.malczuuu.uiot.rooms.core.RoomService;
-import io.github.malczuuu.uiot.rooms.model.CursorPage;
-import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
-import io.github.malczuuu.uiot.rooms.model.RoomModel;
-import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
+import io.github.malczuuu.uiot.room.core.RoomService;
+import io.github.malczuuu.uiot.room.model.CursorPage;
+import io.github.malczuuu.uiot.room.model.RoomCreateModel;
+import io.github.malczuuu.uiot.room.model.RoomModel;
+import io.github.malczuuu.uiot.room.model.RoomUpdateModel;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

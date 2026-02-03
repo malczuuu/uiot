@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rooms.core;
+package io.github.malczuuu.uiot.room.core;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Version;

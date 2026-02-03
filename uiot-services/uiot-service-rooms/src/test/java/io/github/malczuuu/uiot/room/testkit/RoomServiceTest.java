@@ -1,6 +1,6 @@
-package io.github.malczuuu.uiot.rooms.testkit;
+package io.github.malczuuu.uiot.room.testkit;
 
-import io.github.malczuuu.uiot.rooms.RoomsApplication;
+import io.github.malczuuu.uiot.room.RoomsApplication;
 import io.github.malczuuu.uiot.testkit.DatasetAwareTest;
 import io.github.malczuuu.uiot.testkit.KafkaAwareTest;
 import io.github.malczuuu.uiot.testkit.MongoAwareTest;

@@ -1,27 +1,17 @@
-package io.github.malczuuu.uiot.rooms.model;
+package io.github.malczuuu.uiot.room.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RoomModel {
+public class RoomUpdateModel {
 
-  private final String uid;
   private final String name;
   private final Long version;
 
   @JsonCreator
-  public RoomModel(
-      @JsonProperty("uid") String uid,
-      @JsonProperty("name") String name,
-      @JsonProperty("version") Long version) {
-    this.uid = uid;
+  public RoomUpdateModel(@JsonProperty("name") String name, @JsonProperty("version") Long version) {
     this.name = name;
     this.version = version;
-  }
-
-  @JsonProperty("uid")
-  public String getUid() {
-    return uid;
   }
 
   @JsonProperty("name")
@@ -36,6 +26,6 @@ public class RoomModel {
 
   @Override
   public String toString() {
-    return "(uid=" + uid + ", name=" + name + ", version=" + version + ")";
+    return "(name=" + name + ", version=" + version + ")";
   }
 }

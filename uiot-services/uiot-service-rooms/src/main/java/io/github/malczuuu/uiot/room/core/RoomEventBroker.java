@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rooms.core;
+package io.github.malczuuu.uiot.room.core;
 
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;

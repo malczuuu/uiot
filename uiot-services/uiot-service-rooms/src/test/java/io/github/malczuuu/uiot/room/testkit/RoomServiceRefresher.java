@@ -1,7 +1,7 @@
-package io.github.malczuuu.uiot.rooms.testkit;
+package io.github.malczuuu.uiot.room.testkit;
 
-import io.github.malczuuu.uiot.rooms.core.RoomEntity;
-import io.github.malczuuu.uiot.rooms.core.RoomRepository;
+import io.github.malczuuu.uiot.room.core.RoomEntity;
+import io.github.malczuuu.uiot.room.core.RoomRepository;
 import io.github.malczuuu.uiot.testkit.dataset.DatasetRefresher;
 import java.util.List;
 import org.slf4j.Logger;

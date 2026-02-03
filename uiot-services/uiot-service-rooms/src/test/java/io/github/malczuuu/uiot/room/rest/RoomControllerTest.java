@@ -1,15 +1,15 @@
-package io.github.malczuuu.uiot.rooms.rest;
+package io.github.malczuuu.uiot.room.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import io.github.malczuuu.uiot.rooms.core.RoomEntity;
-import io.github.malczuuu.uiot.rooms.core.RoomRepository;
-import io.github.malczuuu.uiot.rooms.model.CursorPage;
-import io.github.malczuuu.uiot.rooms.model.RoomCreateModel;
-import io.github.malczuuu.uiot.rooms.model.RoomModel;
-import io.github.malczuuu.uiot.rooms.model.RoomUpdateModel;
-import io.github.malczuuu.uiot.rooms.testkit.RoomServiceTest;
+import io.github.malczuuu.uiot.room.core.RoomEntity;
+import io.github.malczuuu.uiot.room.core.RoomRepository;
+import io.github.malczuuu.uiot.room.model.CursorPage;
+import io.github.malczuuu.uiot.room.model.RoomCreateModel;
+import io.github.malczuuu.uiot.room.model.RoomModel;
+import io.github.malczuuu.uiot.room.model.RoomUpdateModel;
+import io.github.malczuuu.uiot.room.testkit.RoomServiceTest;
 import io.github.malczuuu.uiot.testkit.RefreshDatasetAfter;
 import io.github.problem4j.core.Problem;
 import java.time.Duration;

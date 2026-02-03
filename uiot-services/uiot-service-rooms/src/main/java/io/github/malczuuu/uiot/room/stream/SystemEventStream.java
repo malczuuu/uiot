@@ -1,11 +1,11 @@
-package io.github.malczuuu.uiot.rooms.stream;
+package io.github.malczuuu.uiot.room.stream;
 
 import io.github.malczuuu.uiot.models.Envelope;
 import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
 import io.github.malczuuu.uiot.models.RoomCreateEvent;
 import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
 import io.github.malczuuu.uiot.models.RoomDeleteEvent;
-import io.github.malczuuu.uiot.rooms.core.RoomService;
+import io.github.malczuuu.uiot.room.core.RoomService;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.AutoOffsetReset;

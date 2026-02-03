@@ -1,4 +1,4 @@
-package io.github.malczuuu.uiot.rooms;
+package io.github.malczuuu.uiot.room;
 
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;

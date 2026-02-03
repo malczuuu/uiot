@@ -1,6 +1,6 @@
-package io.github.malczuuu.uiot.rooms.testkit;
+package io.github.malczuuu.uiot.room.testkit;
 
-import io.github.malczuuu.uiot.rooms.core.RoomRepository;
+import io.github.malczuuu.uiot.room.core.RoomRepository;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
