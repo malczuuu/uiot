@@ -2,8 +2,8 @@ package io.github.malczuuu.uiot.accounting.core;
 
 import io.github.malczuuu.uiot.accounting.model.AccountingRecord;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
-import io.github.malczuuu.uiot.models.Pagination;
-import io.github.malczuuu.uiot.models.TimeRange;
+import io.github.malczuuu.uiot.model.dto.Pagination;
+import io.github.malczuuu.uiot.model.dto.TimeRange;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

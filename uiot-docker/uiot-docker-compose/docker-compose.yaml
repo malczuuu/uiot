@@ -191,11 +191,11 @@ services:
       kafka-init-job:
         condition: service_completed_successfully
 
-  uiot-service-rooms:
-    image: malczuuu/uiot-service-rooms:${UIOT_VERSION}
+  uiot-service-room:
+    image: malczuuu/uiot-service-room:${UIOT_VERSION}
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-rooms
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-room
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
@@ -213,12 +213,12 @@ services:
       kafka-init-job:
         condition: service_completed_successfully
 
-  uiot-service-rules:
-    image: malczuuu/uiot-service-rules:${UIOT_VERSION}
+  uiot-service-rule:
+    image: malczuuu/uiot-service-rule:${UIOT_VERSION}
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-rules
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-rule
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
       UIOT_THING_EVENTS_TOPIC: uiot-thing-events
       UIOT_ACTION_EXECUTION_EVENTS_TOPIC: uiot-action-execution-events
@@ -260,11 +260,11 @@ services:
       kafka-init-job:
         condition: service_completed_successfully
 
-  uiot-service-things:
-    image: malczuuu/uiot-service-things:${UIOT_VERSION}
+  uiot-service-thing:
+    image: malczuuu/uiot-service-thing:${UIOT_VERSION}
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-things
+      SPRING_DATA_MONGODB_DATABASE: uiot-service-thing
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_CONNECTIVITY_INTEGRATION_URL: http://uiot-service-connectivity:8080/api/rooms/{roomUid}/things/{thingUid}/connectivity
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events

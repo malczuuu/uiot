@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.history.stream;
 
 import io.github.malczuuu.uiot.history.core.HistoryService;
-import io.github.malczuuu.uiot.models.ThingEvent;
-import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
+import io.github.malczuuu.uiot.model.dto.ThingEvent;
+import io.github.malczuuu.uiot.model.dto.ThingEventsEnvelope;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;

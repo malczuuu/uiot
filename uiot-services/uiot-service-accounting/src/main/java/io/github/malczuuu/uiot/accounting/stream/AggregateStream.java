@@ -2,8 +2,8 @@ package io.github.malczuuu.uiot.accounting.stream;
 
 import io.github.malczuuu.uiot.accounting.core.AccountingEntity;
 import io.github.malczuuu.uiot.accounting.core.AccountingRepository;
-import io.github.malczuuu.uiot.models.AccountingWindow;
-import io.github.malczuuu.uiot.models.AccountingWindowEnvelope;
+import io.github.malczuuu.uiot.model.dto.AccountingWindow;
+import io.github.malczuuu.uiot.model.dto.AccountingWindowEnvelope;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;

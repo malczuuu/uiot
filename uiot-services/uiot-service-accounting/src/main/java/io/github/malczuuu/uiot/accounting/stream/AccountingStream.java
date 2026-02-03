@@ -1,9 +1,9 @@
 package io.github.malczuuu.uiot.accounting.stream;
 
-import io.github.malczuuu.uiot.models.AccountingMetric;
-import io.github.malczuuu.uiot.models.AccountingMetricEnvelope;
-import io.github.malczuuu.uiot.models.AccountingWindow;
-import io.github.malczuuu.uiot.models.AccountingWindowEnvelope;
+import io.github.malczuuu.uiot.model.dto.AccountingMetric;
+import io.github.malczuuu.uiot.model.dto.AccountingMetricEnvelope;
+import io.github.malczuuu.uiot.model.dto.AccountingWindow;
+import io.github.malczuuu.uiot.model.dto.AccountingWindowEnvelope;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

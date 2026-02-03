@@ -56,19 +56,18 @@ detailed documentation.
 | [**uiot-service-accounting**](uiot-services/uiot-service-accounting/README.md)     | `8331` | Resource usage accounting and billing analytics.        |
 | [**uiot-service-connectivity**](uiot-services/uiot-service-connectivity/README.md) | `8332` | Device authentication and RabbitMQ MQTT integration.    |
 | [**uiot-service-history**](uiot-services/uiot-service-history/README.md)           | `8333` | Historical telemetry storage and last-state management. |
-| [**uiot-service-rooms**](uiot-services/uiot-service-rooms/README.md)               | `8334` | Room management and top-level hierarchy container.      |
-| [**uiot-service-rules**](uiot-services/uiot-service-rules/README.md)               | `8335` | Rule engine for automated actions on telemetry events.  |
+| [**uiot-service-room**](uiot-services/uiot-service-room/README.md)                 | `8334` | Room management and top-level hierarchy container.      |
+| [**uiot-service-rule**](uiot-services/uiot-service-rule/README.md)                 | `8335` | Rule engine for automated actions on telemetry events.  |
 | [**uiot-service-telemetry**](uiot-services/uiot-service-telemetry/README.md)       | `8336` | MQTT to Kafka bridge for telemetry data ingestion.      |
-| [**uiot-service-things**](uiot-services/uiot-service-things/README.md)             | `8337` | IoT device (Thing) lifecycle management within rooms.   |
+| [**uiot-service-thing**](uiot-services/uiot-service-thing/README.md)               | `8337` | IoT device (Thing) lifecycle management within rooms.   |
 
 > **Note:** In Docker environment, all HTTP APIs are served on port `8080` for unification purposes.
 
 ### Supporting Libraries
 
-| Library                                                                     | Description                                       |
-|-----------------------------------------------------------------------------|---------------------------------------------------|
-| [**uiot-library-models**](uiot-libraries/uiot-library-models/README.md)     | Shared DTOs for Kafka and RabbitMQ communication. |
-| [**uiot-library-problems**](uiot-libraries/uiot-library-problems/README.md) | RFC 7807 problem handling utilities.              |
+| Library                                                                | Description           |
+|------------------------------------------------------------------------|-----------------------|
+| [**uiot-library-models**](uiot-libraries/uiot-library-model/README.md) | Shared model classes. |
 
 ## Notable Use Cases
 
@@ -79,7 +78,7 @@ Demonstrates the event-first approach used throughout the system:
 ```mermaid
 sequenceDiagram
     participant Client
-    participant RoomsService as uiot-service-rooms
+    participant RoomsService as uiot-service-room
     participant Kafka as Apache Kafka
     participant HistoryService as uiot-service-history
     participant MongoDB as MongoDB
@@ -111,7 +110,7 @@ IoT device registration and connectivity setup:
 ```mermaid
 sequenceDiagram
     participant Client
-    participant ThingsAPI as uiot-service-things
+    participant ThingsAPI as uiot-service-thing
     participant ConnectivityAPI as uiot-service-connectivity
     participant MongoDB as MongoDB
     Client ->> ThingsAPI: POST /api/rooms/{room}/things
@@ -187,7 +186,7 @@ Real-time telemetry processing with automated rule matching and action triggerin
 ```mermaid
 sequenceDiagram
     participant Kafka as Apache Kafka
-    participant RulesService as uiot-service-rules
+    participant RulesService as uiot-service-rule
     participant MongoDB
     Kafka ->> RulesService: Consume thing_events
     activate RulesService
@@ -210,12 +209,12 @@ Shows distributed cleanup coordination across all microservices:
 ```mermaid
 sequenceDiagram
     participant Client
-    participant RoomsService as uiot-service-rooms
+    participant RoomsService as uiot-service-room
     participant Kafka as Apache Kafka
-    participant ThingsService as uiot-service-things
+    participant ThingsService as uiot-service-thing
     participant ConnectivityService as uiot-service-connectivity
     participant HistoryService as uiot-service-history
-    participant RulesService as uiot-service-rules
+    participant RulesService as uiot-service-rule
     participant MongoDB as MongoDB
     Client ->> RoomsService: DELETE /api/rooms/{room}
     activate RoomsService

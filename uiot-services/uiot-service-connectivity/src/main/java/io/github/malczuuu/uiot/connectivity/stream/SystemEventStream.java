@@ -1,9 +1,9 @@
 package io.github.malczuuu.uiot.connectivity.stream;
 
 import io.github.malczuuu.uiot.connectivity.core.ConnectivityService;
-import io.github.malczuuu.uiot.models.Envelope;
-import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
-import io.github.malczuuu.uiot.models.RoomDeleteEvent;
+import io.github.malczuuu.uiot.model.dto.Envelope;
+import io.github.malczuuu.uiot.model.dto.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.model.dto.RoomDeleteEvent;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.AutoOffsetReset;
 import org.apache.kafka.streams.StreamsBuilder;

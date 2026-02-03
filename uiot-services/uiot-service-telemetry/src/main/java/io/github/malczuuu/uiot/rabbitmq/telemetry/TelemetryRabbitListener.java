@@ -1,9 +1,9 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
-import io.github.malczuuu.uiot.models.AccountingMetric;
-import io.github.malczuuu.uiot.models.Pack;
-import io.github.malczuuu.uiot.models.Record;
-import io.github.malczuuu.uiot.models.ThingEvent;
+import io.github.malczuuu.uiot.model.dto.AccountingMetric;
+import io.github.malczuuu.uiot.model.dto.Pack;
+import io.github.malczuuu.uiot.model.dto.Record;
+import io.github.malczuuu.uiot.model.dto.ThingEvent;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Base64;

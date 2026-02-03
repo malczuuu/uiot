@@ -44,10 +44,10 @@ jobs:
           - uiot-service-accounting
           - uiot-service-connectivity
           - uiot-service-history
-          - uiot-service-rooms
-          - uiot-service-rules
+          - uiot-service-room
+          - uiot-service-rule
           - uiot-service-telemetry
-          - uiot-service-things
+          - uiot-service-thing
     steps:
       - name: Checkout
         uses: actions/checkout@v6

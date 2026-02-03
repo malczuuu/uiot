@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
-import io.github.malczuuu.uiot.models.ThingEvent;
-import io.github.malczuuu.uiot.models.ThingEventsEnvelope;
+import io.github.malczuuu.uiot.model.dto.ThingEvent;
+import io.github.malczuuu.uiot.model.dto.ThingEventsEnvelope;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

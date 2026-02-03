@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.history.core;
 
-import io.github.malczuuu.uiot.models.RoomCreateEvent;
-import io.github.malczuuu.uiot.models.RoomDeleteEvent;
+import io.github.malczuuu.uiot.model.dto.RoomCreateEvent;
+import io.github.malczuuu.uiot.model.dto.RoomDeleteEvent;
 
 public interface StorageService {
 

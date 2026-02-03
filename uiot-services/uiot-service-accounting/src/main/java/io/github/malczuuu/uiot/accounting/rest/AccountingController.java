@@ -2,8 +2,8 @@ package io.github.malczuuu.uiot.accounting.rest;
 
 import io.github.malczuuu.uiot.accounting.core.AccountingService;
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
-import io.github.malczuuu.uiot.models.Pagination;
-import io.github.malczuuu.uiot.models.TimeRange;
+import io.github.malczuuu.uiot.model.dto.Pagination;
+import io.github.malczuuu.uiot.model.dto.TimeRange;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

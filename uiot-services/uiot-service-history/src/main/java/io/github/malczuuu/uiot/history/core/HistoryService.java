@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.history.core;
 
 import io.github.malczuuu.uiot.history.model.EventHistory;
-import io.github.malczuuu.uiot.models.ThingEvent;
+import io.github.malczuuu.uiot.model.dto.ThingEvent;
 
 public interface HistoryService {
 

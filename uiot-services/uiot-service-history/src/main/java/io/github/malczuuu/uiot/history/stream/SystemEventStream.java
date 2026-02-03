@@ -1,11 +1,11 @@
 package io.github.malczuuu.uiot.history.stream;
 
 import io.github.malczuuu.uiot.history.core.StorageService;
-import io.github.malczuuu.uiot.models.Envelope;
-import io.github.malczuuu.uiot.models.RoomCreateEnvelope;
-import io.github.malczuuu.uiot.models.RoomCreateEvent;
-import io.github.malczuuu.uiot.models.RoomDeleteEnvelope;
-import io.github.malczuuu.uiot.models.RoomDeleteEvent;
+import io.github.malczuuu.uiot.model.dto.Envelope;
+import io.github.malczuuu.uiot.model.dto.RoomCreateEnvelope;
+import io.github.malczuuu.uiot.model.dto.RoomCreateEvent;
+import io.github.malczuuu.uiot.model.dto.RoomDeleteEnvelope;
+import io.github.malczuuu.uiot.model.dto.RoomDeleteEvent;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.AutoOffsetReset;

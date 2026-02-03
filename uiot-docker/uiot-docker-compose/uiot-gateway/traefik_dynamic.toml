@@ -20,19 +20,19 @@
       service = "uiot-service-history"
       priority = 30
 
-    [http.routers.uiot-service-rooms]
+    [http.routers.uiot-service-room]
       rule = "Method(`GET`) && Path(`/api/rooms`) || Method(`POST`) && Path(`/api/rooms`) || Method(`GET`) && PathRegexp(`^/api/rooms/[^/]+$`) || Method(`PUT`) && PathRegexp(`^/api/rooms/[^/]+$`) || Method(`DELETE`) && PathRegexp(`^/api/rooms/[^/]+$`)"
-      service = "uiot-service-rooms"
+      service = "uiot-service-room"
       priority = 20
 
-    [http.routers.uiot-service-rules]
+    [http.routers.uiot-service-rule]
       rule = "Method(`GET`) && PathRegexp(`^/api/rooms/[^/]+/rules$`) || Method(`POST`) && PathRegexp(`^/api/rooms/[^/]+/rules$`) || Method(`GET`) && PathRegexp(`^/api/rooms/[^/]+/rules/[^/]+$`) || Method(`DELETE`) && PathRegexp(`^/api/rooms/[^/]+/rules/[^/]+$`)"
-      service = "uiot-service-rules"
+      service = "uiot-service-rule"
       priority = 30
 
-    [http.routers.uiot-service-things]
+    [http.routers.uiot-service-thing]
       rule = "Method(`GET`) && PathRegexp(`^/api/rooms/[^/]+/things$`) || Method(`POST`) && PathRegexp(`^/api/rooms/[^/]+/things$`) || Method(`GET`) && PathRegexp(`^/api/rooms/[^/]+/things/[^/]+$`) || Method(`PUT`) && PathRegexp(`^/api/rooms/[^/]+/things/[^/]+$`) || Method(`DELETE`) && PathRegexp(`^/api/rooms/[^/]+/things/[^/]+$`)"
-      service = "uiot-service-things"
+      service = "uiot-service-thing"
       priority = 30
 
     ############################
@@ -64,19 +64,19 @@
 
     [http.routers.rooms-swagger]
       rule = "Path(`/rooms/v3/api-docs`)"
-      service = "uiot-service-rooms"
+      service = "uiot-service-room"
       middlewares = ["rooms-swagger-strip"]
       priority = 50
 
     [http.routers.rules-swagger]
       rule = "Path(`/rules/v3/api-docs`)"
-      service = "uiot-service-rules"
+      service = "uiot-service-rule"
       middlewares = ["rules-swagger-strip"]
       priority = 50
 
     [http.routers.things-swagger]
       rule = "Path(`/things/v3/api-docs`)"
-      service = "uiot-service-things"
+      service = "uiot-service-thing"
       middlewares = ["things-swagger-strip"]
       priority = 50
 
@@ -118,14 +118,14 @@
     [[http.services.uiot-service-history.loadBalancer.servers]]
       url = "http://uiot-service-history:8080/"
 
-    [[http.services.uiot-service-rooms.loadBalancer.servers]]
-      url = "http://uiot-service-rooms:8080/"
+    [[http.services.uiot-service-room.loadBalancer.servers]]
+      url = "http://uiot-service-room:8080/"
 
-    [[http.services.uiot-service-rules.loadBalancer.servers]]
-      url = "http://uiot-service-rules:8080/"
+    [[http.services.uiot-service-rule.loadBalancer.servers]]
+      url = "http://uiot-service-rule:8080/"
 
-    [[http.services.uiot-service-things.loadBalancer.servers]]
-      url = "http://uiot-service-things:8080/"
+    [[http.services.uiot-service-thing.loadBalancer.servers]]
+      url = "http://uiot-service-thing:8080/"
 
     [[http.services.uiot-swagger-ui.loadBalancer.servers]]
       url = "http://uiot-swagger-ui:8080/"

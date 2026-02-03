@@ -1,4 +1,4 @@
-db = db.getSiblingDB("uiot-service-rooms");
+db = db.getSiblingDB("uiot-service-room");
 
 db.createCollection("rooms");
 

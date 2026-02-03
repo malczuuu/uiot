@@ -1,7 +1,7 @@
 package io.github.malczuuu.uiot.rabbitmq.telemetry;
 
-import io.github.malczuuu.uiot.models.AccountingMetric;
-import io.github.malczuuu.uiot.models.AccountingMetricEnvelope;
+import io.github.malczuuu.uiot.model.dto.AccountingMetric;
+import io.github.malczuuu.uiot.model.dto.AccountingMetricEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(platform(project(":uiot-libraries:uiot-library-bom")))
 
-    implementation(project(":uiot-libraries:uiot-library-models"))
+    implementation(project(":uiot-libraries:uiot-library-model"))
 
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.amqp)

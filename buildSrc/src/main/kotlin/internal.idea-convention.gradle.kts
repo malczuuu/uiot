@@ -29,15 +29,15 @@ idea {
                     workingDirectory = rootProject.rootDir.absolutePath
                     programParameters = ""
                 }
-                create<Application>("launch uiot-service-rooms") {
-                    mainClass = "io.github.malczuuu.uiot.rooms.RoomsApplication"
-                    moduleName = "uiot.uiot-services.uiot-service-rooms.main"
+                create<Application>("launch uiot-service-room") {
+                    mainClass = "io.github.malczuuu.uiot.room.RoomApplication"
+                    moduleName = "uiot.uiot-services.uiot-service-room.main"
                     workingDirectory = rootProject.rootDir.absolutePath
                     programParameters = ""
                 }
-                create<Application>("launch uiot-service-rules") {
-                    mainClass = "io.github.malczuuu.uiot.rules.RulesApplication"
-                    moduleName = "uiot.uiot-services.uiot-service-rules.main"
+                create<Application>("launch uiot-service-rule") {
+                    mainClass = "io.github.malczuuu.uiot.rule.RuleApplication"
+                    moduleName = "uiot.uiot-services.uiot-service-rule.main"
                     workingDirectory = rootProject.rootDir.absolutePath
                     programParameters = ""
                 }
@@ -47,9 +47,9 @@ idea {
                     workingDirectory = rootProject.rootDir.absolutePath
                     programParameters = ""
                 }
-                create<Application>("launch uiot-service-things") {
-                    mainClass = "io.github.malczuuu.uiot.things.ThingsApplication"
-                    moduleName = "uiot.uiot-services.uiot-service-things.main"
+                create<Application>("launch uiot-service-thing") {
+                    mainClass = "io.github.malczuuu.uiot.thing.ThingApplication"
+                    moduleName = "uiot.uiot-services.uiot-service-thing.main"
                     workingDirectory = rootProject.rootDir.absolutePath
                     programParameters = ""
                 }

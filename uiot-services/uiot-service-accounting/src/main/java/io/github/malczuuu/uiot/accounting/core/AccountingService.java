@@ -1,8 +1,8 @@
 package io.github.malczuuu.uiot.accounting.core;
 
 import io.github.malczuuu.uiot.accounting.model.AccountingTimeline;
-import io.github.malczuuu.uiot.models.Pagination;
-import io.github.malczuuu.uiot.models.TimeRange;
+import io.github.malczuuu.uiot.model.dto.Pagination;
+import io.github.malczuuu.uiot.model.dto.TimeRange;
 
 public interface AccountingService {
 
