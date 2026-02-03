@@ -16,11 +16,14 @@ spring:
       uri: mongodb://localhost:27017
       database: uiot-service-rooms
   kafka:
+    bootstrap-servers: localhost:9092
     streams:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: "${spring.kafka.bootstrap-servers}"
     producer:
       client-id: "${spring.application.name}"
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: "${spring.kafka.bootstrap-servers}"
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
       retries: 3
   jackson:
     default-property-inclusion: non_null

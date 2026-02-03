@@ -1,6 +1,7 @@
 package io.github.malczuuu.uiot.rooms.core;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -25,6 +26,7 @@ public class RoomEntity {
   @Field(name = NAME_FIELD)
   private String name;
 
+  @Version
   @Field(name = VERSION_FIELD)
   private Long version;
 
