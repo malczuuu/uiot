@@ -14,7 +14,7 @@ devices, which are organized within rooms and represent physical devices that se
 | Property                                 | Description                                                                                             |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                                           |
-| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-thing`.                                                  |
+| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-thing`.                                                   |
 | `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`.                               |
 | `uiot.connectivity.integration-url`      | Integration URL for connectivity management. See [Connectivity Integration](#connectivity-integration). |
 | `uiot.system-events-topic`               | Kafka topic for system events. See [Room Events](#room-events).                                         |
