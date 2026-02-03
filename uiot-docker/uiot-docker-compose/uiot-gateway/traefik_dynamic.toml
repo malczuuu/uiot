@@ -62,22 +62,22 @@
       middlewares = ["history-swagger-strip"]
       priority = 50
 
-    [http.routers.rooms-swagger]
-      rule = "Path(`/rooms/v3/api-docs`)"
+    [http.routers.room-swagger]
+      rule = "Path(`/room/v3/api-docs`)"
       service = "uiot-service-room"
-      middlewares = ["rooms-swagger-strip"]
+      middlewares = ["room-swagger-strip"]
       priority = 50
 
-    [http.routers.rules-swagger]
-      rule = "Path(`/rules/v3/api-docs`)"
+    [http.routers.rule-swagger]
+      rule = "Path(`/rule/v3/api-docs`)"
       service = "uiot-service-rule"
-      middlewares = ["rules-swagger-strip"]
+      middlewares = ["rule-swagger-strip"]
       priority = 50
 
-    [http.routers.things-swagger]
-      rule = "Path(`/things/v3/api-docs`)"
+    [http.routers.thing-swagger]
+      rule = "Path(`/thing/v3/api-docs`)"
       service = "uiot-service-thing"
-      middlewares = ["things-swagger-strip"]
+      middlewares = ["thing-swagger-strip"]
       priority = 50
 
   [http.middlewares]
@@ -95,14 +95,14 @@
     [http.middlewares.history-swagger-strip.stripPrefix]
       prefixes = ["/history"]
 
-    [http.middlewares.rooms-swagger-strip.stripPrefix]
-      prefixes = ["/rooms"]
+    [http.middlewares.room-swagger-strip.stripPrefix]
+      prefixes = ["/room"]
 
-    [http.middlewares.rules-swagger-strip.stripPrefix]
-      prefixes = ["/rules"]
+    [http.middlewares.rule-swagger-strip.stripPrefix]
+      prefixes = ["/rule"]
 
-    [http.middlewares.things-swagger-strip.stripPrefix]
-      prefixes = ["/things"]
+    [http.middlewares.thing-swagger-strip.stripPrefix]
+      prefixes = ["/thing"]
 
   [http.services]
     ##################

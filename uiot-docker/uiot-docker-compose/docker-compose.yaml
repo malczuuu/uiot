@@ -107,9 +107,9 @@ services:
           { "url" : "/accounting/v3/api-docs",   "name" : "Accounting"   },
           { "url" : "/connectivity/v3/api-docs", "name" : "Connectivity" },
           { "url" : "/history/v3/api-docs",      "name" : "History"      },
-          { "url" : "/rooms/v3/api-docs",        "name" : "Rooms"        },
-          { "url" : "/rules/v3/api-docs",        "name" : "Rules"        },
-          { "url" : "/things/v3/api-docs",       "name" : "Things"       }
+          { "url" : "/room/v3/api-docs",         "name" : "Room"         },
+          { "url" : "/rule/v3/api-docs",         "name" : "Rule"         },
+          { "url" : "/thing/v3/api-docs",        "name" : "Thing"        }
         ]'
     networks:
       - uiot
@@ -123,8 +123,8 @@ services:
   uiot-service-accounting:
     image: malczuuu/uiot-service-accounting:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-accounting
+      SPRING_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_DATABASE: uiot-service-accounting
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_METRICS_TOPIC: uiot-accounting
       UIOT_WINDOWS_TOPIC: uiot-accounting-windows
@@ -146,8 +146,8 @@ services:
   uiot-service-connectivity:
     image: malczuuu/uiot-service-connectivity:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-connectivity
+      SPRING_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_DATABASE: uiot-service-connectivity
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_VHOST: /
       UIOT_ROUTING_KEY_TEMPLATE: telemetry.%s.%s
@@ -170,8 +170,8 @@ services:
   uiot-service-history:
     image: malczuuu/uiot-service-history:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-history
+      SPRING_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_DATABASE: uiot-service-history
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_THING_EVENTS_TOPIC: uiot-thing-events
       UIOT_THING_METADATA_TOPIC: uiot-service-history_thing-metadata
@@ -194,8 +194,8 @@ services:
   uiot-service-room:
     image: malczuuu/uiot-service-room:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-room
+      SPRING_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_DATABASE: uiot-service-room
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
@@ -216,9 +216,9 @@ services:
   uiot-service-rule:
     image: malczuuu/uiot-service-rule:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_URI: mongodb://mongo:27017
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-rule
+      SPRING_MONGODB_DATABASE: uiot-service-rule
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
       UIOT_THING_EVENTS_TOPIC: uiot-thing-events
       UIOT_ACTION_EXECUTION_EVENTS_TOPIC: uiot-action-execution-events
@@ -263,8 +263,8 @@ services:
   uiot-service-thing:
     image: malczuuu/uiot-service-thing:${UIOT_VERSION}
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017
-      SPRING_DATA_MONGODB_DATABASE: uiot-service-thing
+      SPRING_MONGODB_URI: mongodb://mongo:27017
+      SPRING_MONGODB_DATABASE: uiot-service-thing
       SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:29092
       UIOT_CONNECTIVITY_INTEGRATION_URL: http://uiot-service-connectivity:8080/api/rooms/{roomUid}/things/{thingUid}/connectivity
       UIOT_SYSTEM_EVENTS_TOPIC: uiot-system-events
