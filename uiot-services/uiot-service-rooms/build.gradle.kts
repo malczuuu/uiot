@@ -22,7 +22,6 @@ dependencies {
 
     implementation(libs.kafka.streams)
 
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.spring.boot.starter.kafka.test)
+    testImplementation(project(":uiot-libraries:uiot-library-testkit"))
     testRuntimeOnly(libs.junit.platform.launcher)
 }

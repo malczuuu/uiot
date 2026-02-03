@@ -24,7 +24,6 @@ dependencies {
 
     implementation(libs.commons.codec)
 
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.spring.boot.starter.kafka.test)
+    testImplementation(project(":uiot-libraries:uiot-library-testkit"))
     testRuntimeOnly(libs.junit.platform.launcher)
 }

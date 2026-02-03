@@ -29,6 +29,12 @@ tasks.withType<Jar>().configureEach {
 }
 
 tasks.withType<Test>().configureEach {
+    useJUnitPlatform {
+        if (project.findProperty("containers.enabled")?.toString() == "false") {
+            excludeTags("testcontainers")
+        }
+    }
+
     testLogging {
         events("passed", "skipped", "failed", "standardOut", "standardError")
         exceptionFormat = TestExceptionFormat.SHORT
@@ -40,7 +46,4 @@ tasks.withType<Test>().configureEach {
 
     systemProperty("user.language", "en")
     systemProperty("user.country", "US")
-
-    // There might be no tests in certain subprojects. Don't fail the build because of that. To be revisited.
-    failOnNoDiscoveredTests = false
 }

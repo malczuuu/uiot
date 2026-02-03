@@ -13,6 +13,7 @@ rootProject.name = "uiot"
 include(":uiot-libraries:uiot-library-bom")
 include(":uiot-libraries:uiot-library-models")
 include(":uiot-libraries:uiot-library-problems")
+include(":uiot-libraries:uiot-library-testkit")
 
 include(":uiot-services:uiot-service-accounting")
 include(":uiot-services:uiot-service-connectivity")
