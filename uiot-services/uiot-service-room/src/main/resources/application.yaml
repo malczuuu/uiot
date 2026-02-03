@@ -11,10 +11,9 @@ management:
 spring:
   application:
     name: uiot-service-room
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017
-      database: uiot-service-room
+  mongodb:
+    uri: mongodb://localhost:27017
+    database: uiot-service-room
   kafka:
     bootstrap-servers: localhost:9092
     streams:

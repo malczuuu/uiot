@@ -13,8 +13,8 @@ authentication credentials and integrates with RabbitMQ for MQTT authorization.
 
 | Property                                 | Description                                                               |
 |------------------------------------------|---------------------------------------------------------------------------|
-| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
-| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-connectivity`.              |
+| `spring.mongodb.uri`                     | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
+| `spring.mongodb.database`                | MongoDB database name, default: `uiot-service-connectivity`.              |
 | `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`. |
 | `uiot.vhost`                             | RabbitMQ global vhost for things authorization, default: `/`.             |
 | `uiot.routing-key-template`              | RabbitMQ telemetry routing key template, default: `telemetry.%s.%s`.      |

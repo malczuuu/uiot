@@ -13,8 +13,8 @@ incoming telemetry events and publishes actions on the `uiot-action-execution-ev
 
 | Property                                 | Description                                                                       |
 |------------------------------------------|-----------------------------------------------------------------------------------|
-| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                     |
-| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-rule`.                              |
+| `spring.mongodb.uri`                     | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                     |
+| `spring.mongodb.database`                | MongoDB database name, default: `uiot-service-rule`.                              |
 | `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`.         |
 | `uiot.system-events-topic`               | Kafka topic for system events. See [Room Events](#room-events).                   |
 | `uiot.thing-events-topic`                | Kafka topic for incoming telemetry events, default: `uiot-thing-events`.          |

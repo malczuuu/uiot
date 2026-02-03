@@ -13,8 +13,8 @@ track resource consumption, generate usage metrics, and provide billing informat
 
 | Property                                 | Description                                                               |
 |------------------------------------------|---------------------------------------------------------------------------|
-| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
-| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-accounting`.                |
+| `spring.mongodb.uri`                     | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.             |
+| `spring.mongodb.database`                | MongoDB database name, default: `uiot-service-accounting`.                |
 | `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`. |
 | `uiot.metrics-topic`                     | Kafka topic for raw accounting metrics, default: `uiot-accounting`.       |
 | `uiot.windows-topic`                     | Kafka topic for windowed metrics, default: `uiot-accounting-windows`.     |

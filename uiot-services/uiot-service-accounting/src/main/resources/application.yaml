@@ -11,10 +11,9 @@ management:
 spring:
   application:
     name: uiot-service-accounting
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017
-      database: uiot-service-accounting
+  mongodb:
+    uri: mongodb://localhost:27017
+    database: uiot-service-accounting
   kafka:
     streams:
       application-id: "${spring.application.name}"

@@ -14,8 +14,8 @@ all IoT devices.
 
 | Property                                 | Description                                                                             |
 |------------------------------------------|-----------------------------------------------------------------------------------------|
-| `spring.data.mongodb.uri`                | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                           |
-| `spring.data.mongodb.database`           | MongoDB database name, default: `uiot-service-history`.                                 |
+| `spring.mongodb.uri`                     | MongoDB connection URI, default: `mongodb://127.0.0.1:27017`.                           |
+| `spring.mongodb.database`                | MongoDB database name, default: `uiot-service-history`.                                 |
 | `spring.kafka.streams.bootstrap-servers` | Kafka bootstrap servers for stream processing, default: `localhost:9092`.               |
 | `uiot.thing-events-topic`                | Kafka topic for incoming telemetry events, default: `uiot-thing-events`.                |
 | `uiot.thing-metadata-topic`              | Kafka topic for thing metadata, default: `uiot-service-history_thing-metadata`.         |

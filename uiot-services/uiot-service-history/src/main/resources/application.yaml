@@ -11,10 +11,9 @@ management:
 spring:
   application:
     name: uiot-service-history
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017
-      database: uiot-service-history
+  mongodb:
+    uri: mongodb://localhost:27017
+    database: uiot-service-history
   kafka:
     streams:
       application-id: "${spring.application.name}"

@@ -11,10 +11,9 @@ management:
 spring:
   application:
     name: uiot-service-rule
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017
-      database: uiot-service-rule
+  mongodb:
+    uri: mongodb://localhost:27017
+    database: uiot-service-rule
   jackson:
     default-property-inclusion: non_null
 springdoc:
