@@ -2,6 +2,7 @@ import com.diffplug.spotless.LineEnding
 
 plugins {
     id("internal.common-convention")
+    id("internal.idea-convention")
     alias(libs.plugins.spotless)
 }
 
