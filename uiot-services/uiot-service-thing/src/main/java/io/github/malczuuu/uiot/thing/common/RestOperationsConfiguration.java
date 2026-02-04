@@ -1,15 +1,15 @@
 package io.github.malczuuu.uiot.thing.common;
 
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class RestOperationsConfiguration {
 
   @Bean
-  public RestOperations restOperations() {
-    return new RestTemplate();
+  public RestOperations restOperations(RestTemplateBuilder builder) {
+    return builder.build();
   }
 }
