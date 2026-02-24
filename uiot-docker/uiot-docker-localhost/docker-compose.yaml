@@ -1,7 +1,7 @@
 services:
 
   kafka:
-    image: apache/kafka:4.1.1
+    image: apache/kafka:4.2.0
     ports:
       - "127.0.0.1:9092:9092"
     environment:
@@ -29,7 +29,7 @@ services:
       start_period: 10s
 
   kafka-init-job:
-    image: apache/kafka:4.1.1
+    image: apache/kafka:4.2.0
     entrypoint: /bin/bash
     networks:
       - uiot
