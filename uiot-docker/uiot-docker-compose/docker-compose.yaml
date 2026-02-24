@@ -101,7 +101,7 @@ services:
       start_period: 10s
 
   uiot-swagger-ui:
-    image: swaggerapi/swagger-ui:v5.31.0
+    image: swaggerapi/swagger-ui:v5.31.2
     environment:
       URLS: '[
           { "url" : "/accounting/v3/api-docs",   "name" : "Accounting"   },
