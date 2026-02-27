@@ -1,5 +1,5 @@
 [versions]
-idea-ext = "1.4"
+idea-ext = "1.4.1"
 problem4j-spring = "2.2.1"
 spotless = "8.2.1"
 spring-boot = "4.0.3"
