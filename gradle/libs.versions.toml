@@ -3,7 +3,7 @@ idea-ext = "1.4.1"
 problem4j-spring = "2.2.1"
 spotless = "8.2.1"
 spring-boot = "4.0.3"
-springdoc-openapi = "3.0.1"
+springdoc-openapi = "3.0.2"
 
 [plugins]
 idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "idea-ext" }
