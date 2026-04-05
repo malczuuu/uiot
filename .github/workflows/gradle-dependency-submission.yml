@@ -43,7 +43,7 @@ jobs:
             gradle-dependency-submission-${{ runner.os }}-java-25-
 
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v5
+        uses: gradle/actions/dependency-submission@v6
         env:
           GRADLE_OPTS: >-
             -Dorg.gradle.configuration-cache=false
