@@ -2,7 +2,7 @@
 idea-ext = "1.4.1"
 problem4j-spring = "2.2.4"
 spotless = "8.4.0"
-spring-boot = "4.0.3"
+spring-boot = "4.0.5"
 springdoc-openapi = "3.0.2"
 
 [plugins]
