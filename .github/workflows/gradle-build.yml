@@ -26,8 +26,26 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-disabled: true
+
+      # Not using cache from setup-gradle for now due to license change.
+      # See: https://blog.gradle.org/github-actions-for-gradle-v6
+      - name: Cache Gradle
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-build-${{ runner.os }}-java-25-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-build-${{ runner.os }}-java-25-
 
       - name: Build with Gradle Wrapper
         env:
-          GRADLE_OPTS: "-Dorg.gradle.configuration-cache=false -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
+          GRADLE_OPTS: >-
+            -Dorg.gradle.configuration-cache=false
+            -Dorg.gradle.daemon=false
+            -Dorg.gradle.parallel=false
+            -Dorg.gradle.workers.max=1
         run: ./gradlew build
